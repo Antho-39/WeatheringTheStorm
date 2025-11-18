@@ -10,10 +10,12 @@ public class HelicopterController : MonoBehaviour
     public float moveSpeed = 10f;        // Move speed (unit / second)
     public float rotationSpeed = 5f;     // Speed roation to aim at the move direction
 
+    private GaugeController gauge;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        gauge = GetComponent<GaugeController>();
     }
 
     // Update is called once per frame
@@ -43,5 +45,8 @@ public class HelicopterController : MonoBehaviour
             Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
             Body.rotation = Quaternion.Slerp(Body.rotation, targetRot, rotationSpeed * Time.deltaTime);
         }
+
+        float fuelBurned = Time.deltaTime + input.magnitude * Time.deltaTime; // Decrease fuel based on movement
+        gauge.ConsumeValue(fuelBurned); // Update gauge with animated fuel value
     }
 }
