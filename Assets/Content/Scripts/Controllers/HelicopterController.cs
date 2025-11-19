@@ -16,7 +16,9 @@ public class HelicopterController : MonoBehaviour
     private Rigidbody2D chopperRigidbody; // Reference to helicoper rigidbody
 
     private Camera mainCamera;
+    private ParticleSystem waterParticles; // Reference to particle system
     private Quaternion targetRotation;
+    private ParticleSystem.EmissionModule emission;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,9 +26,12 @@ public class HelicopterController : MonoBehaviour
         mainCamera = GetComponentInChildren<Camera>();
         gauge = GetComponent<GaugeController>();
         chopperRigidbody = GetComponent<Rigidbody2D>();
+        waterParticles = GetComponentInChildren<ParticleSystem>();
 
         // I guess this is a terrible way to stop the camera inheriting the chopper's rotation? 
         targetRotation = mainCamera.transform.rotation;
+
+        emission = waterParticles.emission;
     }
 
     // Update is called once per frame
@@ -39,6 +44,7 @@ public class HelicopterController : MonoBehaviour
 
         float h = Input.GetAxisRaw("Horizontal"); // Arrow left/right or A/D
         float v = Input.GetAxisRaw("Vertical");   // Arrow up/down or W/S
+        float cannonInput = Input.GetAxisRaw("Jump"); // space key
 
         Vector3 input = new Vector3(h, v, 0.0f);
         float throttle = v * moveSpeed;
@@ -64,6 +70,15 @@ public class HelicopterController : MonoBehaviour
             // angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90.0f;
             // Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
             // Body.rotation = Quaternion.Slerp(Body.rotation, targetRot, rotationSpeed * Time.deltaTime);
+        }
+
+        if (cannonInput > 0)
+        {
+            emission.enabled = true;
+        }
+        else
+        {
+            emission.enabled = false;
         }
 
         float fuelBurned = Time.deltaTime + input.magnitude * Time.deltaTime; // Decrease fuel based on movement
