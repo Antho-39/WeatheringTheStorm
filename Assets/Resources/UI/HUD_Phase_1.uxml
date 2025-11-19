@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/UI/HUD_StyleSheet.uss?fileID=7433441132597879392&amp;guid=c5125b75148dc984ebf29720ea8614f8&amp;type=3#HUD_StyleSheet" />
+    <ui:VisualElement name="Container" style="flex-grow: 1;">
+        <ui:VisualElement name="Header" class="header" style="flex-grow: 1;">
+            <ui:Label text="Phase 1 : PREPARATION" name="HeaderLabel" class="header" style="align-items: center; justify-content: center; align-self: center; font-size: 50px; padding-top: 25px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="CustomCursor" picking-mode="Ignore" style="width: 32px; height: 32px; background-image: url(&quot;project://database/Assets/Content/Textures/cursor_1.png?fileID=2800000&amp;guid=8ac7971e824798148be852a819ac453b&amp;type=3#cursor_1&quot;); position: absolute;" />
+</ui:UXML>

@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/Resources/UI/HUD_StyleSheet.uss?fileID=7433441132597879392&amp;guid=c5125b75148dc984ebf29720ea8614f8&amp;type=3#HUD_StyleSheet" />
     <ui:VisualElement name="Container" style="flex-grow: 1;">
         <ui:VisualElement name="Header" class="header" style="flex-grow: 1;">
-            <ui:Label text="ACTION - Helicopter" name="HeaderLabel" class="header" style="align-items: center; justify-content: center; align-self: center; font-size: 50px; padding-top: 25px;" />
+            <ui:Label text="Phase 2 : ACTION" name="HeaderLabel" class="header" style="align-items: center; justify-content: center; align-self: center; font-size: 50px; padding-top: 25px;" />
         </ui:VisualElement>
         <ui:Label text="FUEL" name="GaugeLabel" style="font-size: 20px; color: rgb(255, 255, 255); -unity-font-style: bold; left: 1%; bottom: 0; top: 1%; -unity-text-outline-width: 0.5px;" />
         <ui:VisualElement name="GaugeRoot" class="gauge-root" style="bottom: 0%; top: -2%; left: 5%;">

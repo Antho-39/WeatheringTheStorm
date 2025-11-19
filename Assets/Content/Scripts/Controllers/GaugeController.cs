@@ -7,11 +7,9 @@ public class GaugeController : MonoBehaviour
     [Header("UIDocument which contains the UXML")]
     public UIDocument uiDocument;
 
-    // valeur entre 0 et 1
     [Range(0f, 1f)]
     public float value = 1f;
 
-    // vitesse d'animation (0 = instantané, >0 = secondes pour atteindre la cible)
     public float animateDuration = 0.25f;
 
     private float fuel = 100f;
@@ -89,7 +87,7 @@ public class GaugeController : MonoBehaviour
             fill.style.width = new StyleLength(new Length(v * 100f, LengthUnit.Percent));
 
             // Change color based on thresholds:
-            // > 0.5 => vert, > 0.25 => jaune, <= 0.25 => rouge
+            // > 0.5 => green, > 0.25 => yellow, <= 0.25 => red
             Color col;
             if (v > 0.5f)
             {
