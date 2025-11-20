@@ -1,13 +1,24 @@
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FireBehvior : MonoBehaviour
 {
+    public LayerMask layerMask;
+    private float fireSpreadSpeed = 5f;
+    private float minDistance = 2f;
     private Vector3 targetScale;
+    private Vector2 fireCenter;
+    private GameObject prefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         targetScale = new Vector3(0.1f, 0.1f, 0.1f);
+        fireCenter = transform.position;
+        prefab = gameObject;
+        InvokeRepeating(nameof(Propagation), 5, fireSpreadSpeed);
+        InvokeRepeating(nameof(Grow), 1, 1);
     }
 
     // Update is called once per frame
@@ -16,14 +27,31 @@ public class FireBehvior : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void Propagation()
     {
-        // Check if the collided object has the tag "Enemy"
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            // Destroy self
-            Destroy(gameObject);
+        Vector2 targetSpawn = (Random.insideUnitCircle * 4) + fireCenter;
+
+        // Make 20 attempts to spawn more fire within the following restrictions (looks like almost all attempts fail?)
+        for (int attempts = 0; attempts < 20; attempts++)
+        {            
+            // The random location must be a minimum distance from the center of the current fire
+            if (Vector2.Distance(targetSpawn, fireCenter) > minDistance)
+            {
+                // The random location must not overlap with existing fire (Layer mask 6 for fire)
+                if (!Physics2D.OverlapCircle(targetSpawn, 1f, layerMask))
+                {
+                    // Spawn fire
+                    Instantiate(prefab, targetSpawn, quaternion.identity);
+                    break;
+                }
+            }
         }
+    }
+
+    private void Grow()
+    {
+        // Smoothly grow back towards original scale
+        transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(1f, 1f, 1f), 20f * Time.deltaTime);
     }
 
     private void OnParticleCollision(GameObject other)
@@ -38,5 +66,15 @@ public class FireBehvior : MonoBehaviour
             
         // Smoothly shrink towards target scale
         transform.localScale = Vector3.MoveTowards(transform.localScale, targetScale, 20f * Time.deltaTime);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // // Check if the collided object has the tag "Enemy"
+        // if (collision.gameObject.CompareTag("Enemy"))
+        // {
+        //     // Destroy self
+        //     Destroy(gameObject);
+        // }
     }
 }

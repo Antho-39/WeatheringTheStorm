@@ -51,7 +51,7 @@ public class HelicopterController : MonoBehaviour
 
         // Dividing the horizontal axis values because they are far too high. Probably a way better way to do this?
         float steering = (h / 7) * rotationSpeed;
-        float angle = 0.0f;
+        // float angle = 0.0f;
 
         if (input.sqrMagnitude > 0.0001f)
         {
