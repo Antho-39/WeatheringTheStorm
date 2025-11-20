@@ -12,6 +12,8 @@ public class HelicopterController : MonoBehaviour
     public float moveSpeed = 10f;        // Move speed (unit / second)
     public float rotationSpeed = 5f;     // Speed roation to aim at the move direction
 
+    public float height = 0f;
+    public float climbSpeed = 3f;
     private GaugeController gauge;
     private Rigidbody2D chopperRigidbody; // Reference to helicoper rigidbody
 
@@ -80,6 +82,15 @@ public class HelicopterController : MonoBehaviour
         {
             emission.enabled = false;
         }
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            height = Mathf.Min(height + climbSpeed * Time.deltaTime, 10f);
+        }            
+        else
+        {
+            height = Mathf.Max(height - climbSpeed * Time.deltaTime, 0f);
+        }        
 
         float fuelBurned = Time.deltaTime + input.magnitude * Time.deltaTime; // Decrease fuel based on movement
         gauge.ConsumeValue(fuelBurned); // Update gauge with animated fuel value
