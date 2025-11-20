@@ -30,7 +30,7 @@ public class PreparationPhaseUIController : MonoBehaviour
         // DEBUG ! 
         if(Input.GetKeyDown(KeyCode.D))
         {
-            SceneLoader.LoadScene("ActionPhaseScene");
+            SceneLoader.LoadScene("Phase_2_Scene");
         }
     }
 }
