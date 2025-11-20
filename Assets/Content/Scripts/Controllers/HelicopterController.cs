@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Mathematics;
 
 public class HelicopterController : MonoBehaviour
 {
     public Transform[] helicopterBlades; // Array to hold references to helicopter blades
     public Transform Body;            // Reference to the helicopter body
+    public Transform TailRotor;      // Reference to the tail rotor for steering
 
     [Header("Movement")]
     public float moveSpeed = 10f;        // Move speed (unit / second)
@@ -13,11 +15,25 @@ public class HelicopterController : MonoBehaviour
     public float height = 0f;
     public float climbSpeed = 3f;
     private GaugeController gauge;
+    private Rigidbody2D chopperRigidbody; // Reference to helicoper rigidbody
+
+    private Camera mainCamera;
+    private ParticleSystem waterParticles; // Reference to particle system
+    private Quaternion targetRotation;
+    private ParticleSystem.EmissionModule emission;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        mainCamera = GetComponentInChildren<Camera>();
         gauge = GetComponent<GaugeController>();
+        chopperRigidbody = GetComponent<Rigidbody2D>();
+        waterParticles = GetComponentInChildren<ParticleSystem>();
+
+        // I guess this is a terrible way to stop the camera inheriting the chopper's rotation? 
+        targetRotation = mainCamera.transform.rotation;
+
+        emission = waterParticles.emission;
     }
 
     // Update is called once per frame
@@ -30,8 +46,13 @@ public class HelicopterController : MonoBehaviour
 
         float h = Input.GetAxisRaw("Horizontal"); // Arrow left/right or A/D
         float v = Input.GetAxisRaw("Vertical");   // Arrow up/down or W/S
+        float cannonInput = Input.GetAxisRaw("Jump"); // space key
 
         Vector3 input = new Vector3(h, v, 0.0f);
+        float throttle = v * moveSpeed;
+
+        // Dividing the horizontal axis values because they are far too high. Probably a way better way to do this?
+        float steering = (h / 7) * rotationSpeed;
         float angle = 0.0f;
 
         if (input.sqrMagnitude > 0.0001f)
@@ -40,12 +61,26 @@ public class HelicopterController : MonoBehaviour
             Vector3 direction = input.normalized;
 
             // Move the helicopter in the input direction
-            transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
+            //transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
+
+            // Apply force to helicopter rigidbody in the direction the chopper is facing
+            chopperRigidbody.AddForce(transform.up * throttle);
+            // Steering has to be inverted for the force at the tail
+            chopperRigidbody.AddForceAtPosition(transform.right * (steering * -1), TailRotor.position);
 
             // Rotate around the Z axis to face the move direction
-            angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90.0f;
-            Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
-            Body.rotation = Quaternion.Slerp(Body.rotation, targetRot, rotationSpeed * Time.deltaTime);
+            // angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90.0f;
+            // Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
+            // Body.rotation = Quaternion.Slerp(Body.rotation, targetRot, rotationSpeed * Time.deltaTime);
+        }
+
+        if (cannonInput > 0)
+        {
+            emission.enabled = true;
+        }
+        else
+        {
+            emission.enabled = false;
         }
 
         if (Input.GetKey(KeyCode.Space))
@@ -59,5 +94,10 @@ public class HelicopterController : MonoBehaviour
 
         float fuelBurned = Time.deltaTime + input.magnitude * Time.deltaTime; // Decrease fuel based on movement
         gauge.ConsumeValue(fuelBurned); // Update gauge with animated fuel value
+    }
+
+    void LateUpdate()
+    {
+        mainCamera.transform.rotation = targetRotation;
     }
 }

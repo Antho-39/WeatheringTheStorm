@@ -19,7 +19,7 @@ public class HelicopterShadow : MonoBehaviour
     void Start()
     {
         helicopter = GetComponentInParent<Transform>();
-        shadowRendere = GetComponent<SpriteRenderer>();
+        shadowRenderer = GetComponent<SpriteRenderer>();
     }
 
     void LateUpdate()
