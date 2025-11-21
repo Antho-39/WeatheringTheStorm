@@ -52,7 +52,25 @@ public class GameManager : MonoBehaviour
         // Gestion du timer
         if (timerRunning)
         {
-            gameTime -= Time.deltaTime;
+            gameTime -= Time.deltaTime;            
+        }
+        
+        if (gameTime =< 0)
+        {
+            switch (currentPhase)
+            {
+                case Phase.Phase1:
+                    SceneLoader.LoadScene("Phase_2_Scene");
+                    break;
+                case Phase.Phase2:
+                    SceneLoader.LoadScene("Phase_3_Scene");
+                    break;
+                case Phase.Phase3:
+                    SceneLoader.LoadScene("EndGame");
+                    break;
+                case default:
+                    break;
+            }
         }
     }
 
@@ -110,6 +128,11 @@ public class GameManager : MonoBehaviour
     public void ResetTimer()
     {
         gameTime = 600f;
+    }
+
+    public void DecreaseTimer(float amount)
+    {
+        gameTime -= amount;
     }
 
     public void StartTimer()
