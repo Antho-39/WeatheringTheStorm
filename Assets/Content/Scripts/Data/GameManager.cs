@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
             gameTime -= Time.deltaTime;            
         }
         
-        if (gameTime =< 0)
+        if (gameTime <= 0)
         {
             switch (currentPhase)
             {
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
                 case Phase.Phase3:
                     SceneLoader.LoadScene("EndGame");
                     break;
-                case default:
+                default:
                     break;
             }
         }
