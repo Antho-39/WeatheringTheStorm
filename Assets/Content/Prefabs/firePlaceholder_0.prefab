@@ -185,7 +185,7 @@ MonoBehaviour:
     m_Bits: 128
   InFlammableLayers:
     serializedVersion: 2
-    m_Bits: 80
+    m_Bits: 320
 --- !u!198 &6314735620469322182
 ParticleSystem:
   m_ObjectHideFlags: 0
