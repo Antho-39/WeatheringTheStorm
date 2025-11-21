@@ -5,12 +5,20 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public enum Phase { Phase1, Phase2, Phase3 }
+    public Phase currentPhase;
+
     [Header("Timer")]
+    public float preparationPhaseTime = 180f;
+    public float actionPhaseTime = 300f;
     public float gameTime = 600f;
     public bool timerRunning = true;
 
     [Header("Score")]
     public int score = 0;
+
+    [Header("Money")]
+    public int money = 10000;
 
     [Header("Musique")]
     public AudioSource musicSource;
@@ -71,12 +79,28 @@ public class GameManager : MonoBehaviour
     // On peut changer la musique automatiquement selon la scène
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name.Contains("1"))
-            PlayMusic(phase_1Music);
-        else if (scene.name.Contains("2"))
-            PlayMusic(phase_2Music);
-        else if (scene.name.Contains("3"))
-            PlayMusic(phase_2Music);
+        if (scene.name.Contains("1")) currentPhase = Phase.Phase1;
+        if (scene.name.Contains("2")) currentPhase = Phase.Phase2;
+        if (scene.name.Contains("3")) currentPhase = Phase.Phase3;
+
+        switch (currentPhase)
+        {
+            case Phase.Phase1:
+                gameTime = preparationPhaseTime;
+                PlayMusic(phase_1Music);
+                break;
+
+            case Phase.Phase2:
+                gameTime = actionPhaseTime;
+                PlayMusic(phase_2Music);
+                break;
+
+            case Phase.Phase3:
+                gameTime = gameTime;
+                PlayMusic(phase_3Music);
+                break;
+        }
+        timerRunning = true;
     }
 
     // -------------------------------------------------------------------------
