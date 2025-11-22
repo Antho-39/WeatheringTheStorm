@@ -615,7 +615,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 479
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 5787b975035d79442aaf7f2a11be9134, type: 2}
   m_TargetDisplay: 0
@@ -859,7 +859,7 @@ GameObject:
   - component: {fileID: 702567757}
   - component: {fileID: 702567756}
   - component: {fileID: 702567755}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: Water Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
