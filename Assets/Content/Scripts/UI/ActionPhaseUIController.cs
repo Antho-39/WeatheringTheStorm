@@ -14,15 +14,11 @@ public class ActionPhaseUIController : MonoBehaviour
         uiDocument = GetComponent<UIDocument>();
         var root = uiDocument.rootVisualElement;
 
-        moneyLabel = root.Q<Label>("MoneyLabel");
         timeLabel = root.Q<Label>("TimeLabel");
-        scoreLabel = root.Q<Label>("ScoreLabel");
     }
 
     void Update()
     {
-        moneyLabel.text = GameManager.Instance.money.ToString() + " $";
-        scoreLabel.text = GameManager.Instance.score.ToString();
         var time = Mathf.Max(0, GameManager.Instance.gameTime);
         int minutes = Mathf.FloorToInt(time / 60f);
         int seconds = Mathf.FloorToInt(time % 60f);

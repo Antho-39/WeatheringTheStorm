@@ -18,7 +18,6 @@ public class PreparationPhaseUIController : MonoBehaviour
         cursor = root.Q<VisualElement>("CustomCursor");
         moneyLabel = root.Q<Label>("MoneyLabel");
         timeLabel = root.Q<Label>("TimeLabel");
-        scoreLabel = root.Q<Label>("ScoreLabel");
 
         UnityEngine.Cursor.visible = false;
     }
@@ -26,7 +25,6 @@ public class PreparationPhaseUIController : MonoBehaviour
     void Update()
     {
         moneyLabel.text = GameManager.Instance.money.ToString() + " $";
-        scoreLabel.text = GameManager.Instance.score.ToString();
         var time = Mathf.Max(0, GameManager.Instance.gameTime);
         int minutes = Mathf.FloorToInt(time / 60f);
         int seconds = Mathf.FloorToInt(time % 60f);

@@ -10,9 +10,6 @@
         <ui:VisualElement name="MoneyIcon" style="flex-grow: 1; top: 20px; left: 200px; background-image: resource(&apos;Sprites/money&apos;); width: 50%; height: 50%; min-width: 100px; min-height: 75px; max-width: 0%; max-height: 0%; position: absolute; bottom: 0%; right: 0%; align-self: center; align-content: center; align-items: flex-start; flex-direction: column;">
             <ui:Label text="10 000 $" name="MoneyLabel" style="top: 70px; left: -25px; height: 50px; width: 150px; -unity-text-outline-width: 0.5px; font-size: 35px; color: rgb(255, 255, 255); -unity-font-style: bold; -unity-text-align: middle-center;" />
         </ui:VisualElement>
-        <ui:VisualElement name="ScoreIcon" style="flex-grow: 1; width: 150px; height: 150px; top: 5px; left: 350px; background-image: resource(&apos;Sprites/score&apos;); min-width: 0; min-height: 0; max-width: 150px; max-height: 100px; background-size: 150px 150px;">
-            <ui:Label text="50" name="ScoreLabel" style="top: 85px; left: 0; height: 50px; width: 150px; -unity-text-outline-width: 0.5px; -unity-text-align: middle-center; font-size: 35px; color: rgb(255, 255, 255); -unity-font-style: bold;" />
-        </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="CustomCursor" picking-mode="Ignore" style="width: 32px; height: 32px; background-image: url(&quot;project://database/Assets/Content/Textures/cursor_1.png?fileID=2800000&amp;guid=8ac7971e824798148be852a819ac453b&amp;type=3#cursor_1&quot;); position: absolute;" />
 </ui:UXML>
