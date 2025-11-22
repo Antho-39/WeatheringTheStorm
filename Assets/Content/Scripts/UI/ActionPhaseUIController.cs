@@ -26,7 +26,7 @@ public class ActionPhaseUIController : MonoBehaviour
         timeLabel.text = $"{minutes:00}:{seconds:00}";
 
         // DEBUG ! 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.G))
         {
             SceneLoader.LoadScene("Phase_3_Scene");
         }

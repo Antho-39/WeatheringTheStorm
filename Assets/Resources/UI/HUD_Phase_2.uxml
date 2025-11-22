@@ -4,12 +4,6 @@
         <ui:VisualElement name="Header" class="header" style="flex-grow: 1;">
             <ui:Label text="Phase 2 : ACTION" name="HeaderLabel" class="header" style="align-items: center; justify-content: center; align-self: center; font-size: 50px; padding-top: 25px;" />
         </ui:VisualElement>
-<<<<<<< Updated upstream
-        <ui:Label text="FUEL" name="GaugeLabel" style="font-size: 20px; color: rgb(255, 255, 255); -unity-font-style: bold; left: 1%; bottom: 0; top: 1%; -unity-text-outline-width: 0.5px;" />
-        <ui:VisualElement name="GaugeRoot" class="gauge-root" style="bottom: 0%; top: -2%; left: 5%;">
-            <ui:VisualElement name="GaugeBackground" class="gauge-background">
-                <ui:VisualElement name="GaugeFill" class="gauge-fill" />
-=======
         <ui:VisualElement name="TimeIcon" style="flex-grow: 1; background-image: resource(&apos;Sprites/circle&apos;); background-size: 150% 150%; width: 150px; height: 150px; top: 5px; left: 5px; position: absolute;">
             <ui:Label text="3:00" name="TimeLabel" style="position: absolute; top: 45px; left: 50px; height: 50px; width: 50px; justify-content: flex-start; align-self: center; align-content: center; -unity-text-align: middle-center; font-size: 35px; color: rgb(255, 255, 255);" />
         </ui:VisualElement>
@@ -25,7 +19,6 @@
                     <ui:VisualElement name="GaugeFill" class="gauge-fill" />
                 </ui:VisualElement>
                 <ui:Label name="ValueLabel" class="gauge-label" />
->>>>>>> Stashed changes
             </ui:VisualElement>
         </ui:Label>
     </ui:VisualElement>
