@@ -1,9 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ui:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ui="UnityEngine.UIElements"
-    xmlns:uie="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
->
-    
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainMenuStyle.uss?fileID=7433441132597879392&amp;guid=ec236c602a40a514f8c108c6eaeea82d&amp;type=3#MainMenuStyle" />
+    <Style src="project://database/Assets/UI%20Toolkit/FinalSceneStyle.uss?fileID=7433441132597879392&amp;guid=b44fa49bb10484146975de651f9bc6e1&amp;type=3#FinalSceneStyle" />
+    <ui:VisualElement name="Countainer" style="flex-grow: 1; background-image: resource(&apos;Sprites/8-bit-graphics-pixels-scene-with-house-fire&apos;);">
+        <ui:Label text="Thanks for playing!" style="-unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/StoryScript-Regular.ttf?fileID=12800000&amp;guid=c004b1e2fc5ea3f4e936161f4ce0df89&amp;type=3#StoryScript-Regular&quot;); font-size: 50px; align-self: center; -unity-text-outline-color: rgb(255, 255, 255); background-color: rgb(255, 255, 255); margin-top: 100px;" />
+        <ui:Label text="Credits" style="align-self: center; margin-top: 30px; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/StoryScript-Regular.ttf?fileID=12800000&amp;guid=c004b1e2fc5ea3f4e936161f4ce0df89&amp;type=3#StoryScript-Regular&quot;); font-size: 50px; background-color: rgb(255, 255, 255);" />
+        <ui:Label text="Rob ADAMS&#x9;Design / Tech" class="header" style="margin-top: 10px; font-size: 40px; -unity-font-style: normal; align-self: center; align-items: flex-start;" />
+        <ui:Label text="Anthony DAVID&#x9;Co-Producer / Tech" class="header" style="font-size: 40px; align-items: auto;" />
+        <ui:Label text="Noemie MAGOUTIER&#x9;Producer / PM" class="header" style="font-size: 40px;" />
+        <ui:Label text="Francois MOUTOU&#x9;&#x9;Narrative / Design" class="header" style="font-size: 40px;" />
+        <ui:Label text="Marwa SOUIRI&#x9;&#x9;Artist" class="header" style="font-size: 40px;" />
+        <ui:Label text="xxxxx &#x9;Testers" class="header" style="font-size: 40px;" />
+        <ui:Button text="Replay" class="button" style="font-size: 35px; -unity-font-style: bold-and-italic; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/StoryScript-Regular.ttf?fileID=12800000&amp;guid=c004b1e2fc5ea3f4e936161f4ce0df89&amp;type=3#StoryScript-Regular&quot;);" />
+        <ui:Button text="Leave" class="button" style="margin-top: 30px; -unity-font-style: bold-and-italic; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/StoryScript-Regular.ttf?fileID=12800000&amp;guid=c004b1e2fc5ea3f4e936161f4ce0df89&amp;type=3#StoryScript-Regular&quot;); font-size: 35px;" />
+    </ui:VisualElement>
 </ui:UXML>
