@@ -1,0 +1,45 @@
+:root {
+}
+
+.header {
+    font-size: 30px;
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+}
+
+.gauge-root {
+    width: 300px;
+    height: 36px;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.gauge-background {
+    flex-grow: 1;
+    height: 16px;
+    background-color: rgb(46, 46, 46);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.gauge-fill {
+    width: 0%;
+    height: 100%;
+    transition: width 0.1s;
+}
+
+.gauge-label {
+    width: 48px;
+    text-align: right;
+    color: white;
+    unity-font-style: bold;
+    font-size: 12px;
+}
+
+.cursor {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+}
