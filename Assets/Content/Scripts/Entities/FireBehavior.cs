@@ -4,7 +4,8 @@ using Random = UnityEngine.Random;
 
 public class FireBehvior : MonoBehaviour
 {
-    public LayerMask layerMask;
+    public LayerMask FlammableLayers;
+    public LayerMask InFlammableLayers;
     private float fireSpreadSpeed = 5f;
     private float minDistance = 2f;
     private Vector3 targetScale;
@@ -31,14 +32,16 @@ public class FireBehvior : MonoBehaviour
     {
         Vector2 targetSpawn = (Random.insideUnitCircle * 4) + fireCenter;
 
-        // Make 20 attempts to spawn more fire within the following restrictions (looks like almost all attempts fail?)
+        // Make 20 attempts to spawn more fire within the following restrictions
         for (int attempts = 0; attempts < 20; attempts++)
         {            
             // The random location must be a minimum distance from the center of the current fire
             if (Vector2.Distance(targetSpawn, fireCenter) > minDistance)
             {
-                // The random location must not overlap with existing fire (Layer mask 6 for fire)
-                if (!Physics2D.OverlapCircle(targetSpawn, 1f, layerMask))
+                // The random location must not overlap with something inflammable
+                // and must overlap with something flammable
+                if (!Physics2D.OverlapCircle(targetSpawn, 1f, InFlammableLayers)
+                    && Physics2D.OverlapCircle(targetSpawn, 1f, FlammableLayers))
                 {
                     // Spawn fire
                     Instantiate(prefab, targetSpawn, quaternion.identity);

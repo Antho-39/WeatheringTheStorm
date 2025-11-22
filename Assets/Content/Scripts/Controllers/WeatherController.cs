@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class WeatherController : MonoBehaviour
 {
+    public LayerMask InFlammableLayers;
     public GameObject firePrefab;
     public int numberOfInitialFires;
     private BoxCollider2D weatherVolume;
@@ -12,11 +13,18 @@ public class WeatherController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        int startedFires = 0;
         weatherVolume = GetComponentInChildren<BoxCollider2D>();
-
-        for (int i = 0; i < numberOfInitialFires; i++)
+        
+        while (startedFires < numberOfInitialFires)
         {
-            Instantiate(firePrefab, GetRandomPointInSquare(weatherVolume.bounds), quaternion.identity);
+            UnityEngine.Vector2 targetSpawn = GetRandomPointInSquare(weatherVolume.bounds);
+
+            if (!Physics2D.OverlapCircle(targetSpawn, 1f, InFlammableLayers))
+            {
+                Instantiate(firePrefab, targetSpawn, quaternion.identity);
+                startedFires++;
+            }
         }
     }
 
