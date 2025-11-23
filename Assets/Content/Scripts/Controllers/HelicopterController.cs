@@ -105,7 +105,7 @@ public class HelicopterController : MonoBehaviour
             MiniMapCanvas.SetActive(!miniMapActive);
         }  
 
-        if (Physics2D.OverlapCircle(transform.position, 1f, water) && gauge.water < 100f)
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, water) && gauge.water < 100f)
         {
             gauge.ConsumeValue(-0.05f);
         }
