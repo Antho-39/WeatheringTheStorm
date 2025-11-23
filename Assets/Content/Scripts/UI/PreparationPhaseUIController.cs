@@ -41,7 +41,7 @@ public class PreparationPhaseUIController : MonoBehaviour
         cursor.style.top = mousePos.y;
 
         // DEBUG ! 
-        if(Input.GetKeyDown(KeyCode.D))
+        if(Input.GetKeyDown(KeyCode.Alpha2))
         {
             SceneLoader.LoadScene("Phase_2_Scene");
         }
