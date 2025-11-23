@@ -14,6 +14,7 @@ public class PreparationPhaseUIController : MonoBehaviour
     private Button skipButton;
     private Button introNextButton;
     private Button controlsNextButton;
+    private Button nextPhaseButton;
 
     [Header("Speed Settings")]
     public float letterDelay = 0.05f;  // Time between each letter
@@ -53,9 +54,34 @@ public class PreparationPhaseUIController : MonoBehaviour
         skipButton = root.Q<Button>("SkipButton");
         introNextButton = root.Q<Button>("IntroNextButton");
         controlsNextButton = root.Q<Button>("ControlsNextButton");
+        nextPhaseButton = root.Q<Button>("NextPhaseButton");
+
+        var btnFireCrew = root.Q<Button>("FireCrewButton");
+        var btnFireLine = root.Q<Button>("FireLineButton");
+        var btnSafeZone = root.Q<Button>("SafeZoneButton");
+
+        btnFireCrew.clicked += () =>
+        {
+            var def = GameManager.Instance.database.GetById("FIRE_CREW");
+            PlacementManager.Instance.StartPlacing(def);
+        };
+
+        btnFireLine.clicked += () =>
+        {
+            var def = GameManager.Instance.database.GetById("FIRE_LINE");
+            PlacementManager.Instance.StartPlacing(def);
+        };
+
+        btnSafeZone.clicked += () =>
+        {
+            var def = GameManager.Instance.database.GetById("SAFE_ZONE");
+            PlacementManager.Instance.StartPlacing(def);
+        };
+
         skipButton.clicked += SkipText;
         introNextButton.clicked += IntroNextUI;
         controlsNextButton.clicked += ControlsNextUI;
+        nextPhaseButton.clicked += () => SceneLoader.LoadScene("Phase_2_Scene");
 
         phase_1_UI.style.display = DisplayStyle.None;
         controls_UI.style.display = DisplayStyle.None;

@@ -35,6 +35,11 @@ public class PlayerController : MonoBehaviour
             Vector3 difference = dragOrigin - mainCamera.ScreenToWorldPoint(Input.mousePosition);
             targetPosition = transform.position + difference * dragSpeed;
         }
+
+        if (PlacementManager.Instance.isPlacing)
+        {
+            return;
+        }
         mainCamera.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
         mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 2f, 20f);
     }

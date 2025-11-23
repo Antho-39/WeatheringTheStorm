@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,22 +12,26 @@ public class GameManager : MonoBehaviour
     [Header("Timer")]
     public float preparationPhaseTime = 180f;
     public float actionPhaseTime = 300f;
-    public float gameTime = 600f;
-    public bool timerRunning = true;
+    public float gameTime;
+    private float scoreTime;
+    public bool timerRunning = false;
 
     [Header("Score")]
-    public int score = 0;
-    public int treesDestroyed = 0;
-    public int buildingsDestroyed = 0;
+    public int score;
+    public int treesDestroyed;
+    public int buildingsDestroyed;
 
     [Header("Money")]
-    public int money = 10000;
+    public int money;
 
     [Header("Musique")]
     public AudioSource musicSource;
     public AudioClip phase_1Music;
     public AudioClip phase_2Music;
     public AudioClip phase_3Music;
+
+    public List<PlacedObjectData> placedObjects = new ();
+    public PlaceableObjectDatabase database;
 
     private bool isMuted;
 
@@ -49,6 +54,11 @@ public class GameManager : MonoBehaviour
         }
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    
+    private void Start()
+    {
+        Init();
     }
 
     private void Update()
@@ -125,22 +135,22 @@ public class GameManager : MonoBehaviour
         if (scene.name.Contains("1")) currentPhase = Phase.Phase1;
         if (scene.name.Contains("2")) currentPhase = Phase.Phase2;
         if (scene.name.Contains("3")) currentPhase = Phase.Phase3;
+        StopMusic();
 
         switch (currentPhase)
         {
             case Phase.Phase1:
                 gameTime = preparationPhaseTime;
-                //PlayMusic(phase_1Music);
                 break;
 
             case Phase.Phase2:
+                scoreTime += gameTime;
                 gameTime = actionPhaseTime;
-                //PlayMusic(phase_2Music);
                 break;
 
             case Phase.Phase3:
+                scoreTime += gameTime;
                 gameTime = gameTime;
-                //PlayMusic(phase_3Music);
                 break;
             default:
                 break;
@@ -173,6 +183,21 @@ public class GameManager : MonoBehaviour
     }
 
     // -------------------------------------------------------------------------
+    //  MONEY
+    // -------------------------------------------------------------------------
+
+    public void AddMoney(int amount)
+    {
+        money += amount;
+    }
+
+    public void ResetMoney()
+    {
+        money = 10000;
+    }
+
+
+    // -------------------------------------------------------------------------
     //  SCORE
     // -------------------------------------------------------------------------
 
@@ -186,6 +211,17 @@ public class GameManager : MonoBehaviour
         score = 0;
     }
 
+    private void Init()
+    {
+        money = 10000;
+        score = 0;
+        gameTime = preparationPhaseTime;
+        treesDestroyed = 0;
+        buildingsDestroyed = 0;
+        timerRunning = false;
+        isMuted = false;
+    }
+
     public bool GetMuteState()
     { 
         return isMuted;
@@ -196,4 +232,12 @@ public class GameManager : MonoBehaviour
         isMuted = mute;
         this.GetComponent<AudioSource>().mute = isMuted;
     }
+}
+
+[System.Serializable]
+public class PlacedObjectData
+{
+    public string id;
+    public Vector2 position;
+    public float rotation;
 }
