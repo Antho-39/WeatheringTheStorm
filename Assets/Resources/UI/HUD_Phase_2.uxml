@@ -1,10 +1,10 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Resources/UI/HUD_StyleSheet.uss?fileID=7433441132597879392&amp;guid=c5125b75148dc984ebf29720ea8614f8&amp;type=3#HUD_StyleSheet" />
+    <Style src="project://database/Assets/Resources/UI/HUD_Phase_StyleSheet.uss?fileID=7433441132597879392&amp;guid=c5125b75148dc984ebf29720ea8614f8&amp;type=3#HUD_Phase_StyleSheet" />
     <ui:VisualElement name="Container" style="flex-grow: 1;">
         <ui:VisualElement name="Header" class="header" style="flex-grow: 1;">
             <ui:Label text="Phase 2 : ACTION" name="HeaderLabel" class="header" style="align-items: center; justify-content: center; align-self: center; font-size: 50px; padding-top: 25px;" />
         </ui:VisualElement>
-        <ui:VisualElement name="TimeIcon" style="flex-grow: 1; background-image: resource(&apos;Sprites/circle&apos;); background-size: 150% 150%; width: 150px; height: 150px; top: 5px; left: 5px; position: absolute;">
+        <ui:VisualElement name="TimeIcon" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Content/Sprites/circle.png?fileID=2800000&amp;guid=22eba9e5a0a2a3a4f8ed2a13c29b36d4&amp;type=3#circle&quot;); background-size: 150% 150%; width: 150px; height: 150px; top: 5px; left: 5px; position: absolute;">
             <ui:Label text="3:00" name="TimeLabel" style="position: absolute; top: 45px; left: 50px; height: 50px; width: 50px; justify-content: flex-start; align-self: center; align-content: center; -unity-text-align: middle-center; font-size: 35px; color: rgb(255, 255, 255);" />
         </ui:VisualElement>
         <ui:Label text="WATER" name="GaugeLabel" style="font-size: 20px; color: rgb(255, 255, 255); -unity-font-style: bold; left: 1%; bottom: 51px; top: -2%; -unity-text-outline-width: 0.5px; width: 92px; height: 34px;">
