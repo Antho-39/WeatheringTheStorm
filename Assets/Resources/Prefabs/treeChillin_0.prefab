@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2432405392241499991, guid: 533346f0e63c8ed429620cf4d548aed2, type: 3}
+  m_Sprite: {fileID: 9062570003587692548, guid: b65b6845e697b8d4b83c2d238b1ccc52, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61b2cf057d60e84d8d04417624d5293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BurnBehavior
+  entityType: 0
   damagedSprite: {fileID: 8269638823549047491, guid: 375368dad139b1f4cbc5d92d0d96f75f, type: 3}
   fireLayer:
     serializedVersion: 2
@@ -148,7 +149,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.48, y: 1.6}
+    oldSize: {x: 3.61, y: 4.97}
     newSize: {x: 1.48, y: 1.6}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
