@@ -11,6 +11,8 @@ public class HelicopterController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 10f;        // Move speed (unit / second)
     public float rotationSpeed = 5f;     // Speed roation to aim at the move direction
+    public GameObject MiniMapCamera;
+    public GameObject MiniMapCanvas;
     
     // I'm very sure I don't need to make a public layer mask for this, just not sure on syntax to specify explicitly only the water layer
     public LayerMask water;
@@ -94,7 +96,14 @@ public class HelicopterController : MonoBehaviour
         else
         {
             height = Mathf.Max(height - climbSpeed * Time.deltaTime, 0f);
-        }        
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            bool miniMapActive = MiniMapCamera.activeSelf;
+            MiniMapCamera.SetActive(!miniMapActive);
+            MiniMapCanvas.SetActive(!miniMapActive);
+        }  
 
         if (Physics2D.OverlapCircle(transform.position, 1f, water) && gauge.water < 100f)
         {
