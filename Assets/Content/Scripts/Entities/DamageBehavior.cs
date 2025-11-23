@@ -16,12 +16,14 @@ public class BurnBehavior : MonoBehaviour
     private SpriteRenderer entityRenderer;
     private BoxCollider2D entityCollider;
     private float colliderAverageRadius;
+    private bool burned;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         entityRenderer = GetComponent<SpriteRenderer>();
         entityCollider = GetComponent<BoxCollider2D>();
+        burned = false;
 
         // Using average radius of the box collider extends because using the actual overlap box function won't work
         colliderAverageRadius = (entityCollider.bounds.extents.x + entityCollider.bounds.extents.z) * 0.5f;
@@ -48,7 +50,7 @@ public class BurnBehavior : MonoBehaviour
             entityHealth -= 0.05f;
         }
 
-        if(entityHealth <= 0f)
+        if(entityHealth <= 0f && burned == false)
         {
             GameManager.Instance.AddScore(ScorePenalty);
             entityRenderer.sprite = damagedSprite;
@@ -61,6 +63,7 @@ public class BurnBehavior : MonoBehaviour
             {
                 GameManager.Instance.buildingsDestroyed++;
             }
+            burned = true;
         }
     }
 

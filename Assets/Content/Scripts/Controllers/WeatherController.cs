@@ -9,6 +9,7 @@ public class WeatherController : MonoBehaviour
     public GameObject firePrefab;
     public int numberOfInitialFires;
     private BoxCollider2D weatherVolume;
+    private UnityEngine.Vector2 targetSpawn;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,7 +19,7 @@ public class WeatherController : MonoBehaviour
         
         while (startedFires < numberOfInitialFires)
         {
-            UnityEngine.Vector2 targetSpawn = GetRandomPointInSquare(weatherVolume.bounds);
+            targetSpawn = GetRandomPointInSquare(weatherVolume.bounds);
 
             if (!Physics2D.OverlapCircle(targetSpawn, 1f, InFlammableLayers))
             {
@@ -26,12 +27,30 @@ public class WeatherController : MonoBehaviour
                 startedFires++;
             }
         }
+
+        InvokeRepeating(nameof(FireStarter), 30f, 30f);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void FireStarter()
+    {
+        bool fireStarted = false;
+
+        while (!fireStarted)
+        {
+            targetSpawn = GetRandomPointInSquare(weatherVolume.bounds);
+            
+            if (!Physics2D.OverlapCircle(targetSpawn, 1f, InFlammableLayers))
+            {
+                Instantiate(firePrefab, targetSpawn, quaternion.identity);
+                fireStarted = true;
+            }
+        }
     }
 
     private UnityEngine.Vector2 GetRandomPointInSquare(Bounds boxCollider)
