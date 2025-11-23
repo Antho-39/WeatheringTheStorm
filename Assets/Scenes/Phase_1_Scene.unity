@@ -2040,6 +2040,8 @@ MonoBehaviour:
   gameTime: 600
   timerRunning: 1
   score: 0
+  treesDestroyed: 0
+  buildingsDestroyed: 0
   money: 0
   musicSource: {fileID: 2080397579}
   phase_1Music: {fileID: 8300000, guid: 4f5337f9dec349648939fe6759b284bd, type: 3}
@@ -2058,7 +2060,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0

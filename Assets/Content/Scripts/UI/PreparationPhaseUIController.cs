@@ -12,7 +12,8 @@ public class PreparationPhaseUIController : MonoBehaviour
     private Label timeLabel;
     private Label scoreLabel;
     private Button skipButton;
-    private Button nextButton;
+    private Button introNextButton;
+    private Button controlsNextButton;
 
     [Header("Speed Settings")]
     public float letterDelay = 0.05f;  // Time between each letter
@@ -31,6 +32,7 @@ public class PreparationPhaseUIController : MonoBehaviour
 
     private float lastSoundTime = 0;
 
+    private VisualElement controls_UI;
     private VisualElement intro_UI;
     private Label introLabel;
     private string fullText;
@@ -46,13 +48,17 @@ public class PreparationPhaseUIController : MonoBehaviour
         introLabel = root.Q<Label>("IntroText");
         phase_1_UI = root.Q<VisualElement>("Phase_1");
         intro_UI = root.Q<VisualElement>("Intro");
+        controls_UI = root.Q<VisualElement>("Controls");
 
         skipButton = root.Q<Button>("SkipButton");
-        nextButton = root.Q<Button>("NextButton");
+        introNextButton = root.Q<Button>("IntroNextButton");
+        controlsNextButton = root.Q<Button>("ControlsNextButton");
         skipButton.clicked += SkipText;
-        nextButton.clicked += NextUI;
+        introNextButton.clicked += IntroNextUI;
+        controlsNextButton.clicked += ControlsNextUI;
 
         phase_1_UI.style.display = DisplayStyle.None;
+        controls_UI.style.display = DisplayStyle.None;
         intro_UI.style.display = DisplayStyle.Flex;
 
         // Get the full text and clear the label
@@ -83,7 +89,7 @@ public class PreparationPhaseUIController : MonoBehaviour
 
 
         // DEBUG ! 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SceneLoader.LoadScene("Phase_2_Scene");
         }
@@ -154,12 +160,20 @@ public class PreparationPhaseUIController : MonoBehaviour
         isFinished = true;
     }
 
-    private void NextUI()
+    private void IntroNextUI()
+    {
+        if (!isFinished) return;
+
+        controls_UI.style.display = DisplayStyle.Flex;
+        intro_UI.style.display = DisplayStyle.None;
+    }
+
+    private void ControlsNextUI()
     {
         if (!isFinished) return;
 
         phase_1_UI.style.display = DisplayStyle.Flex;
-        intro_UI.style.display = DisplayStyle.None;
+        controls_UI.style.display = DisplayStyle.None;
         UnityEngine.Cursor.visible = false;
 
         GameManager.Instance.StartTimer();

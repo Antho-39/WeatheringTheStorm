@@ -104,11 +104,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61b2cf057d60e84d8d04417624d5293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BurnBehavior
+  entityType: 1
   damagedSprite: {fileID: 21300000, guid: 6251842f293bdc644b7d4448ff03fe17, type: 3}
   fireLayer:
     serializedVersion: 2
     m_Bits: 64
   entityHealth: 130
+  ScorePenalty: -500
 --- !u!61 &7357623981982626957
 BoxCollider2D:
   m_ObjectHideFlags: 0
