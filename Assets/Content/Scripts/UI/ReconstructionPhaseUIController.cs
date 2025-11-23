@@ -18,9 +18,8 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     void Update()
     {
         moneyLabel.text = GameManager.Instance.money.ToString() + " $";
-
         // DEBUG ! 
-        if(Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D))
         {
             SceneLoader.LoadScene("Phase_1_Scene");
         }

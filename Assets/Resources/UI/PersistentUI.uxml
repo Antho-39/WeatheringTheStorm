@@ -1,8 +1,9 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Resources/UI/HUD_StyleSheet.uss?fileID=7433441132597879392&amp;guid=acc3ae0a0918f624ea66f2bf8f70b4ce&amp;type=3#HUD_StyleSheet" />
-    <ui:VisualElement name="PauseMenu" class="pause-container" style="flex-grow: 1;">
+    <ui:VisualElement name="PauseMenu" class="pause-container" style="flex-grow: 1; display: flex;">
         <ui:Label text="Paused" class="pause-title" style="top: -25%; font-size: 50px; -unity-font-style: bold; color: rgb(255, 242, 0);" />
         <ui:Button name="ResumeButton" text="Resume" style="top: -5%; width: 150px; height: 75px; font-size: 30px; -unity-font-style: normal;" />
         <ui:Button name="QuitButton" text="Quit Game" style="font-size: 30px; height: 75px;" />
+        <ui:Button name="VolumeButton" style="top: 25%; left: 1%; position: absolute; background-image: url(&quot;project://database/Assets/Content/Textures/UI/volume.png?fileID=2800000&amp;guid=9768bacb83f235a429ad1ee993d05371&amp;type=3#volume&quot;); width: 75px; height: 75px; background-color: rgba(255, 255, 255, 0); border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; background-size: 75% 75%;" />
     </ui:VisualElement>
 </ui:UXML>
