@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     public AudioClip phase_2Music;
     public AudioClip phase_3Music;
 
+    private bool isMuted;
+
     private void Awake()
     {
         // Singleton
@@ -62,12 +64,15 @@ public class GameManager : MonoBehaviour
             switch (currentPhase)
             {
                 case Phase.Phase1:
+                    StopMusic();
                     SceneLoader.LoadScene("Phase_2_Scene");
                     break;
                 case Phase.Phase2:
+                    StopMusic();
                     SceneLoader.LoadScene("Phase_3_Scene");
                     break;
                 case Phase.Phase3:
+                    StopMusic();
                     SceneLoader.LoadScene("EndGame");
                     break;
                 default:
@@ -91,6 +96,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void PlayPhaseMusic()
+    {
+        switch (currentPhase)
+        {
+            case Phase.Phase1:
+                PlayMusic(phase_1Music);
+                break;
+
+            case Phase.Phase2:
+                PlayMusic(phase_2Music);
+                break;
+
+            case Phase.Phase3:
+                PlayMusic(phase_3Music);
+                break;
+        }
+    }
+
     public void StopMusic()
     {
         musicSource.Stop();
@@ -107,17 +130,19 @@ public class GameManager : MonoBehaviour
         {
             case Phase.Phase1:
                 gameTime = preparationPhaseTime;
-                PlayMusic(phase_1Music);
+                //PlayMusic(phase_1Music);
                 break;
 
             case Phase.Phase2:
                 gameTime = actionPhaseTime;
-                PlayMusic(phase_2Music);
+                //PlayMusic(phase_2Music);
                 break;
 
             case Phase.Phase3:
                 gameTime = gameTime;
-                PlayMusic(phase_3Music);
+                //PlayMusic(phase_3Music);
+                break;
+            default:
                 break;
         }
         timerRunning = true;
@@ -159,5 +184,16 @@ public class GameManager : MonoBehaviour
     public void ResetScore()
     {
         score = 0;
+    }
+
+    public bool GetMuteState()
+    { 
+        return isMuted;
+    }
+
+    public void SetMuteState(bool mute)
+    {
+        isMuted = mute;
+        this.GetComponent<AudioSource>().mute = isMuted;
     }
 }

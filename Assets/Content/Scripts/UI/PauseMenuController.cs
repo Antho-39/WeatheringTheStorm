@@ -3,11 +3,16 @@ using UnityEngine.UIElements;
 
 public class PauseMenuController : MonoBehaviour
 {
+    public Texture2D muteSprite;
+    public Texture2D unmuteSprite;
+
     private VisualElement pauseMenu;
     private Button resumeButton;
     private Button quitButton;
+    private Button volumeButton;
 
     private bool isPaused = false;
+    private bool isMuted = false;
 
     private void Awake()
     {
@@ -22,9 +27,11 @@ public class PauseMenuController : MonoBehaviour
         pauseMenu = root.Q<VisualElement>("PauseMenu");
         resumeButton = root.Q<Button>("ResumeButton");
         quitButton = root.Q<Button>("QuitButton");
+        volumeButton = root.Q<Button>("VolumeButton");
 
         resumeButton.clicked += ResumeGame;
         quitButton.clicked += QuitToMenu;
+        volumeButton.clicked += SwitchMuteState;
     }
 
     private void Update()
@@ -68,5 +75,19 @@ public class PauseMenuController : MonoBehaviour
         GameManager.Instance.timerRunning = false;
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+    }
+
+    public void SwitchMuteState()
+    {
+        isMuted = !isMuted;
+        GameManager.Instance.SetMuteState(isMuted);
+        if (isMuted)
+        {
+            volumeButton.style.backgroundImage = new StyleBackground(muteSprite);
+        }
+        else
+        {
+            volumeButton.style.backgroundImage = new StyleBackground(unmuteSprite);
+        }
     }
 }
