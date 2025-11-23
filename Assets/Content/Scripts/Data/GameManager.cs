@@ -129,7 +129,6 @@ public class GameManager : MonoBehaviour
         musicSource.Stop();
     }
 
-    // On peut changer la musique automatiquement selon la scène
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name.Contains("1")) currentPhase = Phase.Phase1;

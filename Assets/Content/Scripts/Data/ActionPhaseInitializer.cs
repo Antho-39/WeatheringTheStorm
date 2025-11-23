@@ -24,7 +24,6 @@ public class ActionPhaseInitializer : MonoBehaviour
             );
         }
 
-        // Optionnel : vider après utilisation
         GameManager.Instance.placedObjects.Clear();
     }
 }

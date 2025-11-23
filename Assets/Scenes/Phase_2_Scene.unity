@@ -8603,6 +8603,8 @@ MonoBehaviour:
   phase_1Music: {fileID: 0}
   phase_2Music: {fileID: 0}
   phase_3Music: {fileID: 0}
+  placedObjects: []
+  database: {fileID: 0}
 --- !u!4 &808275389
 Transform:
   m_ObjectHideFlags: 0
@@ -12560,6 +12562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1711055343}
+  - component: {fileID: 1711055344}
   m_Layer: 0
   m_Name: PhaseInitializer
   m_TagString: Untagged
@@ -12582,6 +12585,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1711055344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711055342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b12529b608c90574eb58364b537264a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActionPhaseInitializer
+  fireCrewPrefab: {fileID: 0}
+  fireLinePrefab: {fileID: 0}
+  safeZonePrefab: {fileID: 0}
 --- !u!1 &1722625921
 GameObject:
   m_ObjectHideFlags: 0

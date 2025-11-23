@@ -897,8 +897,8 @@ MonoBehaviour:
   instantSkip: 1
   soundCooldown: 0.1
   audioSource: {fileID: 869377849}
-  letterSound_1: {fileID: 8300000, guid: b3ac1686f1d0b084a847a50f035854f7, type: 3}
-  letterSound_2: {fileID: 8300000, guid: 718f416ebfba5e340b6ebf9f31ad3774, type: 3}
+  letterSound_1: {fileID: 8300000, guid: 06d68d08a1d68ed43b88a477499a32e6, type: 3}
+  letterSound_2: {fileID: 8300000, guid: 06d68d08a1d68ed43b88a477499a32e6, type: 3}
 --- !u!82 &869377849
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2372,6 +2372,8 @@ MonoBehaviour:
     m_Bits: 336
   previewRenderer: {fileID: 103858715}
   previewColor: {r: 1, g: 1, b: 1, a: 0.5}
+  audioSource: {fileID: 869377849}
+  cashRegister: {fileID: 8300000, guid: 2dcdf5362d5eca747890d396d8ea2c2f, type: 3}
   isPlacing: 0
 --- !u!1 &2107111210
 GameObject:
