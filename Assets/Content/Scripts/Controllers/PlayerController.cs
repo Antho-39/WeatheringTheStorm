@@ -22,31 +22,6 @@ public class PlayerController : MonoBehaviour
         mainCamera = GetComponentInChildren<Camera>();
         targetPosition = transform.position;
     }
-    /*
-    void Update()
-    {
-        if (mainCamera == null)
-        {
-            return;
-        }
-        if (Input.GetMouseButtonDown(2))
-        {
-            dragOrigin = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        }
-
-        if (Input.GetMouseButton(2))
-        {
-            Vector3 difference = dragOrigin - mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            targetPosition = transform.position + difference * dragSpeed;
-        }
-
-        if (PlacementManager.Instance.isPlacing)
-        {
-            return;
-        }
-        mainCamera.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-        mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 1f, 3f);
-    }*/
 
     void Update()
     {
@@ -71,7 +46,7 @@ public class PlayerController : MonoBehaviour
         // 3. ZOOM CAMERA
         // ---------------------------------------------------------
         mainCamera.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
-        mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 1f, 3f);
+        mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 3f, 5f);
 
     }
 
