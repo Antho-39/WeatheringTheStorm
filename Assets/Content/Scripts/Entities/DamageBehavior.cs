@@ -2,9 +2,17 @@ using UnityEngine;
 
 public class BurnBehavior : MonoBehaviour
 {
+    public enum EntityType
+    {
+        Tree,
+        Building
+    }
+
+    public EntityType entityType;
     public Sprite damagedSprite;
     public LayerMask fireLayer;
     public float entityHealth;
+    public int ScorePenalty;
     private SpriteRenderer entityRenderer;
     private BoxCollider2D entityCollider;
     private float colliderAverageRadius;
@@ -42,7 +50,17 @@ public class BurnBehavior : MonoBehaviour
 
         if(entityHealth <= 0f)
         {
+            GameManager.Instance.AddScore(ScorePenalty);
             entityRenderer.sprite = damagedSprite;
+
+            if (entityType == EntityType.Tree)
+            {
+                GameManager.Instance.treesDestroyed++;
+            }
+            else if (entityType == EntityType.Building)
+            {
+                GameManager.Instance.buildingsDestroyed++;
+            }
         }
     }
 
