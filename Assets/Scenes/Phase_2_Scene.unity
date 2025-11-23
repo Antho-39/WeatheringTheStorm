@@ -11170,7 +11170,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 336
   firePrefab: {fileID: 9205259926687696933, guid: be3a33e3347b3534da7913ee44fb0976, type: 3}
-  numberOfInitialFires: 4
+  numberOfInitialFires: 3
+  numberOfRepeatingFires: 2
 --- !u!61 &1398019781
 BoxCollider2D:
   m_ObjectHideFlags: 0
