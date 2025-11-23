@@ -2,10 +2,10 @@
     <Style src="project://database/Assets/Resources/UI/HUD_Phase_StyleSheet.uss?fileID=7433441132597879392&amp;guid=c5125b75148dc984ebf29720ea8614f8&amp;type=3#HUD_Phase_StyleSheet" />
     <ui:VisualElement name="Container" style="flex-grow: 1;">
         <ui:VisualElement name="Header" class="header" style="flex-grow: 1;">
-            <ui:Label text="Phase 2 : ACTION" name="HeaderLabel" class="header" style="align-items: center; justify-content: center; align-self: center; font-size: 50px; padding-top: 25px;" />
+            <ui:Label text="Phase 2 : ACTION" name="HeaderLabel" class="header" style="align-items: center; justify-content: center; align-self: center; font-size: 50px; padding-top: 25px; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/PixelifySans-VariableFont_wght.ttf?fileID=12800000&amp;guid=01aebf42bf5c54e488dbe542a6e17f57&amp;type=3#PixelifySans-VariableFont_wght&quot;);" />
         </ui:VisualElement>
-        <ui:VisualElement name="TimeIcon" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Content/Sprites/circle.png?fileID=2800000&amp;guid=22eba9e5a0a2a3a4f8ed2a13c29b36d4&amp;type=3#circle&quot;); background-size: 150% 150%; width: 150px; height: 150px; top: 5px; left: 5px; position: absolute;">
-            <ui:Label text="3:00" name="TimeLabel" style="position: absolute; top: 45px; left: 50px; height: 50px; width: 50px; justify-content: flex-start; align-self: center; align-content: center; -unity-text-align: middle-center; font-size: 35px; color: rgb(255, 255, 255);" />
+        <ui:VisualElement name="TimeIcon" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Content/Images/Timer.png?fileID=2800000&amp;guid=05b8c06411403c64bb7d1d5697e509b0&amp;type=3#Timer&quot;); background-size: 150% 150%; width: 150px; height: 150px; top: 5px; left: 5px; position: absolute;">
+            <ui:Label text="3:00" name="TimeLabel" style="position: absolute; top: 45px; left: 43px; height: 50px; width: 50px; justify-content: flex-start; align-self: center; align-content: center; -unity-text-align: middle-center; font-size: 35px; color: rgb(0, 0, 0); -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/Pix32.ttf?fileID=12800000&amp;guid=2aa8d7de24ddbe64cb8d6bd3d99753c1&amp;type=3#Pix32&quot;); background-color: rgba(255, 255, 255, 0.49);" />
         </ui:VisualElement>
         <ui:Label text="WATER" name="GaugeLabel" style="font-size: 20px; color: rgb(255, 255, 255); -unity-font-style: bold; left: 1%; bottom: 51px; top: -2%; -unity-text-outline-width: 0.5px; width: 92px; height: 34px;">
             <ui:VisualElement name="GaugeRoot" class="gauge-root" style="bottom: 0%; top: -2%; left: 9%;">
