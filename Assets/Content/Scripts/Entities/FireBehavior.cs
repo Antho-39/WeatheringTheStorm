@@ -19,6 +19,7 @@ public class FireBehvior : MonoBehaviour
         fireCenter = transform.position;
         prefab = gameObject;
         InvokeRepeating(nameof(Propagation), 5, fireSpreadSpeed);
+        InvokeRepeating(nameof(DecreasePlayerScore), 10, 10);
         InvokeRepeating(nameof(Grow), 1, 1);
     }
 
@@ -69,6 +70,11 @@ public class FireBehvior : MonoBehaviour
             
         // Smoothly shrink towards target scale
         transform.localScale = Vector3.MoveTowards(transform.localScale, targetScale, 20f * Time.deltaTime);
+    }
+
+    private void DecreasePlayerScore()
+    {
+        GameManager.Instance.AddScore(-10);
     }
 
     private void OnCollisionEnter(Collision collision)

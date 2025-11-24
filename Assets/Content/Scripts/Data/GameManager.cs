@@ -214,7 +214,7 @@ public class GameManager : MonoBehaviour
     private void Init()
     {
         money = 10000;
-        score = 0;
+        score = 1000;
         gameTime = preparationPhaseTime;
         treesDestroyed = 0;
         buildingsDestroyed = 0;
