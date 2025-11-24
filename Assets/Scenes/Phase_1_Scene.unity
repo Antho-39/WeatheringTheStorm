@@ -23766,11 +23766,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4524526258033166129, guid: 5afe34cfd7684744e889705c8782405e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.2
+      value: 3.55
       objectReference: {fileID: 0}
     - target: {fileID: 4524526258033166129, guid: 5afe34cfd7684744e889705c8782405e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.2
+      value: 3.85
       objectReference: {fileID: 0}
     - target: {fileID: 4524526258033166129, guid: 5afe34cfd7684744e889705c8782405e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -33010,11 +33010,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4524526258033166129, guid: 5afe34cfd7684744e889705c8782405e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.64
+      value: 2.57
       objectReference: {fileID: 0}
     - target: {fileID: 4524526258033166129, guid: 5afe34cfd7684744e889705c8782405e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.13
+      value: 3.9
       objectReference: {fileID: 0}
     - target: {fileID: 4524526258033166129, guid: 5afe34cfd7684744e889705c8782405e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -37401,6 +37401,7 @@ MonoBehaviour:
   timerRunning: 1
   score: 0
   treesDestroyed: 0
+  homesDestroyed: 0
   buildingsDestroyed: 0
   money: 0
   musicSource: {fileID: 2080397579}
