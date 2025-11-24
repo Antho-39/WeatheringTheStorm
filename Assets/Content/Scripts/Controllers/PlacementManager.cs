@@ -101,12 +101,12 @@ public class PlacementManager : MonoBehaviour
     {
         if (GameManager.Instance.money < def.cost)
         {
-            Debug.Log("Pas assez d'argent !");
             return;
         }
 
         currentDef = def;
         isPlacing = true;
+
         currentRotation = 0;
 
         // Setup preview
@@ -125,7 +125,7 @@ public class PlacementManager : MonoBehaviour
     void UpdatePreviewPosition()
     {
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
+        mousePos.z = -0.01f;
         previewRenderer.transform.position = mousePos;
     }
 
@@ -163,6 +163,7 @@ public class PlacementManager : MonoBehaviour
         }
 
         Vector3 pos = previewRenderer.transform.position;
+        pos.z = -0.01f;
 
         if (IsOverForbiddenZone())
         {

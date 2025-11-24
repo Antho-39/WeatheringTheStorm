@@ -108,14 +108,14 @@ public class FireFighter : MonoBehaviour
         foreach (var fire in firesInRange)
         {
             if (fire == null) continue;
-
+            /*
             FireBehavior fireScript = fire.GetComponent<FireBehavior>();
 
             if (fireScript == null) continue;
-
+            
             if (fireScript.isAssigned)
                 continue;
-
+            */
             float dist = Vector2.Distance(transform.position, fire.transform.position);
             if (dist < minDist)
             {
@@ -123,12 +123,12 @@ public class FireFighter : MonoBehaviour
                 closest = fire;
             }
         }
-
+        /*
         if (closest != null)
         {
             closest.GetComponent<FireBehavior>().isAssigned = true;
         }
-
+        */
 
         return closest;
     }
@@ -183,8 +183,10 @@ public class FireFighter : MonoBehaviour
 
         if (isExtinguished)
         {
+            /*
             if (fireB != null)
                 fireB.isAssigned = false;
+            */
             firesInRange.Remove(fire);
             targetFire = null;
         }
