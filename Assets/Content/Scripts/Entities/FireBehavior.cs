@@ -7,7 +7,7 @@ public class FireBehvior : MonoBehaviour
     public LayerMask FlammableLayers;
     public LayerMask InFlammableLayers;
     private float fireSpreadSpeed = 5f;
-    private float minDistance = 2f;
+    private float minDistance = 0.2f;
     private Vector3 targetScale;
     private Vector2 fireCenter;
     private GameObject prefab;
@@ -30,7 +30,7 @@ public class FireBehvior : MonoBehaviour
 
     private void Propagation()
     {
-        Vector2 targetSpawn = (Random.insideUnitCircle * 4) + fireCenter;
+        Vector2 targetSpawn = (Random.insideUnitCircle * 1.5f) + fireCenter;
 
         // Make 20 attempts to spawn more fire within the following restrictions
         for (int attempts = 0; attempts < 20; attempts++)
@@ -40,8 +40,8 @@ public class FireBehvior : MonoBehaviour
             {
                 // The random location must not overlap with something inflammable
                 // and must overlap with something flammable
-                if (!Physics2D.OverlapCircle(targetSpawn, 1f, InFlammableLayers)
-                    && Physics2D.OverlapCircle(targetSpawn, 1f, FlammableLayers))
+                if (!Physics2D.OverlapCircle(targetSpawn, 0.2f, InFlammableLayers)
+                    && Physics2D.OverlapCircle(targetSpawn, 0.2f, FlammableLayers))
                 {
                     // Spawn fire
                     Instantiate(prefab, targetSpawn, quaternion.identity);
@@ -54,14 +54,14 @@ public class FireBehvior : MonoBehaviour
     private void Grow()
     {
         // Smoothly grow back towards original scale
-        transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(1f, 1f, 1f), 20f * Time.deltaTime);
+        transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(0.65f, 0.65f, 0.65f), 20f * Time.deltaTime);
     }
 
     private void OnParticleCollision(GameObject other)
     {
         // Debug.Log($"Fire collided with: {other.name}");
 
-        if (transform.localScale.x < 0.4f)
+        if (transform.localScale.x < 0.2f)
         {
             // Destroy self
             Destroy(gameObject);
