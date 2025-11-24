@@ -1,12 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using Unity.Mathematics;
+using System.Numerics;
 
 public class HelicopterController : MonoBehaviour
 {
     public Transform[] helicopterBlades; // Array to hold references to helicopter blades
     public Transform Body;            // Reference to the helicopter body
     public Transform TailRotor;      // Reference to the tail rotor for steering
+    public Collider2D mapArea;
 
     [Header("Movement")]
     public float moveSpeed = 10f;        // Move speed (unit / second)
@@ -24,7 +26,7 @@ public class HelicopterController : MonoBehaviour
 
     private Camera mainCamera;
     private ParticleSystem waterParticles; // Reference to particle system
-    private Quaternion targetRotation;
+    private UnityEngine.Quaternion targetRotation;
     private ParticleSystem.EmissionModule emission;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -46,14 +48,14 @@ public class HelicopterController : MonoBehaviour
     {
         foreach (var blade in helicopterBlades)
         {
-            blade.localRotation *= Quaternion.Euler(0, 0, 360f * Time.deltaTime);
+            blade.localRotation *= UnityEngine.Quaternion.Euler(0, 0, 360f * Time.deltaTime);
         }
 
         float h = Input.GetAxisRaw("Horizontal"); // Arrow left/right or A/D
         float v = Input.GetAxisRaw("Vertical");   // Arrow up/down or W/S
         float cannonInput = Input.GetAxisRaw("Jump"); // space key
 
-        Vector3 input = new Vector3(h, v, 0.0f);
+        UnityEngine.Vector3 input = new UnityEngine.Vector3(h, v, 0.0f);
         float throttle = v * moveSpeed;
 
         // Dividing the horizontal axis values because they are far too high. Probably a way better way to do this?
@@ -63,7 +65,7 @@ public class HelicopterController : MonoBehaviour
         if (input.sqrMagnitude > 0.0001f)
         {
             // Normalization of the input vector to get the direction
-            Vector3 direction = input.normalized;
+            UnityEngine.Vector3 direction = input.normalized;
 
             // Move the helicopter in the input direction
             //transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
@@ -110,6 +112,14 @@ public class HelicopterController : MonoBehaviour
             gauge.ConsumeValue(-0.05f);
         }
 
+        // Stop chopper from leaving map area
+        Bounds mapBounds = mapArea.bounds;
+        UnityEngine.Vector3 clampedPosition = transform.position;
+        clampedPosition.x = Mathf.Clamp(transform.position.x, mapBounds.min.x, mapBounds.max.x);
+        clampedPosition.y = Mathf.Clamp(transform.position.y, mapBounds.min.y, mapBounds.max.y);
+        clampedPosition.z = transform.position.z;
+
+        transform.position = clampedPosition;
         // float waterBurned = Time.deltaTime + input.magnitude * Time.deltaTime; // Decrease water based on movement
         // Update gauge with animated water value
     }
