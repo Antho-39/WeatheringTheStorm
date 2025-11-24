@@ -211,7 +211,7 @@ public class GameManager : MonoBehaviour
         score = 0;
     }
 
-    private void Init()
+    public void Init()
     {
         money = 10000;
         score = 0;

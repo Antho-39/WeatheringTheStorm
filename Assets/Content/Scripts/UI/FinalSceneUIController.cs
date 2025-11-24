@@ -24,6 +24,7 @@ public class FinalSceneUIController : MonoBehaviour
     private void ReplayGame()
     {
         SceneLoader.LoadScene("Menu_Scene");
+        GameManager.Instance.Init();
     }
 
     private void Quit()
