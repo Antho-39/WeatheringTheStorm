@@ -198,7 +198,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
                 // Add full tag
                 introLabel.text += tag;
 
-                continue; // On passe au caractère suivant
+                continue; // On passe au caractï¿½re suivant
             }
             // Add letter
             introLabel.text += c;
