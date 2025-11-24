@@ -87,6 +87,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         repairedHome = 0;
         repairedCompliantHome = 0;
         plantedTrees = 0;
+        UnityEngine.Cursor.visible = true;
 
         uiDocument = GetComponent<UIDocument>();
         var root = uiDocument.rootVisualElement;
@@ -252,7 +253,15 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         phase_3_UI.style.display = DisplayStyle.Flex;
         controls_UI.style.display = DisplayStyle.None;
 
+        AddDonationMoney();
         GameManager.Instance.PlayPhaseMusic();
+    }
+
+    private void AddDonationMoney()
+    {
+        int donation = Random.Range(15000, 20000);
+        GameManager.Instance.AddMoney(donation);
+        ShowError("You received a donation of " + donation.ToString() + " $ to help with the reconstruction !", 5f, 0.4f);
     }
 
     private void CountScore()
