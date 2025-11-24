@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Timer")]
     public float preparationPhaseTime = 180f;
-    public float actionPhaseTime = 300f;
+    public float actionPhaseTime = 240f;
     public float gameTime;
     private float scoreTime;
     public bool timerRunning = false;

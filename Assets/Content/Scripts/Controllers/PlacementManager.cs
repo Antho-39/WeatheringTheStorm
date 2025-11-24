@@ -230,11 +230,14 @@ public class PlacementManager : MonoBehaviour
         isPlacing = true;
         currentDef = null;
 
-        // activer le preview basé sur l’objet existant
-        previewRenderer.gameObject.SetActive(true);
-        previewRenderer.sprite = selectedObject.GetComponentInChildren<SpriteRenderer>().sprite;
-        previewRenderer.color = new Color(1, 1, 1, 0.5f);
-        previewRenderer.transform.localScale = selectedObject.transform.GetChild(0).localScale;
+        if(previewRenderer != null)
+        {
+            previewRenderer.gameObject.SetActive(true);
+            previewRenderer.sprite = selectedObject.GetComponentInChildren<SpriteRenderer>().sprite;
+            previewRenderer.color = new Color(1, 1, 1, 0.5f);
+            previewRenderer.transform.localScale = selectedObject.transform.GetChild(0).localScale;
+
+        }
 
         currentRotation = selectedObject.transform.eulerAngles.z;
     }
