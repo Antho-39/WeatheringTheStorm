@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [Header("Score")]
     public int score;
     public int treesDestroyed;
+    public int homesDestroyed;
     public int buildingsDestroyed;
 
     [Header("Money")]
