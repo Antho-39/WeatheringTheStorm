@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
 
     private Camera mainCamera;
+    private int dragButton = -1;
 
     void Start()
     {  
@@ -28,18 +29,28 @@ public class PlayerController : MonoBehaviour
         if (mainCamera == null)
             return;
 
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(2)) // middle mouse
         {
+            dragButton = 2;
+            dragOrigin = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        }
+        else if (Input.GetMouseButtonDown(1))  // right mouse
+        {
+            dragButton = 1;
             dragOrigin = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         }
 
-        if (Input.GetMouseButton(2))
+        if (dragButton != -1 && Input.GetMouseButton(dragButton))
         {
             Vector3 difference = dragOrigin - mainCamera.ScreenToWorldPoint(Input.mousePosition);
             targetPosition = transform.position + difference * dragSpeed;
         }
+        if (dragButton != -1 && Input.GetMouseButtonUp(dragButton))
+        {
+            dragButton = -1;
+        }
 
-        if (PlacementManager.Instance.isPlacing)
+        if (PlacementManager.Instance != null && PlacementManager.Instance.isPlacing)
             return;
 
         // ---------------------------------------------------------
