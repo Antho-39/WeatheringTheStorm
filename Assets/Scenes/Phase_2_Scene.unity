@@ -29344,8 +29344,8 @@ MonoBehaviour:
   InFlammableLayers:
     serializedVersion: 2
     m_Bits: 336
-  firePrefab: {fileID: 8868815351250924897, guid: f0783255610ef4745a665fb97ef75679, type: 3}
-  numberOfInitialFires: 3
+  firePrefab: {fileID: 8617792986512164101, guid: 3581dbd023b259347bd49b597c2d8add, type: 3}
+  numberOfInitialFires: 1
   numberOfRepeatingFires: 2
 --- !u!61 &1398019781
 BoxCollider2D:
@@ -38522,7 +38522,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.11167383, y: 0.06700468}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -38532,7 +38532,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 9.9, y: 6.38}
+  m_Size: {x: 9.468194, y: 5.977974}
   m_EdgeRadius: 0
 --- !u!1001 &1858016571
 PrefabInstance:
@@ -43679,12 +43679,12 @@ SceneRoots:
   - {fileID: 1711055343}
   - {fileID: 820131140}
   - {fileID: 808275389}
-  - {fileID: 786974267}
-  - {fileID: 757675390}
   - {fileID: 335563281}
   - {fileID: 1421190824}
   - {fileID: 1428648107}
   - {fileID: 2130604609}
+  - {fileID: 757675390}
+  - {fileID: 786974267}
   - {fileID: 1201954097}
   - {fileID: 1398019779}
   - {fileID: 1520203254}
