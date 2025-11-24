@@ -19,23 +19,32 @@ public class FireFighter : MonoBehaviour
     public float rescanInterval = 1f;
     private float rescanTimer = 0f;
 
+    // --- NEW ---
+    private Vector3 initialPosition;
+
     void Start()
     {
         rb = transform.parent.GetComponent<Rigidbody2D>();
-        /*
-        var trigger = GetComponent<CircleCollider2D>();
-        if (trigger != null)
-        {
-            trigger.isTrigger = true;
-            trigger.radius = detectionRadius;
-        }*/
+
+        // SAVE initial position
+        initialPosition = transform.position;
+
+        // If you ever add a trigger collider:
+        // var trigger = GetComponent<CircleCollider2D>();
+        // trigger.isTrigger = true;
+        // trigger.radius = detectionRadius;
     }
 
     void Update()
     {
+        if(GameManager.Instance.currentPhase != GameManager.Phase.Phase2)
+        {
+            return;
+        }
+
         UpdateTarget();
-        
-        // Rescan every X seconds to catch new fires spawning inside detection zone
+
+        // Rescan periodically
         rescanTimer -= Time.deltaTime;
         if (rescanTimer <= 0f)
         {
@@ -46,8 +55,14 @@ public class FireFighter : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (GameManager.Instance.currentPhase != GameManager.Phase.Phase2)
+        {
+            return;
+        }
         if (targetFire != null)
             MoveTowardFire();
+        else
+            ReturnToBase();
     }
 
     // ---------------------------------------------------------
@@ -56,17 +71,13 @@ public class FireFighter : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Fire"))
-        {
             firesInRange.Add(other.gameObject);
-        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Fire"))
-        {
             firesInRange.Remove(other.gameObject);
-        }
     }
 
     void RescanForFires()
@@ -74,12 +85,9 @@ public class FireFighter : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRadius, LayerMask.GetMask("Fire"));
 
         foreach (var h in hits)
-        {
             if (!firesInRange.Contains(h.gameObject))
                 firesInRange.Add(h.gameObject);
-        }
 
-        // Clean destroyed fires
         firesInRange.RemoveAll(f => f == null);
     }
 
@@ -88,14 +96,11 @@ public class FireFighter : MonoBehaviour
     // ---------------------------------------------------------
     void UpdateTarget()
     {
-        // Retirer tous les feux détruits
         firesInRange.RemoveAll(f => f == null);
 
-        if (firesInRange.Count == 0)
-        {
-            targetFire = null;
+        // Si on a déjà une cible, on la garde tant qu'elle existe
+        if (targetFire != null)
             return;
-        }
 
         targetFire = GetClosestFire();
     }
@@ -108,14 +113,13 @@ public class FireFighter : MonoBehaviour
         foreach (var fire in firesInRange)
         {
             if (fire == null) continue;
-            /*
-            FireBehavior fireScript = fire.GetComponent<FireBehavior>();
 
+            FireBehavior fireScript = fire.GetComponent<FireBehavior>();
             if (fireScript == null) continue;
-            
+
             if (fireScript.isAssigned)
                 continue;
-            */
+
             float dist = Vector2.Distance(transform.position, fire.transform.position);
             if (dist < minDist)
             {
@@ -123,18 +127,16 @@ public class FireFighter : MonoBehaviour
                 closest = fire;
             }
         }
-        /*
+
+        // Si on trouve un feu, on l'assigne
         if (closest != null)
-        {
             closest.GetComponent<FireBehavior>().isAssigned = true;
-        }
-        */
 
         return closest;
     }
 
     // ---------------------------------------------------------
-    // MOVEMENT + WATER AVOIDANCE
+    // MOVEMENT
     // ---------------------------------------------------------
     void MoveTowardFire()
     {
@@ -149,44 +151,60 @@ public class FireFighter : MonoBehaviour
             return;
         }
 
-        Vector2 direction = toFire.normalized;
-
-        // Combine normal movement + avoidance
+        Vector2 direction = (toFire).normalized;
         Vector2 finalDir = (direction + avoidanceVector).normalized;
 
         rb.MovePosition(rb.position + finalDir * speed * Time.fixedDeltaTime);
 
-        // Reset avoidance each frame (will update if colliding)
         avoidanceVector = Vector2.zero;
     }
 
     // ---------------------------------------------------------
-    // WATER COLLISION = AVOID / SLIDE
+    // RETURN TO BASE
+    // ---------------------------------------------------------
+    void ReturnToBase()
+    {
+        Vector2 toBase = (initialPosition - transform.position);
+        float dist = toBase.magnitude;
+
+        if (dist < 0.1f)
+            return;
+
+        Vector2 direction = toBase.normalized;
+        Vector2 finalDir = (direction + avoidanceVector).normalized;
+
+        rb.MovePosition(rb.position + finalDir * speed * Time.fixedDeltaTime);
+
+        avoidanceVector = Vector2.zero;
+    }
+
+    // ---------------------------------------------------------
+    // WATER COLLISION = SLIDE
     // ---------------------------------------------------------
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Water"))
         {
-            // Compute push-away vector from the water surface normal
             foreach (var contact in collision.contacts)
-            {
                 avoidanceVector += contact.normal * avoidStrength;
-            }
         }
     }
 
+    // ---------------------------------------------------------
+    // EXTINGUISH
+    // ---------------------------------------------------------
     void ExtinguishFire(GameObject fire)
     {
         FireBehavior fireB = fire.GetComponent<FireBehavior>();
-        // Appeler un script Fire si nécessaire
-        bool isExtinguished = fireB.Extinguish();
 
-        if (isExtinguished)
+        bool isExtinguished = fireB.Extinguish();
+        
+        if(isExtinguished)
         {
-            /*
-            if (fireB != null)
-                fireB.isAssigned = false;
-            */
+            // Libérer la réservation
+            fireB.isAssigned = false;
+
+            // Cleanup
             firesInRange.Remove(fire);
             targetFire = null;
         }
