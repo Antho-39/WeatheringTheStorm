@@ -14,6 +14,9 @@ public class BurnBehavior : MonoBehaviour
     public LayerMask fireLayer;
     public float entityHealth;
     public int ScorePenalty;
+
+    public AudioClip burningAudio;
+
     private SpriteRenderer entityRenderer;
     private BoxCollider2D entityCollider;
     private float colliderAverageRadius;

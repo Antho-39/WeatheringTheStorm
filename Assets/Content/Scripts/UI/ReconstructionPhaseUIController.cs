@@ -64,6 +64,10 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     public int compliantHomeReparationCost = 1500;
     public int treeCost = 20;
 
+    public int repairedHomePointScale = 50;
+    public int repairedCompliantHomePointScale = 60;
+    public int plantedTreePointScale = 30;
+
     private Label moneyLabel;
     private float score;
 
@@ -267,7 +271,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private void CountScore()
     {
         int phase2Score = GameManager.Instance.phase2scoreBonus;
-        int socialScore = repairedHome * 50 + repairedCompliantHome * 60 + /*repairedBuilding * 150*/ + plantedTrees * 30;
+        int socialScore = repairedHome * repairedHomePointScale + repairedCompliantHome * repairedCompliantHomePointScale + /*repairedBuilding * 150*/ + plantedTrees * plantedTreePointScale;
         if(plantedTrees < burntTrees) socialScore -= 1000;
         //int injuriesScore = (injuries * -20);
         int damageScore = /*(burntBuildings * -50) + */(burntHomes * -20) + (burntTrees * -5);

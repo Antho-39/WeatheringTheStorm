@@ -14,6 +14,8 @@ public class FireFighter : MonoBehaviour
     private List<GameObject> firesInRange = new List<GameObject>();
     private GameObject targetFire;
 
+    public AudioClip extinguishAudio;
+
     private Rigidbody2D rb;
     private Vector2 avoidanceVector = Vector2.zero;
     public float rescanInterval = 1f;

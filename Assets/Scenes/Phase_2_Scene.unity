@@ -24633,6 +24633,8 @@ MonoBehaviour:
   rotationSpeed: 4
   MiniMapCamera: {fileID: 475501614}
   MiniMapCanvas: {fileID: 1967624700}
+  bladeAudio: {fileID: 0}
+  waterCanonAudio: {fileID: 0}
   water:
     serializedVersion: 2
     m_Bits: 16
@@ -24718,6 +24720,7 @@ MonoBehaviour:
   value: 1
   animateDuration: 0.25
   water: 100
+  waterGaugeAudio: {fileID: 0}
 --- !u!1001 &1427323798
 PrefabInstance:
   m_ObjectHideFlags: 0

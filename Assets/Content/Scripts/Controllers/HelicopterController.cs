@@ -15,7 +15,9 @@ public class HelicopterController : MonoBehaviour
     public float rotationSpeed = 5f;     // Speed roation to aim at the move direction
     public GameObject MiniMapCamera;
     public GameObject MiniMapCanvas;
-    
+
+    public AudioClip bladeAudio;
+    public AudioClip waterCanonAudio;
     // I'm very sure I don't need to make a public layer mask for this, just not sure on syntax to specify explicitly only the water layer
     public LayerMask water;
 

@@ -14,6 +14,8 @@ public class GaugeController : MonoBehaviour
 
     public float water = 100f;
 
+    public AudioClip waterGaugeAudio;
+
     private VisualElement fill;
     private Label valueLabel;
     private float currentValue;
