@@ -19,7 +19,7 @@ public class ActionPhaseUIController : MonoBehaviour
     private Button introNextButton;
     private Button controlsNextButton;
 
-    public WeatherController weatherController;
+    public FireManager fireManager;
 
     [Header("Speed Settings")]
     public float letterDelay = 0.05f;  // Time between each letter
@@ -169,10 +169,12 @@ public class ActionPhaseUIController : MonoBehaviour
         controls_UI.style.display = DisplayStyle.None;
         UnityEngine.Cursor.visible = false;
 
-        if (weatherController != null)
+        
+        if (fireManager != null)
         {
-            weatherController.StartWeatherCycle();
+            fireManager.StartFireCycle();
         }
+        
         GameManager.Instance.StartTimer();
         GameManager.Instance.PlayPhaseMusic();
     }

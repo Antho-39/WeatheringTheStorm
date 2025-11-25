@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61b2cf057d60e84d8d04417624d5293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BurnBehavior
-  entityType: 1
+  entityType: 2
   damagedSprite: {fileID: 5900460500773315314, guid: 72bf4dc43c272a7429911e113e7abce9, type: 3}
   fireLayer:
     serializedVersion: 2

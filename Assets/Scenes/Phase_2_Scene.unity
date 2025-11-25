@@ -16388,7 +16388,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0cea04fcf66b54f90a350084b7561e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionPhaseUIController
-  weatherController: {fileID: 1398019780}
+  fireManager: {fileID: 2063966757}
   letterDelay: 0.05
   punctuationDelay: 0.2
   instantSkip: 1
@@ -24093,103 +24093,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4524526258033166129, guid: 5afe34cfd7684744e889705c8782405e, type: 3}
   m_PrefabInstance: {fileID: 1394193307}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1398019776
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1398019779}
-  - component: {fileID: 1398019780}
-  - component: {fileID: 1398019781}
-  m_Layer: 0
-  m_Name: WeatherSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1398019779
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398019776}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3, y: -0.2, z: 0}
-  m_LocalScale: {x: 96.0683, y: 96.0683, z: 96.0683}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1398019780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398019776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 981930f4071decb46aafaf402f08a769, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeatherController
-  InFlammableLayers:
-    serializedVersion: 2
-    m_Bits: 336
-  firePrefab: {fileID: 8617792986512164101, guid: 3581dbd023b259347bd49b597c2d8add, type: 3}
-  numberOfInitialFires: 1
-  numberOfRepeatingFires: 2
---- !u!61 &1398019781
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398019776}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.002482295, y: 0.0031930134}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.3682897, y: 0.23215128}
-  m_EdgeRadius: 0
 --- !u!1001 &1399637685
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34558,6 +34461,62 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4524526258033166129, guid: 5afe34cfd7684744e889705c8782405e, type: 3}
   m_PrefabInstance: {fileID: 2059527674}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2063966755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2063966756}
+  - component: {fileID: 2063966757}
+  m_Layer: 0
+  m_Name: FireManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2063966756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063966755}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.58238, y: 3.18972, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2063966757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063966755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55d03af14942a64ab71bd8990d21424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  firePrefab: {fileID: 8617792986512164101, guid: 3581dbd023b259347bd49b597c2d8add, type: 3}
+  flammableLayers:
+    serializedVersion: 2
+    m_Bits: 129
+  inFlammableLayers:
+    serializedVersion: 2
+    m_Bits: 336
+  spreadRadius: 1.5
+  maxAttemptsPerFire: 10
+  globalSpawnInterval: 10
+  globalSpawnAttempts: 20
+  mapArea: {fileID: 1857692959}
 --- !u!1001 &2068073785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35487,8 +35446,8 @@ SceneRoots:
   - {fileID: 2130604609}
   - {fileID: 757675390}
   - {fileID: 786974267}
-  - {fileID: 1398019779}
   - {fileID: 1520203254}
   - {fileID: 869377847}
   - {fileID: 475501615}
   - {fileID: 1967624704}
+  - {fileID: 2063966756}

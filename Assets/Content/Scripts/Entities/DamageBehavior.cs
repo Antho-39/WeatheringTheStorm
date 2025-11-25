@@ -5,7 +5,8 @@ public class BurnBehavior : MonoBehaviour
     public enum EntityType
     {
         Tree,
-        Building
+        Building,
+        Home
     }
 
     public EntityType entityType;
@@ -58,6 +59,10 @@ public class BurnBehavior : MonoBehaviour
             if (entityType == EntityType.Tree)
             {
                 GameManager.Instance.treesDestroyed++;
+            }
+            else if (entityType == EntityType.Home)
+            {
+                GameManager.Instance.homesDestroyed++;
             }
             else if (entityType == EntityType.Building)
             {
