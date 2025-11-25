@@ -19,7 +19,6 @@ public class FireFighter : MonoBehaviour
     public float rescanInterval = 1f;
     private float rescanTimer = 0f;
 
-    // --- NEW ---
     private Vector3 initialPosition;
 
     void Start()
@@ -29,10 +28,6 @@ public class FireFighter : MonoBehaviour
         // SAVE initial position
         initialPosition = transform.position;
 
-        // If you ever add a trigger collider:
-        // var trigger = GetComponent<CircleCollider2D>();
-        // trigger.isTrigger = true;
-        // trigger.radius = detectionRadius;
     }
 
     void Update()
@@ -98,7 +93,6 @@ public class FireFighter : MonoBehaviour
     {
         firesInRange.RemoveAll(f => f == null);
 
-        // Si on a déjà une cible, on la garde tant qu'elle existe
         if (targetFire != null)
             return;
 
@@ -128,7 +122,6 @@ public class FireFighter : MonoBehaviour
             }
         }
 
-        // Si on trouve un feu, on l'assigne
         if (closest != null)
             closest.GetComponent<FireBehavior>().isAssigned = true;
 
@@ -201,7 +194,6 @@ public class FireFighter : MonoBehaviour
         
         if(isExtinguished)
         {
-            // Libérer la réservation
             fireB.isAssigned = false;
 
             // Cleanup
