@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7146698578447526686, guid: 17e820edb5b420d42aed5f767c458ec0, type: 3}
+  m_Sprite: {fileID: 2722816657355525349, guid: f077456bac3396846a5c1bae3575503b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -175,6 +175,7 @@ MonoBehaviour:
   speed: 0.5
   extinguishDistance: 0.5
   avoidStrength: 2
+  extinguishAudio: {fileID: 8300000, guid: f62249104aea35547b2b98f878352d52, type: 3}
   rescanInterval: 1
 --- !u!1 &7325311627247121086
 GameObject:

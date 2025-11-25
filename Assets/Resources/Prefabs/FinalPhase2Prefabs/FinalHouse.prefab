@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1086787486703325123}
   - component: {fileID: 6731164516748931478}
   - component: {fileID: 6800817423148315634}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: FinalHouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,3 +157,4 @@ MonoBehaviour:
     m_Bits: 64
   entityHealth: 130
   ScorePenalty: -500
+  burningAudio: {fileID: 8300000, guid: 96ded1f146e450c4e8aaaaa2c42ed754, type: 3}

@@ -111,6 +111,7 @@ MonoBehaviour:
     m_Bits: 64
   entityHealth: 80
   ScorePenalty: -100
+  burningAudio: {fileID: 8300000, guid: b0478690b8f83184fb90f6f1171a5dd8, type: 3}
 --- !u!61 &7487148465933102098
 BoxCollider2D:
   m_ObjectHideFlags: 0

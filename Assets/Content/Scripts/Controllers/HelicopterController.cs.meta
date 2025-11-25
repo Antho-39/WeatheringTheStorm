@@ -1,2 +1,18 @@
 fileFormatVersion: 2
 guid: 62d33caf61e88154f885bc757ff0a2ba
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Body: {instanceID: 0}
+  - TailRotor: {instanceID: 0}
+  - mapArea: {instanceID: 0}
+  - MiniMapCamera: {instanceID: 0}
+  - MiniMapCanvas: {instanceID: 0}
+  - bladeAudio: {fileID: 8300000, guid: 4c199ae4bb64586459555be6a84cd2fc, type: 3}
+  - waterCanonAudio: {fileID: 8300000, guid: f9ebe9450bd28cd419bb645a4d5f1bbf, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

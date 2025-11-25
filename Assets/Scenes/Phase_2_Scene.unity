@@ -34514,7 +34514,7 @@ MonoBehaviour:
     m_Bits: 129
   inFlammableLayers:
     serializedVersion: 2
-    m_Bits: 336
+    m_Bits: 848
   spreadRadius: 1.5
   maxAttemptsPerFire: 10
   globalSpawnInterval: 10
