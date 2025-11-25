@@ -24726,8 +24726,8 @@ MonoBehaviour:
   Body: {fileID: 1662555556}
   TailRotor: {fileID: 12255537}
   mapArea: {fileID: 1857692959}
-  moveSpeed: 0.5
-  rotationSpeed: 0.5
+  moveSpeed: 4
+  rotationSpeed: 4
   MiniMapCamera: {fileID: 475501614}
   MiniMapCanvas: {fileID: 1967624700}
   water:

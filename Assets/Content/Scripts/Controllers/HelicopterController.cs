@@ -51,35 +51,9 @@ public class HelicopterController : MonoBehaviour
             blade.localRotation *= UnityEngine.Quaternion.Euler(0, 0, 360f * Time.deltaTime);
         }
 
-        float h = Input.GetAxisRaw("Horizontal"); // Arrow left/right or A/D
-        float v = Input.GetAxisRaw("Vertical");   // Arrow up/down or W/S
         float cannonInput = Input.GetAxisRaw("Jump"); // space key
 
-        UnityEngine.Vector3 input = new UnityEngine.Vector3(h, v, 0.0f);
-        float throttle = v * moveSpeed;
-
-        // Dividing the horizontal axis values because they are far too high. Probably a way better way to do this?
-        float steering = (h / 7) * rotationSpeed;
         // float angle = 0.0f;
-
-        if (input.sqrMagnitude > 0.0001f)
-        {
-            // Normalization of the input vector to get the direction
-            UnityEngine.Vector3 direction = input.normalized;
-
-            // Move the helicopter in the input direction
-            //transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
-
-            // Apply force to helicopter rigidbody in the direction the chopper is facing
-            chopperRigidbody.AddForce(transform.up * throttle);
-            // Steering has to be inverted for the force at the tail
-            chopperRigidbody.AddForceAtPosition(transform.right * (steering * -1), TailRotor.position);
-
-            // Rotate around the Z axis to face the move direction
-            // angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90.0f;
-            // Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
-            // Body.rotation = Quaternion.Slerp(Body.rotation, targetRot, rotationSpeed * Time.deltaTime);
-        }
 
         if (cannonInput > 0 && gauge.water > 0f)
         {
@@ -122,6 +96,36 @@ public class HelicopterController : MonoBehaviour
         transform.position = clampedPosition;
         // float waterBurned = Time.deltaTime + input.magnitude * Time.deltaTime; // Decrease water based on movement
         // Update gauge with animated water value
+    }
+
+    void FixedUpdate()
+    {
+        float h = Input.GetAxisRaw("Horizontal"); // Arrow left/right or A/D
+        float v = Input.GetAxisRaw("Vertical");   // Arrow up/down or W/S
+        UnityEngine.Vector3 input = new UnityEngine.Vector3(h, v, 0.0f);
+        float throttle = v * moveSpeed;
+
+        // Dividing the horizontal axis values because they are far too high. Probably a way better way to do this?
+        float steering = (h / 7) * rotationSpeed;
+        
+        if (input.sqrMagnitude > 0.0001f)
+        {
+            // Normalization of the input vector to get the direction
+            UnityEngine.Vector3 direction = input.normalized;
+
+            // Move the helicopter in the input direction
+            //transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
+
+            // Apply force to helicopter rigidbody in the direction the chopper is facing
+            chopperRigidbody.AddForce(transform.up * throttle);
+            // Steering has to be inverted for the force at the tail
+            chopperRigidbody.AddForceAtPosition(transform.right * (steering * -1), TailRotor.position);
+
+            // Rotate around the Z axis to face the move direction
+            // angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90.0f;
+            // Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
+            // Body.rotation = Quaternion.Slerp(Body.rotation, targetRot, rotationSpeed * Time.deltaTime);
+        }
     }
 
     void LateUpdate()
