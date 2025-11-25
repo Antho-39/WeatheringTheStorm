@@ -1,91 +1,82 @@
-using UnityEngine;
-using UnityEngine.UIElements;
+ï»¿using UnityEngine;
 
 public class PlacementManager : MonoBehaviour
 {
     public static PlacementManager Instance;
-
 
     [Header("Prefabs")]
     public GameObject fireCrewPrefab;
     public GameObject fireLinePrefab;
     public GameObject safeZonePrefab;
 
-    [Header("Costs")]
-    public int fireCrewCost = 2500;
-    public int fireLineCost = 500;
-    public int safeZoneCost = 500;
-
     [Header("Forbidden Zone Detection")]
-    public LayerMask forbiddenLayer; // ex: layer "Water"
+    public LayerMask forbiddenLayer;
 
     [Header("Preview")]
     public SpriteRenderer previewRenderer;
     public Color previewColor = new Color(1, 1, 1, 0.5f);
 
-
     public AudioSource audioSource;
     public AudioClip cashRegister;
 
-    public bool isPlacing = false;
-    private GameObject prefabToPlace;
-    private int prefabCost;
     private Camera cam;
 
-    private float currentRotation = 0f;
-    private PlaceableObjectDefinition currentDef;
+    // ----- Placement states -----
+    public bool isPlacing = false;         // Placing new object
+    public bool isMovingExisting = false;  // Moving an existing object
 
+    private PlaceableObjectDefinition currentDef;
     private SelectableObject selectedObject = null;
-    private bool isMovingExisting = false;
+    private float currentRotation = 0f;
 
     private void Awake()
     {
         Instance = this;
         cam = Camera.main;
 
-        // Desactivate preview at start
         if (previewRenderer != null)
             previewRenderer.gameObject.SetActive(false);
     }
 
-    void Update()
+    private void Update()
     {
-        // If nothing to place, exit
+        // ---------- 1. Handle selection when NOT placing or moving ----------
         if (!isPlacing && !isMovingExisting)
+        {
             return;
+        }
 
-        // Update preview position
+        // ---------- 2. Update preview ----------
         UpdatePreviewPosition();
         HandleRotation();
 
-        // Move existing object
+        // ---------- 3. Moving an existing object ----------
         if (isMovingExisting)
         {
-            // Validate move
             if (Input.GetMouseButtonDown(0))
             {
                 PlaceExistingObject();
                 return;
             }
-            // Cancel move
+
             if (Input.GetMouseButtonDown(1))
             {
                 CancelMove();
                 return;
             }
-            // Do not continue to placement checks
+
             return;
         }
-        // Placing new object
+
+        // ---------- 4. Placing new object ----------
         if (isPlacing && currentDef != null)
         {
-            // Validate placement
             if (Input.GetMouseButtonDown(0))
             {
                 TryPlaceObject();
                 return;
             }
-            // Cancel placement
+
             if (Input.GetMouseButtonDown(1))
             {
                 StopPlacing();
@@ -94,34 +85,49 @@ public class PlacementManager : MonoBehaviour
         }
     }
 
-    // --------------------------------------------------------------
-    // START PLACING
-    // --------------------------------------------------------------
+    public void SelectObject(SelectableObject obj)
+    {
+        if (selectedObject != null)
+            selectedObject.SetSelected(false);
+
+        selectedObject = obj;
+        selectedObject.SetSelected(true);
+    }
+
+    // ===========================================================================
+    //  START PLACING NEW OBJECT
+    // ===========================================================================
+
     public void StartPlacing(PlaceableObjectDefinition def)
     {
         if (GameManager.Instance.money < def.cost)
-        {
             return;
+
+        // Cancel any selection
+        if (selectedObject != null)
+        {
+            selectedObject.SetSelected(false);
+            selectedObject = null;
         }
 
         currentDef = def;
         isPlacing = true;
+        isMovingExisting = false;
 
         currentRotation = 0;
 
-        // Setup preview
         SpriteRenderer sr = def.prefab.GetComponentInChildren<SpriteRenderer>();
-        previewRenderer.transform.localScale = sr.transform.localScale;
         previewRenderer.sprite = sr.sprite;
-        previewRenderer.color = new Color(1, 1, 1, 0.5f);
+        previewRenderer.color = previewColor;
+        previewRenderer.transform.localScale = sr.transform.localScale;
         previewRenderer.transform.rotation = Quaternion.identity;
         previewRenderer.gameObject.SetActive(true);
     }
 
+    // ===========================================================================
+    //  PREVIEW + ROTATION
+    // ===========================================================================
 
-    // --------------------------------------------------------------
-    // UPDATE PREVIEW POSITION
-    // --------------------------------------------------------------
     void UpdatePreviewPosition()
     {
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -129,47 +135,28 @@ public class PlacementManager : MonoBehaviour
         previewRenderer.transform.position = mousePos;
     }
 
-    // --------------------------------------------------------------
-    // ROTATION
-    // --------------------------------------------------------------
     void HandleRotation()
     {
-        // Rotation with R (90°)
         if (Input.GetKeyDown(KeyCode.R))
-        {
             currentRotation += 90f;
-        }
 
-        // Rotation with wheel
         float scroll = Input.mouseScrollDelta.y;
         if (scroll != 0)
-        {
             currentRotation += scroll * 10f;
-        }
 
         previewRenderer.transform.rotation = Quaternion.Euler(0, 0, currentRotation);
     }
 
-    // --------------------------------------------------------------
-    // TRY PLACE OBJECT
-    // --------------------------------------------------------------
+    // ===========================================================================
+    //  PLACE NEW OBJECT
+    // ===========================================================================
+
     void TryPlaceObject()
     {
-        if (GameManager.Instance.money < currentDef.cost)
-        {
-            Debug.Log("Not enough money !");
-            StopPlacing();
-            return;
-        }
-
         Vector3 pos = previewRenderer.transform.position;
-        pos.z = -0.01f;
 
         if (IsOverForbiddenZone())
-        {
-            Debug.Log("Forbidden Zone !");
             return;
-        }
 
         Instantiate(
             currentDef.prefab,
@@ -184,84 +171,56 @@ public class PlacementManager : MonoBehaviour
             rotation = currentRotation
         });
 
-
         GameManager.Instance.AddMoney(-currentDef.cost);
-        Debug.Log("Placement OK, money updated : " + GameManager.Instance.money);
 
-        audioSource.clip = cashRegister;
-        audioSource.Play();
+        if (audioSource != null && cashRegister != null)
+        {
+            audioSource.clip = cashRegister;
+            audioSource.Play();
+        }
 
         StopPlacing();
     }
 
-    // --------------------------------------------------------------
-    // FORBIDDEN ZONE CHECK
-    // --------------------------------------------------------------
     bool IsOverForbiddenZone()
     {
-        Collider2D hit = Physics2D.OverlapCircle(previewRenderer.transform.position, 0.1f, forbiddenLayer);
-        return hit != null;
+        return Physics2D.OverlapCircle(previewRenderer.transform.position, 0.1f, forbiddenLayer);
     }
 
-    // --------------------------------------------------------------
-    // STOP PLACING
-    // --------------------------------------------------------------
-    public void StopPlacing()
-    {
-        isPlacing = false;
-        prefabToPlace = null;
+    // ===========================================================================
+    //  MOVE EXISTING OBJECT
+    // ===========================================================================
 
-        if (previewRenderer != null)
-            previewRenderer.gameObject.SetActive(false);
-    }
-
-    // --------------------------------------------------------------
-    // SELECT OBJECT
-    // --------------------------------------------------------------
     public void SelectObjectForMove(SelectableObject obj)
     {
-        // Désélectionner un éventuel autre objet
-        if (selectedObject != null)
-            selectedObject.SetSelected(false);
-
-        selectedObject = obj;
-        selectedObject.SetSelected(true);
-
         isMovingExisting = true;
-        isPlacing = true;
-        currentDef = null;
+        isPlacing = true;    
 
-        if(previewRenderer != null)
-        {
-            previewRenderer.gameObject.SetActive(true);
-            previewRenderer.sprite = selectedObject.GetComponentInChildren<SpriteRenderer>().sprite;
-            previewRenderer.color = new Color(1, 1, 1, 0.5f);
-            previewRenderer.transform.localScale = selectedObject.transform.GetChild(0).localScale;
 
-        }
+        if (selectedObject != obj)
+            SelectObject(obj);
 
-        currentRotation = selectedObject.transform.eulerAngles.z;
+        previewRenderer.gameObject.SetActive(true);
+        SpriteRenderer sr = obj.GetComponentInChildren<SpriteRenderer>();
+        previewRenderer.sprite = sr.sprite;
+        previewRenderer.color = previewColor;
+        previewRenderer.transform.localScale = sr.transform.localScale;
+
+        currentRotation = obj.transform.eulerAngles.z;
     }
 
-    // --------------------------------------------------------------
-    // MOVE EXISTING OBJECT
-    // --------------------------------------------------------------
     void PlaceExistingObject()
     {
-        
         if (IsOverForbiddenZone())
-        {
-            Debug.Log("Zone interdite !");
             return;
-        }
 
         Vector3 pos = previewRenderer.transform.position;
+        pos.z = -0.01f;
 
-        
         selectedObject.transform.position = pos;
         selectedObject.transform.rotation = Quaternion.Euler(0, 0, currentRotation);
 
-
+        // Update saved data
         float epsilon = 0.01f;
         var data = GameManager.Instance.placedObjects
             .Find(o => Vector2.Distance(o.position, selectedObject.transform.position) < epsilon);
@@ -274,23 +233,28 @@ public class PlacementManager : MonoBehaviour
 
         EndMove();
     }
-    // --------------------------------------------------------------
-    // CANCEL MOVE
-    // --------------------------------------------------------------
+
     void CancelMove()
     {
         EndMove();
         selectedObject = null;
     }
 
-    // --------------------------------------------------------------
-    // END MOVE
-    // --------------------------------------------------------------
     void EndMove()
     {
-        selectedObject?.SetSelected(false);
+        if (selectedObject != null)
+            selectedObject.SetSelected(false);
+
         isMovingExisting = false;
         isPlacing = false;
+        previewRenderer.gameObject.SetActive(false);
+    }
+
+    public void StopPlacing()
+    {
+        isPlacing = false;
+        currentDef = null;
+
         previewRenderer.gameObject.SetActive(false);
     }
 }

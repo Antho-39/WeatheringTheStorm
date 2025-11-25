@@ -30,7 +30,7 @@ public class WeatherController : MonoBehaviour
             }
         }
 
-        InvokeRepeating(nameof(FireStarter), 10f, 30f);
+        InvokeRepeating(nameof(FireStarter), 10f, 20f);
     }
 
     void FireStarter()

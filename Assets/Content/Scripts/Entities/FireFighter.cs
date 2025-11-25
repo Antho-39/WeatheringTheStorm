@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class FireFighter : MonoBehaviour
 {
     [Header("Detection")]
-    public float detectionRadius = 5f;
+    public float detectionRadius = 3f;
 
     [Header("Movement")]
     public float speed = 0.5f;

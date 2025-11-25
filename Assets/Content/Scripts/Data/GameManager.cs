@@ -13,11 +13,11 @@ public class GameManager : MonoBehaviour
     public float preparationPhaseTime = 180f;
     public float actionPhaseTime = 240f;
     public float gameTime;
-    private float scoreTime;
     public bool timerRunning = false;
 
     [Header("Score")]
     public int score;
+    public int phase2scoreBonus;
     public int treesDestroyed;
     public int homesDestroyed;
     public int buildingsDestroyed;
@@ -144,12 +144,10 @@ public class GameManager : MonoBehaviour
                 break;
 
             case Phase.Phase2:
-                scoreTime += gameTime;
                 gameTime = actionPhaseTime;
                 break;
 
             case Phase.Phase3:
-                scoreTime += gameTime;
                 gameTime = gameTime;
                 break;
             default:
@@ -206,6 +204,11 @@ public class GameManager : MonoBehaviour
         score += amount;
     }
 
+    public void AddPhase2Score(int amount)
+    {
+        phase2scoreBonus += amount;
+    }
+
     public void ResetScore()
     {
         score = 0;
@@ -214,7 +217,8 @@ public class GameManager : MonoBehaviour
     public void Init()
     {
         money = 10000;
-        score = 1000;
+        score = 0;
+        phase2scoreBonus = 1000;
         gameTime = preparationPhaseTime;
         treesDestroyed = 0;
         buildingsDestroyed = 0;

@@ -56,6 +56,8 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private Label labelSocialScore;
     //private Label labelInjurieScore;
     private Label labelDamageScore;
+    private Label labelPhase2Score;
+    private Label labelMoneyScore;
     private Label labelTotalScore;
 
     public int buildingReparationCost = 3000;
@@ -130,6 +132,8 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         //labelInjurieScore = root.Q<Label>("InjuriesScore");
         labelDamageScore = root.Q<Label>("DamagesScore");
         labelTotalScore = root.Q<Label>("TotalScore");
+        labelMoneyScore = root.Q<Label>("MoneyScore");
+        labelPhase2Score = root.Q<Label>("Phase2Score");
 
         labelError = root.Q<Label>("ErrorLabel");
         labelError.style.opacity = 0;
@@ -264,14 +268,18 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
     private void CountScore()
     {
+        int moneyLeft = GameManager.Instance.money;
+        int phase2Score = GameManager.Instance.phase2scoreBonus;
         int socialScore = repairedHome * 50 + repairedCompliantHome * 60 + /*repairedBuilding * 150*/ + plantedTrees * 30;
         if(plantedTrees < burntTrees) socialScore -= 1000;
         //int injuriesScore = (injuries * -20);
         int damageScore = /*(burntBuildings * -50) + */(burntHomes * -20) + (burntTrees * -5);
-        score = (socialScore/* + injuriesScore*/ + damageScore) + GameManager.Instance.money;
+        score = (socialScore/* + injuriesScore*/ + damageScore) + phase2Score + moneyLeft;
         labelSocialScore.text = socialScore.ToString();
         //labelInjurieScore.text = injuriesScore.ToString();
         labelDamageScore.text = damageScore.ToString();
+        labelMoneyScore.text = moneyLeft.ToString();
+        labelPhase2Score.text = phase2Score.ToString();
         labelTotalScore.text = score.ToString();
 
     }

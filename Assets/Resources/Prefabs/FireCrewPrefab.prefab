@@ -158,7 +158,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 5
+  m_Radius: 3
 --- !u!114 &8623201554177413873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,8 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c2702123b2dae844a79bba3339bf30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireFighter
-  detectionRadius: 5
-  speed: 1
+  detectionRadius: 3
+  speed: 0.5
   extinguishDistance: 0.5
   avoidStrength: 2
   rescanInterval: 1
@@ -260,6 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279524ff510bc564db6f9ad07bea115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectableObject
+  ExtinguishCollider: {fileID: 243392624253339024}
 --- !u!50 &4826652906856043433
 Rigidbody2D:
   serializedVersion: 5
