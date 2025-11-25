@@ -3,8 +3,8 @@
     <ui:VisualElement name="Container" style="flex-grow: 1;">
         <ui:VisualElement style="flex-grow: 1; color: rgb(0, 0, 0); opacity: 1; -unity-text-outline-width: -322px; background-color: rgb(0, 0, 0);">
             <ui:VisualElement name="Header" class="header" style="flex-grow: 1;">
-                <ui:Label text="Loading..." name="HeaderLabel" class="header" style="align-items: center; justify-content: center; align-self: center; font-size: 50px; padding-top: 25px; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/PixelifySans-VariableFont_wght.ttf?fileID=12800000&amp;guid=01aebf42bf5c54e488dbe542a6e17f57&amp;type=3#PixelifySans-VariableFont_wght&quot;);" />
-                <ui:ProgressBar name="LoadingBar" style="width: 300px; height: 20px; align-content: flex-start; align-self: center; justify-content: center; -unity-text-outline-width: -322px;" />
+                <ui:Label text="Loading..." name="HeaderLabel" class="header" style="align-items: center; justify-content: center; align-self: center; font-size: 35px; padding-top: 25px; -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/prstartk.ttf?fileID=12800000&amp;guid=4ef2032f4a7925943809588411c48562&amp;type=3#prstartk&quot;); top: 300px;" />
+                <ui:ProgressBar name="LoadingBar" style="width: 300px; height: 20px; align-content: flex-start; align-self: center; justify-content: center; -unity-text-outline-width: -322px; top: 310px;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

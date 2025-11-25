@@ -77,7 +77,9 @@ public class PauseMenuController : MonoBehaviour
 
         GameManager.Instance.timerRunning = false;
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Menu_Scene");
+
+        UnityEngine.Cursor.visible = true;
     }
 
     public void SwitchMuteState()

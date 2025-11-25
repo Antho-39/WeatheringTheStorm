@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Timer")]
     public float preparationPhaseTime = 180f;
-    public float actionPhaseTime = 300f;
+    public float actionPhaseTime = 240f;
     public float gameTime;
     private float scoreTime;
     public bool timerRunning = false;
@@ -214,7 +214,7 @@ public class GameManager : MonoBehaviour
     public void Init()
     {
         money = 10000;
-        score = 0;
+        score = 1000;
         gameTime = preparationPhaseTime;
         treesDestroyed = 0;
         buildingsDestroyed = 0;

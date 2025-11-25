@@ -2,10 +2,13 @@ using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FireBehvior : MonoBehaviour
+public class FireBehavior : MonoBehaviour
 {
     public LayerMask FlammableLayers;
     public LayerMask InFlammableLayers;
+    public AudioClip fireSound;
+    public AudioClip fireExtinguishedSound;
+    public bool isAssigned;
     private float fireSpreadSpeed = 5f;
     private float minDistance = 0.2f;
     private Vector3 targetScale;
@@ -15,17 +18,23 @@ public class FireBehvior : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        isAssigned = false;
         targetScale = new Vector3(0.1f, 0.1f, 0.1f);
         fireCenter = transform.position;
         prefab = gameObject;
         InvokeRepeating(nameof(Propagation), 5, fireSpreadSpeed);
+        InvokeRepeating(nameof(DecreasePlayerScore), 10, 10);
         InvokeRepeating(nameof(Grow), 1, 1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (transform.localScale.x < 0.2f)
+        {
+            // Destroy self
+            Destroy(gameObject);
+        }
     }
 
     private void Propagation()
@@ -61,14 +70,19 @@ public class FireBehvior : MonoBehaviour
     {
         // Debug.Log($"Fire collided with: {other.name}");
 
-        if (transform.localScale.x < 0.2f)
-        {
-            // Destroy self
-            Destroy(gameObject);
-        }
-            
+        Extinguish();
+    }
+
+    public bool Extinguish()
+    {
         // Smoothly shrink towards target scale
         transform.localScale = Vector3.MoveTowards(transform.localScale, targetScale, 20f * Time.deltaTime);
+        return transform.localScale.x < 0.2f;
+    }
+
+    private void DecreasePlayerScore()
+    {
+        GameManager.Instance.AddScore(-10);
     }
 
     private void OnCollisionEnter(Collision collision)
