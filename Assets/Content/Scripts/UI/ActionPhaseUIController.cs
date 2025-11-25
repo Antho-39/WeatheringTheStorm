@@ -19,6 +19,8 @@ public class ActionPhaseUIController : MonoBehaviour
     private Button introNextButton;
     private Button controlsNextButton;
 
+    public WeatherController weatherController;
+
     [Header("Speed Settings")]
     public float letterDelay = 0.05f;  // Time between each letter
     public float punctuationDelay = 0.2f;       // Delay extra for . , ! ?
@@ -167,6 +169,10 @@ public class ActionPhaseUIController : MonoBehaviour
         controls_UI.style.display = DisplayStyle.None;
         UnityEngine.Cursor.visible = false;
 
+        if (weatherController != null)
+        {
+            weatherController.StartWeatherCycle();
+        }
         GameManager.Instance.StartTimer();
         GameManager.Instance.PlayPhaseMusic();
     }

@@ -14,7 +14,7 @@ public class WeatherController : MonoBehaviour
     private int startedFires;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void StartWeatherCycle()
     {
         startedFires = 0;
         weatherVolume = GetComponentInChildren<BoxCollider2D>();
@@ -30,13 +30,7 @@ public class WeatherController : MonoBehaviour
             }
         }
 
-        InvokeRepeating(nameof(FireStarter), 30f, 30f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        InvokeRepeating(nameof(FireStarter), 10f, 30f);
     }
 
     void FireStarter()
