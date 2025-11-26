@@ -40139,7 +40139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   currentPhase: 0
   preparationPhaseTime: 180
-  actionPhaseTime: 300
+  actionPhaseTime: 240
   gameTime: 600
   timerRunning: 1
   score: 0
