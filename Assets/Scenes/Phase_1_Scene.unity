@@ -18413,6 +18413,8 @@ MonoBehaviour:
   punctuationDelay: 0.15
   instantSkip: 1
   soundCooldown: 0.1
+  dragCursorSprite: {fileID: -7346238495889031964, guid: 7ebde82bc5341004b8f87a090c1d11f3, type: 3}
+  defaultCursorSprite: {fileID: 8969372505841162879, guid: 77ec7ee8f619c5747b1b42af77288fca, type: 3}
   audioSource: {fileID: 869377849}
   letterSound_1: {fileID: 8300000, guid: 06d68d08a1d68ed43b88a477499a32e6, type: 3}
   letterSound_2: {fileID: 8300000, guid: 06d68d08a1d68ed43b88a477499a32e6, type: 3}
@@ -40594,6 +40596,7 @@ MonoBehaviour:
   smoothTime: 0.2
   minBounds: {x: -20, y: -12}
   maxBounds: {x: 20, y: 12}
+  UIController: {fileID: 869377848}
 --- !u!4 &2094836921
 Transform:
   m_ObjectHideFlags: 0

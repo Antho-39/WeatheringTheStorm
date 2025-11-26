@@ -4991,7 +4991,7 @@ MonoBehaviour:
   isAssigned: 0
   spreadDelay: 5
   fireLoopSound: {fileID: 8300000, guid: 6ed6d1d422b51174a93bb76687b1c5ca, type: 3}
-  fireExtinguishSound: {fileID: 0}
+  fireExtinguishSound: {fileID: 8300000, guid: dc641adcb1ea0ed478ced9fa43d66fbe, type: 3}
   maxSoundDistance: 12
 --- !u!50 &4724207008842266656
 Rigidbody2D:

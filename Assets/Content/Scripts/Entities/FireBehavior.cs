@@ -84,14 +84,18 @@ public class FireBehavior : MonoBehaviour
         if (fireLoopSource != null)
             fireLoopSource.Stop();
 
-        /*AudioManager.Instance.PlaySFXAtPosition(
-            fireExtinguishSound,
-            transform.position,
-            12f
-        );*/
-
         transform.localScale = Vector3.MoveTowards(transform.localScale, targetScale, 20f * Time.deltaTime);
-        return transform.localScale.x < 0.2f;
+
+        bool isFireExtinguished = transform.localScale.x < 0.2f;
+        if (isFireExtinguished)
+        {
+            AudioManager.Instance.PlaySFXAtPosition(
+                fireExtinguishSound,
+                transform.position,
+                12f
+            );
+        }
+        return isFireExtinguished;
     }
 
     private void OnDestroy()

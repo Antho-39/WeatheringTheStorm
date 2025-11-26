@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     public Vector2 minBounds = new Vector2(-16f, -10f);
     public Vector2 maxBounds = new Vector2(16f, 11f);
 
+    public PreparationPhaseUIController UIController;
+
     private Vector3 dragOrigin;
     private Vector3 targetPosition;
     private Vector3 velocity = Vector3.zero;
@@ -33,11 +35,13 @@ public class PlayerController : MonoBehaviour
         {
             dragButton = 2;
             dragOrigin = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            UIController.SetDragCursor(true);
         }
         else if (Input.GetMouseButtonDown(1))  // right mouse
         {
             dragButton = 1;
             dragOrigin = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            UIController.SetDragCursor(true);
         }
 
         if (dragButton != -1 && Input.GetMouseButton(dragButton))
@@ -48,6 +52,7 @@ public class PlayerController : MonoBehaviour
         if (dragButton != -1 && Input.GetMouseButtonUp(dragButton))
         {
             dragButton = -1;
+            UIController.SetDragCursor(false);
         }
 
         if (PlacementManager.Instance != null && PlacementManager.Instance.isPlacing)

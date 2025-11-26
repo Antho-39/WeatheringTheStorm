@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Diagnostics;
 
 public class HelicopterController : MonoBehaviour
 {
@@ -38,6 +39,11 @@ public class HelicopterController : MonoBehaviour
     public float pickupRadius = 1f;
     public float dropRadius = 1f;
     public Transform victimHoldPoint;
+    private float rescueTimer = 0f;
+    private bool isRescuing = false;
+    private bool isDropping = false;
+    private Collider2D currentVictim;
+
 
     private GameObject carriedVictim;
 
@@ -170,44 +176,97 @@ public class HelicopterController : MonoBehaviour
     {
         if (carriedVictim != null) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, pickupRadius);
+        Collider2D victim = null;
+
+        foreach (var hit in hits)
         {
-            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, pickupRadius);
-            foreach (var hit in hits)
+            if (hit.CompareTag("Victim"))
             {
-                if (hit.CompareTag("Victim"))
+                victim = hit;
+                break;
+            }
+        }
+
+        if (victim != null)
+        {
+            if (!isRescuing)
+            {
+                isRescuing = true;
+                rescueTimer = 0f;
+                currentVictim = victim;
+            }
+            else
+            {
+                rescueTimer += Time.deltaTime;
+
+                if (rescueTimer >= 1f) // 1 seconde
                 {
-                    carriedVictim = hit.gameObject;
+                    carriedVictim = currentVictim.gameObject;
                     RescueManager.Instance.RescueVictim(carriedVictim);
                     carriedVictim.transform.SetParent(victimHoldPoint);
                     carriedVictim.transform.position = victimHoldPoint.position;
 
-                    //WaterCanon not Available
-                    break;
+                    isRescuing = false;
+                    currentVictim = null;
                 }
             }
         }
+        else
+        {
+            isRescuing = false;
+            rescueTimer = 0f;
+            currentVictim = null;
+        }
+
     }
+
 
     private void HandleRescueDrop()
     {
         if (carriedVictim == null) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        Transform safeZone = null;
+        foreach (var zone in RescueManager.Instance.safeZones)
         {
-            foreach (var zone in RescueManager.Instance.safeZones)
+            if (Vector2.Distance(transform.position, zone.position) <= dropRadius)
             {
-                if (Vector2.Distance(transform.position, zone.position) <= dropRadius)
+                safeZone = zone;
+                break;
+            }
+        }
+
+        if (safeZone != null)
+        {
+            if (!isDropping)
+            {
+                isDropping = true;
+                rescueTimer = 0f;
+            }
+            else
+            {
+                rescueTimer += Time.deltaTime;
+
+                if (rescueTimer >= 1f) // 1 seconde
                 {
-                    Debug.Log("Victim dropped in safe zone");
                     carriedVictim.transform.SetParent(null);
                     RescueManager.Instance.DropVictim();
                     carriedVictim = null;
-                    break;
+
+                    isDropping = false;
+                    rescueTimer = 0f;
                 }
             }
         }
+        else
+        {
+            // Si on sort de la zone avant la fin
+            isDropping = false;
+            rescueTimer = 0f;
+        }
     }
+
 
     private void UpdateCarriedVictimPosition()
     {

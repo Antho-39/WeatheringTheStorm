@@ -22,6 +22,9 @@ public class PreparationPhaseUIController : MonoBehaviour
     public bool instantSkip = true;
     public float soundCooldown = 0.05f;
 
+    public Sprite dragCursorSprite;
+    public Sprite defaultCursorSprite;
+
     private bool isTyping = false;
     private bool isFinished = false;
 
@@ -90,6 +93,8 @@ public class PreparationPhaseUIController : MonoBehaviour
         // Get the full text and clear the label
         fullText = introLabel.text;
         introLabel.text = "";
+
+        cursor.style.backgroundImage = new StyleBackground(defaultCursorSprite);
 
         GameManager.Instance.StopTimer();
         StartCoroutine(TypeText());
@@ -169,6 +174,18 @@ public class PreparationPhaseUIController : MonoBehaviour
 
         isTyping = false;
         isFinished = true;
+    }
+
+    public void SetDragCursor(bool isDragging)
+    {
+        if (isDragging)
+        {
+            cursor.style.backgroundImage = new StyleBackground(dragCursorSprite);
+        }
+        else
+        {
+            cursor.style.backgroundImage = new StyleBackground(defaultCursorSprite);
+        }
     }
 
     private void SkipText()

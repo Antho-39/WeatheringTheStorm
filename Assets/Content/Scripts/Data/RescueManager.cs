@@ -12,8 +12,8 @@ public class RescueManager : MonoBehaviour
     public LayerMask forbiddenLayers;
 
     [Header("Spawn Settings")]
-    public float spawnInterval = 55f;
-    public float rescueTimeLimit = 20f;
+    public float spawnInterval;
+    public float rescueTimeLimit;
     public bool playerCarryingVictim = false;
     public GameObject currentCarriedVictim;
     public bool rescueInProgress = false;
@@ -128,7 +128,6 @@ public class RescueManager : MonoBehaviour
 
     public void DropVictim()
     {
-        Debug.Log("Drop victim");
         HUD.ShowRescueSuccess();
         playerCarryingVictim = false;
 

@@ -19601,8 +19601,8 @@ MonoBehaviour:
   forbiddenLayers:
     serializedVersion: 2
     m_Bits: 80
-  spawnInterval: 10
-  rescueTimeLimit: 15
+  spawnInterval: 55
+  rescueTimeLimit: 20
   playerCarryingVictim: 0
   currentCarriedVictim: {fileID: 0}
   rescueInProgress: 0
@@ -24828,7 +24828,7 @@ MonoBehaviour:
   helicopterAudioSource: {fileID: 1421190829}
   chopperAudioSource: {fileID: 1662555558}
   bladeAudio: {fileID: 8300000, guid: 1012d43bcc64a4b47b0b5f4e9ed9e72a, type: 3}
-  waterCanonAudio: {fileID: 8300000, guid: b81ba3d5ab16c3d4c80c511ac94d6b3b, type: 3}
+  waterCanonAudio: {fileID: 8300000, guid: f9ebe9450bd28cd419bb645a4d5f1bbf, type: 3}
   water:
     serializedVersion: 2
     m_Bits: 16
