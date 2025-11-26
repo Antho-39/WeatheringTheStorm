@@ -11,6 +11,7 @@ public class FireManager : MonoBehaviour
     [Header("Fire Settings")]
     public GameObject firePrefab;
     public LayerMask flammableLayers;
+    public LayerMask SpawnFlammableLayers;
     public LayerMask inFlammableLayers;
     public float spreadRadius = 1.5f;
     public int maxAttemptsPerFire = 15;
@@ -136,7 +137,7 @@ public class FireManager : MonoBehaviour
             );
 
             if (!Physics2D.OverlapCircle(randomPos, 0.2f, inFlammableLayers)
-                && Physics2D.OverlapCircle(randomPos, 0.2f, flammableLayers))
+                && Physics2D.OverlapCircle(randomPos, 0.2f, SpawnFlammableLayers))
             {
                 GameObject newFire = Instantiate(firePrefab, randomPos, Quaternion.identity);
                 FireBehavior fb = newFire.GetComponent<FireBehavior>();

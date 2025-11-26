@@ -34830,6 +34830,9 @@ MonoBehaviour:
   firePrefab: {fileID: 8617792986512164101, guid: 3581dbd023b259347bd49b597c2d8add, type: 3}
   flammableLayers:
     serializedVersion: 2
+    m_Bits: 641
+  SpawnFlammableLayers:
+    serializedVersion: 2
     m_Bits: 129
   inFlammableLayers:
     serializedVersion: 2
