@@ -366,6 +366,7 @@ GameObject:
   - component: {fileID: 211301953637265100}
   - component: {fileID: 4826652906856043433}
   - component: {fileID: 6586398310040016862}
+  - component: {fileID: 4094504807956066538}
   m_Layer: 8
   m_Name: FireCrewPrefab
   m_TagString: Untagged
@@ -403,7 +404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 279524ff510bc564db6f9ad07bea115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectableObject
-  ExtinguishCollider: {fileID: 243392624253339024}
 --- !u!50 &4826652906856043433
 Rigidbody2D:
   serializedVersion: 5
@@ -477,3 +477,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.3, y: 0.5}
   m_EdgeRadius: 0
+--- !u!114 &4094504807956066538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7325311627247121086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80bac476cd940184dad2c4a6fbc8a253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FireFighterController
+  ExtinguishCollider: {fileID: 6586398310040016862}

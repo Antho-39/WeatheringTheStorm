@@ -36,6 +36,12 @@ public class ActionPhaseUIController : MonoBehaviour
     private AudioClip currentAudioClip;
     private float lastSoundTime = 0;
 
+    private Label rescueAlertLabel;
+    private VisualElement rescueDirectionArrow;
+    private Slider rescueTimerSlider;
+
+    private Coroutine currentAlertCoroutine;
+
     private Label introLabel;
     private string fullText;
 
@@ -62,6 +68,13 @@ public class ActionPhaseUIController : MonoBehaviour
         phase_2_UI.style.display = DisplayStyle.None;
         controls_UI.style.display = DisplayStyle.None;
         intro_UI.style.display = DisplayStyle.Flex;
+
+        rescueAlertLabel = root.Q<Label>("RescueAlertLabel");
+        rescueDirectionArrow = root.Q<VisualElement>("RescueDirectionArrow");
+        rescueTimerSlider = root.Q<Slider>("RescueTimerSlider");
+        rescueAlertLabel.style.display = DisplayStyle.None;
+        rescueDirectionArrow.style.display = DisplayStyle.None;
+        rescueTimerSlider.style.display = DisplayStyle.None;
 
         timeLabel = root.Q<Label>("TimeLabel");
 
@@ -177,5 +190,74 @@ public class ActionPhaseUIController : MonoBehaviour
         
         GameManager.Instance.StartTimer();
         GameManager.Instance.PlayPhaseMusic();
+    }
+
+    public void ShowRescueAlert(Vector3 pos)
+    {
+        rescueAlertLabel.text = "Une personne est en danger !";
+        rescueAlertLabel.style.color = Color.yellow;
+        rescueAlertLabel.style.display = DisplayStyle.Flex;
+
+        rescueDirectionArrow.style.display = DisplayStyle.Flex;
+        UpdateDirectionArrow(pos);
+
+        rescueTimerSlider.style.display = DisplayStyle.Flex;
+        StartCoroutine(RunRescueTimer(15f));
+
+        if (currentAlertCoroutine != null)
+            StopCoroutine(currentAlertCoroutine);
+        currentAlertCoroutine = StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 15f));
+    }
+
+    public void ShowRescueFailed()
+    {
+        rescueAlertLabel.text = "Sauvetage échoué !";
+        rescueAlertLabel.style.color = Color.red;
+        rescueDirectionArrow.style.display = DisplayStyle.None;
+        rescueTimerSlider.style.display = DisplayStyle.None;
+        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 2f));
+    }
+
+    public void ShowRescueCarryMessage()
+    {
+        rescueAlertLabel.text = "Vous transportez la victime !";
+        rescueAlertLabel.style.color = Color.green;
+        rescueDirectionArrow.style.display = DisplayStyle.None;
+        rescueTimerSlider.style.display = DisplayStyle.None;
+        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 2f));
+    }
+
+    public void ShowRescueSuccess()
+    {
+        rescueAlertLabel.text = "Sauvetage réussi !";
+        rescueAlertLabel.style.color = Color.green;
+        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 2f));
+    }
+
+    public void UpdateDirectionArrow(Vector3 targetPos)
+    {
+        Vector3 dir = (targetPos - Camera.main.transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        rescueDirectionArrow.transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+    }
+
+    private IEnumerator RunRescueTimer(float duration)
+    {
+        rescueTimerSlider.lowValue = 0;
+        rescueTimerSlider.highValue = duration;
+        float t = duration;
+        while (t > 0)
+        {
+            t -= Time.deltaTime;
+            rescueTimerSlider.value = t;
+            yield return null;
+        }
+        ShowRescueFailed();
+    }
+
+    private IEnumerator HideLabelAfterSeconds(Label label, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        label.style.display = DisplayStyle.None;
     }
 }

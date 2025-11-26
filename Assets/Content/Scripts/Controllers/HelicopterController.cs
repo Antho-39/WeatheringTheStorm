@@ -1,52 +1,56 @@
 using UnityEngine;
 using System.Collections;
-using Unity.Mathematics;
-using System.Numerics;
 
 public class HelicopterController : MonoBehaviour
 {
-    public Transform[] helicopterBlades; // Array to hold references to helicopter blades
-    public Transform Body;            // Reference to the helicopter body
-    public Transform TailRotor;      // Reference to the tail rotor for steering
+    [Header("References")]
+    public Transform[] helicopterBlades;
+    public Transform Body;
+    public Transform TailRotor;
     public Collider2D mapArea;
 
     [Header("Movement")]
-    public float moveSpeed = 10f;        // Move speed (unit / second)
-    public float rotationSpeed = 5f;     // Speed roation to aim at the move direction
+    public float moveSpeed = 10f;
+    public float rotationSpeed = 5f;
     public GameObject MiniMapCamera;
     public GameObject MiniMapCanvas;
 
+    [Header("Audio")]
     public AudioSource helicopterAudioSource;
     public AudioSource chopperAudioSource;
     public AudioClip bladeAudio;
     public AudioClip waterCanonAudio;
-    // I'm very sure I don't need to make a public layer mask for this, just not sure on syntax to specify explicitly only the water layer
+
     public LayerMask water;
 
-    public float height = 0f;
+    [Header("Water")]
     public float climbSpeed = 3f;
     private GaugeController gauge;
-    private Rigidbody2D chopperRigidbody; // Reference to helicoper rigidbody
-
-    private Camera mainCamera;
-    private ParticleSystem waterParticles; // Reference to particle system
-    private UnityEngine.Quaternion targetRotation;
+    private Rigidbody2D chopperRigidbody;
+    private ParticleSystem waterParticles;
     private ParticleSystem.EmissionModule emission;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Camera")]
+    private Camera mainCamera;
+    private Quaternion targetRotation;
+
+    [Header("Rescue")]
+    public float pickupRadius = 1f;
+    public float dropRadius = 1f;
+    public Transform victimHoldPoint;
+
+    private GameObject carriedVictim;
+
     void Start()
     {
         mainCamera = GetComponentInChildren<Camera>();
         gauge = GetComponent<GaugeController>();
         chopperRigidbody = GetComponent<Rigidbody2D>();
         waterParticles = GetComponentInChildren<ParticleSystem>();
-
-        // I guess this is a terrible way to stop the camera inheriting the chopper's rotation? 
+        emission = waterParticles.emission;
         targetRotation = mainCamera.transform.rotation;
 
-        emission = waterParticles.emission;
-
-        // --- AUDIO SOURCES ---
+        // Setup helicopter audio
         helicopterAudioSource.clip = bladeAudio;
         helicopterAudioSource.loop = true;
         helicopterAudioSource.playOnAwake = false;
@@ -59,91 +63,155 @@ public class HelicopterController : MonoBehaviour
         chopperAudioSource.volume = 0f;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        foreach (var blade in helicopterBlades)
-        {
-            blade.localRotation *= UnityEngine.Quaternion.Euler(0, 0, 360f * Time.deltaTime * rotationSpeed);
-        }
+        RotateBlades();
+        HandleWaterCannon();
+        ToggleMiniMap();
+        RefillWater();
+        ClampPosition();
 
-        float cannonInput = Input.GetAxisRaw("Jump"); // space key
-
-        float speed = chopperRigidbody.linearVelocity.magnitude;
-        float targetVolume = Mathf.InverseLerp(0f, 25f, speed); // 0 -> max speed
-        helicopterAudioSource.volume = targetVolume;
-
-        // float angle = 0.0f;
-
-        if (cannonInput > 0 && gauge.water > 0f)
-        {
-            emission.enabled = true;
-            gauge.ConsumeValue(0.03f);
-            if (!chopperAudioSource.isPlaying)
-                chopperAudioSource.Play();
-            chopperAudioSource.volume = 0.7f;
-        }
-        else
-        {
-            emission.enabled = false;
-
-            if (chopperAudioSource.volume > 0f)
-            {
-                chopperAudioSource.volume -= Time.deltaTime * 3f;
-                if (chopperAudioSource.volume <= 0.01f)
-                    chopperAudioSource.Stop();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            bool miniMapActive = MiniMapCamera.activeSelf;
-            MiniMapCamera.SetActive(!miniMapActive);
-            MiniMapCanvas.SetActive(!miniMapActive);
-        }  
-
-        if (Physics2D.OverlapCircle(transform.position, 0.2f, water) && gauge.water < 100f)
-        {
-            gauge.ConsumeValue(-0.05f);
-        }
-
-        // Stop chopper from leaving map area
-        Bounds mapBounds = mapArea.bounds;
-        UnityEngine.Vector3 clampedPosition = transform.position;
-        clampedPosition.x = Mathf.Clamp(transform.position.x, mapBounds.min.x, mapBounds.max.x);
-        clampedPosition.y = Mathf.Clamp(transform.position.y, mapBounds.min.y, mapBounds.max.y);
-        clampedPosition.z = transform.position.z;
-
-        transform.position = clampedPosition;
-        // float waterBurned = Time.deltaTime + input.magnitude * Time.deltaTime; // Decrease water based on movement
-        // Update gauge with animated water value
+        HandleRescuePickup();
+        HandleRescueDrop();
+        UpdateCarriedVictimPosition();
     }
 
     void FixedUpdate()
     {
-        float h = Input.GetAxisRaw("Horizontal"); // Arrow left/right or A/D
-        float v = Input.GetAxisRaw("Vertical");   // Arrow up/down or W/S
-        UnityEngine.Vector3 input = new UnityEngine.Vector3(h, v, 0.0f);
-        float throttle = v * moveSpeed;
-
-        // Dividing the horizontal axis values because they are far too high. Probably a way better way to do this?
-        float steering = (h / 7) * rotationSpeed;
-        
-        if (input.sqrMagnitude > 0.0001f)
-        {
-            // Normalization of the input vector to get the direction
-            UnityEngine.Vector3 direction = input.normalized;
-
-            // Apply force to helicopter rigidbody in the direction the chopper is facing
-            chopperRigidbody.AddForce(transform.up * throttle);
-            // Steering has to be inverted for the force at the tail
-            chopperRigidbody.AddForceAtPosition(transform.right * (steering * -1), TailRotor.position);
-
-        }
+        HandleMovement();
     }
 
     void LateUpdate()
     {
         mainCamera.transform.rotation = targetRotation;
     }
+
+    #region Helicopter
+    private void RotateBlades()
+    {
+        foreach (var blade in helicopterBlades)
+        {
+            blade.localRotation *= Quaternion.Euler(0, 0, 360f * Time.deltaTime * rotationSpeed);
+        }
+
+        float speed = chopperRigidbody.linearVelocity.magnitude;
+        helicopterAudioSource.volume = Mathf.InverseLerp(0f, 25f, speed);
+    }
+
+    private void HandleWaterCannon()
+    {
+        float cannonInput = Input.GetAxisRaw("Jump");
+
+        if (cannonInput > 0 && gauge.water > 0f)
+        {
+            emission.enabled = true;
+            gauge.ConsumeValue(0.03f);
+
+            if (!chopperAudioSource.isPlaying) chopperAudioSource.Play();
+            chopperAudioSource.volume = 0.7f;
+        }
+        else
+        {
+            emission.enabled = false;
+            if (chopperAudioSource.volume > 0f)
+            {
+                chopperAudioSource.volume -= Time.deltaTime * 3f;
+                if (chopperAudioSource.volume <= 0.01f) chopperAudioSource.Stop();
+            }
+        }
+    }
+
+    private void ToggleMiniMap()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            bool active = MiniMapCamera.activeSelf;
+            MiniMapCamera.SetActive(!active);
+            MiniMapCanvas.SetActive(!active);
+        }
+    }
+
+    private void RefillWater()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, water) && gauge.water < 100f)
+        {
+            gauge.ConsumeValue(-0.05f);
+        }
+    }
+
+    private void ClampPosition()
+    {
+        Bounds bounds = mapArea.bounds;
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, bounds.min.x, bounds.max.x);
+        pos.y = Mathf.Clamp(pos.y, bounds.min.y, bounds.max.y);
+        transform.position = pos;
+    }
+
+    private void HandleMovement()
+    {
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+        Vector3 input = new Vector3(h, v, 0f);
+
+        if (input.sqrMagnitude < 0.0001f) return;
+
+        Vector3 direction = input.normalized;
+        float throttle = v * moveSpeed;
+        float steering = (h / 7f) * rotationSpeed;
+
+        chopperRigidbody.AddForce(transform.up * throttle);
+        chopperRigidbody.AddForceAtPosition(transform.right * (-steering), TailRotor.position);
+    }
+    #endregion
+
+    #region Rescue
+    private void HandleRescuePickup()
+    {
+        if (carriedVictim != null) return;
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, pickupRadius);
+            foreach (var hit in hits)
+            {
+                if (hit.CompareTag("Victim"))
+                {
+                    carriedVictim = hit.gameObject;
+                    RescueManager.Instance.RescueVictim(carriedVictim);
+                    carriedVictim.transform.SetParent(victimHoldPoint);
+                    carriedVictim.transform.position = victimHoldPoint.position;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void HandleRescueDrop()
+    {
+        if (carriedVictim == null) return;
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            foreach (var zone in RescueManager.Instance.safeZones)
+            {
+                if (Vector2.Distance(transform.position, zone.position) <= dropRadius)
+                {
+                    carriedVictim.transform.SetParent(null);
+                    RescueManager.Instance.DropVictim();
+                    carriedVictim = null;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void UpdateCarriedVictimPosition()
+    {
+        if (carriedVictim != null)
+        {
+            carriedVictim.transform.position = victimHoldPoint.position;
+        }
+    }
+    #endregion
 }

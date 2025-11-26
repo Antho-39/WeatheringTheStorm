@@ -45,3 +45,29 @@
     z-index: 9999;
     pointer-events: none;
 }
+
+.rescue-label {
+    font-size: 50px;
+    unity-font-style: bold;
+    color: yellow;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    -unity-font-style: normal;
+}
+
+.direction-arrow {
+    width: 40px;
+    height: 40px;
+    background-image: url("project://database/Assets/Content/Sprites/right-arrow.png?fileID=2800000&guid=a722efb52930fd84dbd0687896933010&type=3#right-arrow");
+    background-size: cover;
+    display: none;
+    transform-origin: center center;
+}
+
+.rescue-timer {
+    width: 200px;
+    margin-top: 10px;
+    display: none;
+}
