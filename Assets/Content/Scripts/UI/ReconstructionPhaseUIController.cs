@@ -62,11 +62,11 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     public int buildingReparationCost = 3000;
     public int homeReparationCost = 1000;
     public int compliantHomeReparationCost = 1500;
-    public int treeCost = 20;
+    public int treeCost = 50;
 
-    public int repairedHomePointScale = 50;
-    public int repairedCompliantHomePointScale = 60;
-    public int plantedTreePointScale = 30;
+    public int repairedHomePointScale = 30;
+    public int repairedCompliantHomePointScale = 90;
+    public int plantedTreePointScale = 4;
 
     private Label moneyLabel;
     private float score;
@@ -201,7 +201,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
                 // Add full tag
                 introLabel.text += tag;
 
-                continue; // On passe au caract�re suivant
+                continue; // On passe au caract re suivant
             }
             // Add letter
             introLabel.text += c;
@@ -263,7 +263,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
     private void AddDonationMoney()
     {
-        int donation = Random.Range(15000, 20000);
+        int donation = Random.Range(4990, 5010);
         GameManager.Instance.AddMoney(donation);
         ShowError("You received a donation of " + donation.ToString() + " $ to help with the reconstruction !", 5f, 0.4f);
     }
