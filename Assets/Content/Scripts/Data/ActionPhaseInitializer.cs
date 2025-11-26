@@ -17,11 +17,15 @@ public class ActionPhaseInitializer : MonoBehaviour
                 continue;
             }
 
-            Instantiate(
+            var prefab = Instantiate(
                 def.prefab,
                 data.position,
                 Quaternion.Euler(0, 0, data.rotation)
             );
+            if(data.id == "SAFE_ZONE")
+            {
+                RescueManager.Instance.safeZones.Add(prefab.transform);
+            }
         }
 
         GameManager.Instance.placedObjects.Clear();

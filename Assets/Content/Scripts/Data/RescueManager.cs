@@ -7,16 +7,24 @@ public class RescueManager : MonoBehaviour
     public static RescueManager Instance;
 
     [Header("Prefabs")]
-    public GameObject[] victimPrefabs;       // Personnes ou animaux
-    public Transform[] safeZones;            // Points où déposer les victimes
-    public LayerMask forbiddenLayers;        // Eau et feu
+    public GameObject[] victimPrefabs;
+    public List<Transform> safeZones;
+    public LayerMask forbiddenLayers;
 
     [Header("Spawn Settings")]
-    public float spawnInterval = 10f;
-    public float rescueTimeLimit = 15f;
+    public float spawnInterval = 55f;
+    public float rescueTimeLimit = 20f;
     public bool playerCarryingVictim = false;
     public GameObject currentCarriedVictim;
+    public bool rescueInProgress = false;
 
+    public Transform playerTransform;
+
+    public Collider2D mapArea;
+    private Vector2 mapMinBounds;
+    private Vector2 mapMaxBounds;
+
+    private Coroutine currentVictimTimerCoroutine;
     public ActionPhaseUIController HUD;
 
     private List<GameObject> activeVictims = new List<GameObject>();
@@ -30,6 +38,8 @@ public class RescueManager : MonoBehaviour
     void Start()
     {
         spawnCoroutine = StartCoroutine(SpawnVictimsRoutine());
+        mapMinBounds = mapArea.bounds.min;
+        mapMaxBounds = mapArea.bounds.max;
     }
 
     IEnumerator SpawnVictimsRoutine()
@@ -37,12 +47,16 @@ public class RescueManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(spawnInterval);
-            SpawnVictim();
+            if (!rescueInProgress)
+                SpawnVictim();
         }
     }
 
     void SpawnVictim()
     {
+        Debug.Log(rescueInProgress);
+        if (rescueInProgress) return;
+
         Vector3 spawnPos = Vector3.zero;
         int attempts = 0;
         bool validPos = false;
@@ -50,8 +64,8 @@ public class RescueManager : MonoBehaviour
         while (!validPos && attempts < 20)
         {
             spawnPos = new Vector3(
-                Random.Range(-15f, 15f),
-                Random.Range(-10f, 10f),
+                Random.Range(mapMinBounds.x, mapMaxBounds.x),
+                Random.Range(mapMinBounds.y, mapMaxBounds.y),
                 0f
             );
 
@@ -68,8 +82,9 @@ public class RescueManager : MonoBehaviour
         GameObject victim = Instantiate(victimPrefabs[prefabIndex], spawnPos, Quaternion.identity);
         activeVictims.Add(victim);
 
-        HUD.ShowRescueAlert(spawnPos);
-        StartCoroutine(VictimTimer(victim));
+        HUD.ShowRescueAlert(victim);
+        currentVictimTimerCoroutine = StartCoroutine(VictimTimer(victim));
+        rescueInProgress = true;
     }
 
     IEnumerator VictimTimer(GameObject victim)
@@ -78,8 +93,9 @@ public class RescueManager : MonoBehaviour
         while (timer > 0)
         {
             if (victim == null) yield break;
+            if (playerCarryingVictim) yield break;
+
             timer -= Time.deltaTime;
-            //HUD.UpdateRescueTimer(timer / rescueTimeLimit);
             yield return null;
         }
 
@@ -87,6 +103,7 @@ public class RescueManager : MonoBehaviour
         {
             activeVictims.Remove(victim);
             Destroy(victim);
+            rescueInProgress = false;
             HUD.ShowRescueFailed();
         }
     }
@@ -95,20 +112,30 @@ public class RescueManager : MonoBehaviour
     {
         if (activeVictims.Contains(victim))
         {
+            if (currentVictimTimerCoroutine != null)
+            {
+                StopCoroutine(currentVictimTimerCoroutine);
+                currentVictimTimerCoroutine = null;
+            }
+
             activeVictims.Remove(victim);
             playerCarryingVictim = true;
             currentCarriedVictim = victim;
+            rescueInProgress = true;
             HUD.ShowRescueCarryMessage();
         }
     }
 
     public void DropVictim()
     {
-        if (currentCarriedVictim == null) return;
-
+        Debug.Log("Drop victim");
         HUD.ShowRescueSuccess();
         playerCarryingVictim = false;
-        Destroy(currentCarriedVictim);
+
+        if (currentCarriedVictim != null)
+            Destroy(currentCarriedVictim);
+
         currentCarriedVictim = null;
+        rescueInProgress = false;
     }
 }

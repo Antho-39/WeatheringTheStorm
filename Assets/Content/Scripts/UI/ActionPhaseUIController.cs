@@ -39,6 +39,7 @@ public class ActionPhaseUIController : MonoBehaviour
     private Label rescueAlertLabel;
     private VisualElement rescueDirectionArrow;
     private Slider rescueTimerSlider;
+    private GameObject currentVictimTarget;
 
     private Coroutine currentAlertCoroutine;
 
@@ -93,6 +94,11 @@ public class ActionPhaseUIController : MonoBehaviour
         int seconds = Mathf.FloorToInt(time % 60f);
 
         timeLabel.text = $"{minutes:00}:{seconds:00}";
+
+        if (currentVictimTarget != null)
+        {
+            UpdateDirectionArrow(currentVictimTarget.transform.position);
+        }
 
         // DEBUG ! 
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -192,53 +198,60 @@ public class ActionPhaseUIController : MonoBehaviour
         GameManager.Instance.PlayPhaseMusic();
     }
 
-    public void ShowRescueAlert(Vector3 pos)
+    public void ShowRescueAlert(GameObject victim)
     {
-        rescueAlertLabel.text = "Une personne est en danger !";
+        currentVictimTarget = victim;
+
+        rescueAlertLabel.text = "Allô ! We have an emergency, someone needs your help !";
         rescueAlertLabel.style.color = Color.yellow;
         rescueAlertLabel.style.display = DisplayStyle.Flex;
 
         rescueDirectionArrow.style.display = DisplayStyle.Flex;
-        UpdateDirectionArrow(pos);
-
         rescueTimerSlider.style.display = DisplayStyle.Flex;
-        StartCoroutine(RunRescueTimer(15f));
+        StartCoroutine(RunRescueTimer(20f));
 
         if (currentAlertCoroutine != null)
             StopCoroutine(currentAlertCoroutine);
-        currentAlertCoroutine = StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 15f));
+        currentAlertCoroutine = StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 20f));
     }
 
     public void ShowRescueFailed()
     {
-        rescueAlertLabel.text = "Sauvetage échoué !";
+        rescueAlertLabel.text = "Oh no ! We are now too late for the rescue !";
         rescueAlertLabel.style.color = Color.red;
         rescueDirectionArrow.style.display = DisplayStyle.None;
         rescueTimerSlider.style.display = DisplayStyle.None;
-        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 2f));
+        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 3f));
     }
 
     public void ShowRescueCarryMessage()
     {
-        rescueAlertLabel.text = "Vous transportez la victime !";
+        StopAllCoroutines();
+        rescueTimerSlider.style.display = DisplayStyle.None;
+        rescueAlertLabel.text = "Nice ! Bring this person in a safe place !";
         rescueAlertLabel.style.color = Color.green;
         rescueDirectionArrow.style.display = DisplayStyle.None;
-        rescueTimerSlider.style.display = DisplayStyle.None;
-        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 2f));
+        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 3f));
     }
 
     public void ShowRescueSuccess()
     {
-        rescueAlertLabel.text = "Sauvetage réussi !";
+        rescueAlertLabel.text = "Successful Rescue !";
         rescueAlertLabel.style.color = Color.green;
         StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 2f));
     }
 
     public void UpdateDirectionArrow(Vector3 targetPos)
     {
-        Vector3 dir = (targetPos - Camera.main.transform.position).normalized;
+        if (RescueManager.Instance == null) return;
+        Transform helicopter = RescueManager.Instance.playerTransform;
+        if (!helicopter) return;
+
+        Vector3 dir = (targetPos - helicopter.position).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        rescueDirectionArrow.transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+
+        rescueDirectionArrow.transform.rotation =
+            Quaternion.Euler(0, 0, angle - 90f);
     }
 
     private IEnumerator RunRescueTimer(float duration)

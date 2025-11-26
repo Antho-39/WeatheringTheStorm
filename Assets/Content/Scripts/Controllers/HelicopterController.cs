@@ -181,6 +181,8 @@ public class HelicopterController : MonoBehaviour
                     RescueManager.Instance.RescueVictim(carriedVictim);
                     carriedVictim.transform.SetParent(victimHoldPoint);
                     carriedVictim.transform.position = victimHoldPoint.position;
+
+                    //WaterCanon not Available
                     break;
                 }
             }
@@ -191,12 +193,13 @@ public class HelicopterController : MonoBehaviour
     {
         if (carriedVictim == null) return;
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             foreach (var zone in RescueManager.Instance.safeZones)
             {
                 if (Vector2.Distance(transform.position, zone.position) <= dropRadius)
                 {
+                    Debug.Log("Victim dropped in safe zone");
                     carriedVictim.transform.SetParent(null);
                     RescueManager.Instance.DropVictim();
                     carriedVictim = null;

@@ -2969,11 +2969,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5917926765489237475, guid: 46147498ef1cceb4b8b34984df1a3f1c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.21
+      value: -12.127
       objectReference: {fileID: 0}
     - target: {fileID: 5917926765489237475, guid: 46147498ef1cceb4b8b34984df1a3f1c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.17
+      value: -3.771
       objectReference: {fileID: 0}
     - target: {fileID: 5917926765489237475, guid: 46147498ef1cceb4b8b34984df1a3f1c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -19605,6 +19605,9 @@ MonoBehaviour:
   rescueTimeLimit: 15
   playerCarryingVictim: 0
   currentCarriedVictim: {fileID: 0}
+  rescueInProgress: 0
+  playerTransform: {fileID: 1421190824}
+  mapArea: {fileID: 1857692959}
   HUD: {fileID: 869377848}
 --- !u!4 &1046362707
 Transform:
@@ -23715,6 +23718,75 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4524526258033166129, guid: 5afe34cfd7684744e889705c8782405e, type: 3}
   m_PrefabInstance: {fileID: 1328366389}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1356511448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1356511449}
+  - component: {fileID: 1356511450}
+  m_Layer: 3
+  m_Name: RescueCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1356511449
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356511448}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1421190824}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &1356511450
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356511448}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.016155005, y: 0.13919401}
+  m_Size: {x: 0.28750992, y: 0.5470011}
+  m_Direction: 0
 --- !u!1001 &1359874765
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24729,6 +24801,7 @@ Transform:
   m_Children:
   - {fileID: 519420032}
   - {fileID: 1662555556}
+  - {fileID: 1356511449}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1421190825

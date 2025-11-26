@@ -31,9 +31,9 @@
             </ui:VisualElement>
         </ui:Label>
         <ui:VisualElement name="Root" style="flex-direction: column; align-items: center; justify-content: flex-end; width: 100%; height: 100%;">
-            <ui:Label name="RescueAlertLabel" text="Sauvetage !" class="rescue-label" style="display: flex; width: 800px; height: 200px;" />
-            <ui:VisualElement name="RescueDirectionArrow" class="direction-arrow" style="display: flex; background-image: url(&quot;project://database/Assets/Content/Sprites/right-arrow.png?fileID=2800000&amp;guid=a722efb52930fd84dbd0687896933010&amp;type=3#right-arrow&quot;); width: 75px; height: 75px;" />
-            <ui:Slider name="RescueTimerSlider" low-value="0" high-value="15" show-input="false" class="rescue-timer" style="display: flex; height: 75px; width: 500px;" />
+            <ui:VisualElement name="RescueDirectionArrow" class="direction-arrow" style="display: flex; background-image: url(&quot;project://database/Assets/Content/Sprites/right-arrow.png?fileID=2800000&amp;guid=a722efb52930fd84dbd0687896933010&amp;type=3#right-arrow&quot;); width: 75px; height: 75px; flex-direction: column; rotate: 180deg;" />
+            <ui:Label name="RescueAlertLabel" text="Sauvetage !" class="rescue-label" style="display: flex; width: 800px; height: 200px; white-space: normal; background-color: rgba(0, 0, 0, 0.99); border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-top-left-radius: 15px; border-bottom-left-radius: 15px;" />
+            <ui:Slider name="RescueTimerSlider" low-value="0" high-value="20" show-input="false" class="rescue-timer" style="display: flex; height: 75px; width: 500px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
