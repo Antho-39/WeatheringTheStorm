@@ -4988,12 +4988,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e56a260e39298648922c6424dcad191, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireBehvior
-  FlammableLayers:
-    serializedVersion: 2
-    m_Bits: 128
-  InFlammableLayers:
-    serializedVersion: 2
-    m_Bits: 336
+  isAssigned: 0
+  spreadDelay: 5
+  fireLoopSound: {fileID: 8300000, guid: 6ed6d1d422b51174a93bb76687b1c5ca, type: 3}
+  fireExtinguishSound: {fileID: 0}
+  maxSoundDistance: 12
 --- !u!50 &4724207008842266656
 Rigidbody2D:
   serializedVersion: 5

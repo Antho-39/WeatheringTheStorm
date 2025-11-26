@@ -16,6 +16,8 @@ public class HelicopterController : MonoBehaviour
     public GameObject MiniMapCamera;
     public GameObject MiniMapCanvas;
 
+    public AudioSource helicopterAudioSource;
+    public AudioSource chopperAudioSource;
     public AudioClip bladeAudio;
     public AudioClip waterCanonAudio;
     // I'm very sure I don't need to make a public layer mask for this, just not sure on syntax to specify explicitly only the water layer
@@ -43,6 +45,18 @@ public class HelicopterController : MonoBehaviour
         targetRotation = mainCamera.transform.rotation;
 
         emission = waterParticles.emission;
+
+        // --- AUDIO SOURCES ---
+        helicopterAudioSource.clip = bladeAudio;
+        helicopterAudioSource.loop = true;
+        helicopterAudioSource.playOnAwake = false;
+        helicopterAudioSource.volume = 0f;
+        helicopterAudioSource.Play();
+
+        chopperAudioSource.clip = waterCanonAudio;
+        chopperAudioSource.loop = true;
+        chopperAudioSource.playOnAwake = false;
+        chopperAudioSource.volume = 0f;
     }
 
     // Update is called once per frame
@@ -50,10 +64,14 @@ public class HelicopterController : MonoBehaviour
     {
         foreach (var blade in helicopterBlades)
         {
-            blade.localRotation *= UnityEngine.Quaternion.Euler(0, 0, 360f * Time.deltaTime);
+            blade.localRotation *= UnityEngine.Quaternion.Euler(0, 0, 360f * Time.deltaTime * rotationSpeed);
         }
 
         float cannonInput = Input.GetAxisRaw("Jump"); // space key
+
+        float speed = chopperRigidbody.linearVelocity.magnitude;
+        float targetVolume = Mathf.InverseLerp(0f, 25f, speed); // 0 -> max speed
+        helicopterAudioSource.volume = targetVolume;
 
         // float angle = 0.0f;
 
@@ -61,19 +79,20 @@ public class HelicopterController : MonoBehaviour
         {
             emission.enabled = true;
             gauge.ConsumeValue(0.03f);
+            if (!chopperAudioSource.isPlaying)
+                chopperAudioSource.Play();
+            chopperAudioSource.volume = 0.7f;
         }
         else
         {
             emission.enabled = false;
-        }
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            height = Mathf.Min(height + climbSpeed * Time.deltaTime, 10f);
-        }            
-        else
-        {
-            height = Mathf.Max(height - climbSpeed * Time.deltaTime, 0f);
+            if (chopperAudioSource.volume > 0f)
+            {
+                chopperAudioSource.volume -= Time.deltaTime * 3f;
+                if (chopperAudioSource.volume <= 0.01f)
+                    chopperAudioSource.Stop();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.M))
@@ -115,18 +134,11 @@ public class HelicopterController : MonoBehaviour
             // Normalization of the input vector to get the direction
             UnityEngine.Vector3 direction = input.normalized;
 
-            // Move the helicopter in the input direction
-            //transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
-
             // Apply force to helicopter rigidbody in the direction the chopper is facing
             chopperRigidbody.AddForce(transform.up * throttle);
             // Steering has to be inverted for the force at the tail
             chopperRigidbody.AddForceAtPosition(transform.right * (steering * -1), TailRotor.position);
 
-            // Rotate around the Z axis to face the move direction
-            // angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90.0f;
-            // Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
-            // Body.rotation = Quaternion.Slerp(Body.rotation, targetRot, rotationSpeed * Time.deltaTime);
         }
     }
 

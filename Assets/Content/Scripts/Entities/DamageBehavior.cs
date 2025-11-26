@@ -71,6 +71,7 @@ public class BurnBehavior : MonoBehaviour
             {
                 GameManager.Instance.buildingsDestroyed++;
             }
+            //GameManager.Instance.audioSource.Stop();
             burned = true;
         }
     }

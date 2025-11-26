@@ -12,11 +12,30 @@ public class FireBehavior : MonoBehaviour
     private float scoreInterval = 10f;
     private float nextScoreTime;
 
+    private AudioSource fireLoopSource;
+
+    [Header("Audio")]
+    public AudioClip fireLoopSound;
+    public AudioClip fireExtinguishSound;
+    public float maxSoundDistance = 12f;
 
     void Start()
     {
         Initialize();
         nextScoreTime = Time.time + scoreInterval;
+
+        fireLoopSource = gameObject.AddComponent<AudioSource>();
+        fireLoopSource.loop = true;
+        fireLoopSource.playOnAwake = false;
+        fireLoopSource.spatialBlend = 1f;
+        fireLoopSource.minDistance = 1.5f;
+        fireLoopSource.maxDistance = maxSoundDistance;
+        fireLoopSource.rolloffMode = AudioRolloffMode.Linear;
+        fireLoopSource.volume = 0.6f;
+
+        fireLoopSource.clip = fireLoopSound;
+
+        fireLoopSource.Play();
     }
 
     public void Initialize()
@@ -39,6 +58,13 @@ public class FireBehavior : MonoBehaviour
 
     void Update()
     {
+        if (fireLoopSource == null) return;
+
+        float dist = Vector2.Distance(Camera.main.transform.position, transform.position);
+        float t = Mathf.Clamp01(1f - dist / maxSoundDistance);
+
+        // Évite les feux TROP proches (empêche volume = 1 pile)
+        fireLoopSource.volume = Mathf.Lerp(0f, 0.6f, t);
 
         if (transform.localScale.x >= 0.2f && Time.time >= nextScoreTime)
         {
@@ -55,6 +81,15 @@ public class FireBehavior : MonoBehaviour
 
     public bool Extinguish()
     {
+        if (fireLoopSource != null)
+            fireLoopSource.Stop();
+
+        /*AudioManager.Instance.PlaySFXAtPosition(
+            fireExtinguishSound,
+            transform.position,
+            12f
+        );*/
+
         transform.localScale = Vector3.MoveTowards(transform.localScale, targetScale, 20f * Time.deltaTime);
         return transform.localScale.x < 0.2f;
     }

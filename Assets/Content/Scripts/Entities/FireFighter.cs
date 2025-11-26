@@ -202,5 +202,6 @@ public class FireFighter : MonoBehaviour
             firesInRange.Remove(fire);
             targetFire = null;
         }
+        AudioManager.Instance.PlaySFXAtPosition(extinguishAudio, transform.position);
     }
 }

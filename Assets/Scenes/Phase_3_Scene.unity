@@ -14963,7 +14963,7 @@ Transform:
   m_GameObject: {fileID: 869377845}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1649006, y: -0.120600045, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.4872863, y: 2.4792426, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14992,6 +14992,9 @@ MonoBehaviour:
   homeReparationCost: 1000
   compliantHomeReparationCost: 1500
   treeCost: 20
+  repairedHomePointScale: 50
+  repairedCompliantHomePointScale: 60
+  plantedTreePointScale: 30
 --- !u!82 &869377850
 AudioSource:
   m_ObjectHideFlags: 0
@@ -39922,67 +39925,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1070473258753571156, guid: a6ee10ce220bf67409b049eadbe6d042, type: 3}
   m_PrefabInstance: {fileID: 2079102048}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2080397576
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2080397577}
-  - component: {fileID: 2080397578}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2080397577
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2080397576}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.00676, y: 22.30783, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2080397578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2080397576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb10df5b572fedf4fa50dffe2d5f7092, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  currentPhase: 0
-  preparationPhaseTime: 180
-  actionPhaseTime: 300
-  gameTime: 600
-  timerRunning: 1
-  score: 0
-  phase2scoreBonus: 0
-  treesDestroyed: 0
-  homesDestroyed: 0
-  buildingsDestroyed: 0
-  money: 10000
-  musicSource: {fileID: 869377850}
-  phase_1Music: {fileID: 8300000, guid: 4f5337f9dec349648939fe6759b284bd, type: 3}
-  phase_2Music: {fileID: 8300000, guid: d00c39c947f682e4fb3f204b3166bfdd, type: 3}
-  phase_3Music: {fileID: 8300000, guid: 9d5ae265c49073a4aa375c245e060f74, type: 3}
-  placedObjects: []
-  database: {fileID: 0}
 --- !u!1001 &2082965948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41603,7 +41545,6 @@ SceneRoots:
   - {fileID: 820131140}
   - {fileID: 869377847}
   - {fileID: 2094836921}
-  - {fileID: 2080397577}
   - {fileID: 1718992923}
   - {fileID: 2145813611}
   - {fileID: 1570494390}

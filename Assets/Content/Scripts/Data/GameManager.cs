@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
     public Phase currentPhase;
 
     [Header("Timer")]
-    public float preparationPhaseTime = 180f;
-    public float actionPhaseTime = 240f;
+    public float preparationPhaseTime;
+    public float actionPhaseTime;
     public float gameTime;
     public bool timerRunning = false;
 
@@ -47,19 +47,14 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        if (musicSource == null)
-        {
-            musicSource = gameObject.AddComponent<AudioSource>();
-            musicSource.loop = true;
-        }
-
+        
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
     private void Start()
     {
         Init();
+        musicSource = AudioManager.Instance.audioSource;
     }
 
     private void Update()
@@ -159,11 +154,6 @@ public class GameManager : MonoBehaviour
     // -------------------------------------------------------------------------
     //  TIMER
     // -------------------------------------------------------------------------
-
-    public void ResetTimer()
-    {
-        gameTime = 600f;
-    }
 
     public void DecreaseTimer(float amount)
     {
