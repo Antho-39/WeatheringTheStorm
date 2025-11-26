@@ -22,7 +22,7 @@
         <ui:VisualElement name="TimeIcon" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Content/Images/Timer.png?fileID=2800000&amp;guid=05b8c06411403c64bb7d1d5697e509b0&amp;type=3#Timer&quot;); background-size: 150% 150%; width: 75px; height: 75px; top: 10px; left: 50px; position: absolute;">
             <ui:Label text="3:00" name="TimeLabel" style="position: absolute; top: 65px; left: 10px; height: 50px; width: 50px; justify-content: flex-start; align-self: center; align-content: center; -unity-text-align: middle-center; font-size: 25px; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/prstartk.ttf?fileID=12800000&amp;guid=4ef2032f4a7925943809588411c48562&amp;type=3#prstartk&quot;); background-color: rgba(255, 255, 255, 0); -unity-font-style: bold;" />
         </ui:VisualElement>
-        <ui:Label text="WATER" name="GaugeLabel" style="font-size: 20px; color: rgb(255, 255, 255); -unity-font-style: bold; left: 1%; bottom: 51px; top: -2%; -unity-text-outline-width: 0.5px; width: 92px; height: 34px;">
+        <ui:Label text="WATER" name="GaugeLabel" style="font-size: 20px; color: rgb(255, 255, 255); -unity-font-style: bold; left: 1%; bottom: 51px; top: 95%; -unity-text-outline-width: 0.5px; width: 92px; height: 34px; position: absolute;">
             <ui:VisualElement name="GaugeRoot" class="gauge-root" style="bottom: 0%; top: -2%; left: 9%;">
                 <ui:VisualElement name="GaugeBackground" class="gauge-background" style="left: 82px;">
                     <ui:VisualElement name="GaugeFill" class="gauge-fill" />

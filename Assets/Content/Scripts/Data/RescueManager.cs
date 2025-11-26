@@ -11,6 +11,13 @@ public class RescueManager : MonoBehaviour
     public List<Transform> safeZones;
     public LayerMask forbiddenLayers;
 
+    [Header("Audio")]
+	public AudioClip radioClip;
+	public AudioClip rescueClip;
+	public AudioClip successClip;
+	public AudioClip failClip;
+	private AudioSource audiosource;
+
     [Header("Spawn Settings")]
     public float spawnInterval;
     public float rescueTimeLimit;
@@ -37,6 +44,7 @@ public class RescueManager : MonoBehaviour
 
     void Start()
     {
+		audiosource = GetComponent<AudioSource>();
         spawnCoroutine = StartCoroutine(SpawnVictimsRoutine());
         mapMinBounds = mapArea.bounds.min;
         mapMaxBounds = mapArea.bounds.max;
@@ -85,6 +93,8 @@ public class RescueManager : MonoBehaviour
         HUD.ShowRescueAlert(victim);
         currentVictimTimerCoroutine = StartCoroutine(VictimTimer(victim));
         rescueInProgress = true;
+		audiosource.clip = radioClip;
+		audiosource.Play();
     }
 
     IEnumerator VictimTimer(GameObject victim)
@@ -104,7 +114,9 @@ public class RescueManager : MonoBehaviour
             activeVictims.Remove(victim);
             Destroy(victim);
             rescueInProgress = false;
-            HUD.ShowRescueFailed();
+            HUD.ShowRescueFailed();			
+			audiosource.clip = failClip;
+			audiosource.Play();
         }
     }
 
@@ -123,6 +135,8 @@ public class RescueManager : MonoBehaviour
             currentCarriedVictim = victim;
             rescueInProgress = true;
             HUD.ShowRescueCarryMessage();
+			audiosource.clip = rescueClip;
+			audiosource.Play();
         }
     }
 
@@ -136,5 +150,7 @@ public class RescueManager : MonoBehaviour
 
         currentCarriedVictim = null;
         rescueInProgress = false;
+		audiosource.clip = successClip;
+		audiosource.Play();
     }
 }
