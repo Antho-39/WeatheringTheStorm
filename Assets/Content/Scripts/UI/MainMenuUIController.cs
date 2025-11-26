@@ -19,6 +19,8 @@ public class MainMenuUIController : MonoBehaviour
 
         playButton.clicked += PlayGame;
         leaveButton.clicked += Quit;
+
+        GameManager.Instance.PlayPhaseMusic();
     }
 
     private void PlayGame()
