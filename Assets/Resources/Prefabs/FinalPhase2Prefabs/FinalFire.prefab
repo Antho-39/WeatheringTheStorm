@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2402144049199687803}
   - component: {fileID: 2951536258311286238}
   - component: {fileID: 6528039904058057964}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ ParticleSystemRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4918,7 +4918,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 1098286324429101383, guid: ca0e42fbb26292c45ad8516683a08fe9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
