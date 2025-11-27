@@ -188,9 +188,6 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
         GameManager.Instance.StopTimer();
         StartCoroutine(TypeText());
-        print("Fire Crews: " + GameManager.Instance.fireCrews);
-        print("Fire Lines: " + GameManager.Instance.fireLines);
-        print("Safe Zones: " + GameManager.Instance.safeZones);
     }
 
     void Update()
@@ -315,6 +312,13 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         int damageScore = (burntHomes * -5) + (burntTrees * -1) + (repairedHome * 30) + (repairedCompliantHome * 90) + (plantedTrees * 4);
 
         score = phase1Score + fireScore + damageScore + rescuedScore;
+        
+        // Debug logs to help with balancing!
+        print("Phase 1 score: " + phase1Score);
+        print("Fire score: " + fireScore);
+        print("Rescue Score: " + rescuedScore);        
+        print("Damage Score: " + damageScore);
+        print("Final Score: " + score);
 
         labelInjurieScore.text = injuries.ToString();
         labelRescuedScore.text = rescuedScore.ToString();
