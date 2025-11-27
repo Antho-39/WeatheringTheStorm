@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum Phase { MenuPhase, Phase1, Phase2, Phase3 }
+    public enum Phase { MenuPhase, Phase1, Phase2, Phase3, FinalScene }
     public Phase currentPhase;
 
     [Header("Timer")]
@@ -17,10 +17,17 @@ public class GameManager : MonoBehaviour
 
     [Header("Score")]
     public int score;
+    public int fastFireSuppression;
+    public int slowFireSuppression;
+    public int fireCrews;
+    public int fireLines;
+    public int safeZones;
     public int phase2scoreBonus;
     public int treesDestroyed;
     public int homesDestroyed;
     public int buildingsDestroyed;
+    public int rescuedVictim;
+    public int notRescuedVictim;
 
     [Header("Money")]
     public int money;
@@ -77,10 +84,9 @@ public class GameManager : MonoBehaviour
                     StopMusic();
                     SceneLoader.LoadScene("Phase_3_Scene");
                     break;
+                case Phase.MenuPhase:
                 case Phase.Phase3:
-                    StopMusic();
-                    SceneLoader.LoadScene("EndGame");
-                    break;
+                case Phase.FinalScene:
                 default:
                     break;
             }
@@ -124,6 +130,11 @@ public class GameManager : MonoBehaviour
             case Phase.Phase3:
                 PlayMusic(phase_3Music);
                 break;
+            case Phase.FinalScene:
+                PlayMusic(phase_3Music);
+                break;
+            default:
+                break;
         }
     }
 
@@ -138,10 +149,14 @@ public class GameManager : MonoBehaviour
         if (scene.name.Contains("1")) currentPhase = Phase.Phase1;
         if (scene.name.Contains("2")) currentPhase = Phase.Phase2;
         if (scene.name.Contains("3")) currentPhase = Phase.Phase3;
-        
+        if (scene.name.Contains("Final")) currentPhase = Phase.FinalScene;
+
         // Keep phase 1 music playing from menu into phase 1
         switch (currentPhase)
         {
+            case Phase.MenuPhase:
+                PlayPhaseMusic();
+                break;
             case Phase.Phase1:
                 gameTime = preparationPhaseTime;
                 break;
@@ -153,7 +168,12 @@ public class GameManager : MonoBehaviour
 
             case Phase.Phase3:
                 StopMusic();
-                gameTime = gameTime;
+                gameTime = 0;
+                break;
+
+            case Phase.FinalScene:
+                PlayPhaseMusic();
+                gameTime = 0;
                 break;
             default:
                 break;
@@ -222,8 +242,43 @@ public class GameManager : MonoBehaviour
         gameTime = preparationPhaseTime;
         treesDestroyed = 0;
         buildingsDestroyed = 0;
+        rescuedVictim = 0;
+        notRescuedVictim = 0;
         timerRunning = false;
         isMuted = false;
+    }
+
+    public void AddRescuedVictim()
+    {
+        rescuedVictim += 1;
+    }
+    public void AddNotRescuedVictim()
+    {
+        notRescuedVictim += 1;
+    }
+
+    public void AddFireCrew(int amount)
+    {
+        fireCrews += amount;
+    }
+    public void AddFireLine(int amount)
+    {
+        fireLines += amount;
+    }
+
+    public void AddSafeZone(int amount)
+    {
+        safeZones += amount;
+    }
+
+    public void AddFastFireSuppression()
+    {
+        fastFireSuppression += 1;
+    }
+
+    public void AddSlowFireSuppression()
+    {
+        slowFireSuppression += 1;
     }
 
     public bool GetMuteState()

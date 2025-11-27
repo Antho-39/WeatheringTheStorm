@@ -14991,10 +14991,10 @@ MonoBehaviour:
   buildingReparationCost: 3000
   homeReparationCost: 1000
   compliantHomeReparationCost: 1500
-  treeCost: 20
-  repairedHomePointScale: 50
-  repairedCompliantHomePointScale: 60
-  plantedTreePointScale: 30
+  treeCost: 50
+  repairedHomePointScale: 30
+  repairedCompliantHomePointScale: 90
+  plantedTreePointScale: 4
 --- !u!82 &869377850
 AudioSource:
   m_ObjectHideFlags: 0

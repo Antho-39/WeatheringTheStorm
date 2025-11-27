@@ -156,5 +156,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   entityHealth: 130
-  ScorePenalty: -500
+  ScorePenalty: -5
   burningAudio: {fileID: 8300000, guid: 96ded1f146e450c4e8aaaaa2c42ed754, type: 3}

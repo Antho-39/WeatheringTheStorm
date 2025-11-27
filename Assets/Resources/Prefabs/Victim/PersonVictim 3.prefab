@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7912924055995117553, guid: 7f1536b479bfed3478abb29a0dca7d43, type: 3}
+  m_Sprite: {fileID: -7687702389306135508, guid: 0b9d273a3ad6b2249b076eb2f1c1a7b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 5142389009318886629}
   - component: {fileID: 1332102490185866224}
   m_Layer: 0
-  m_Name: Victim
+  m_Name: PersonVictim 3
   m_TagString: Victim
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -278,8 +278,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9cc88e8ec160af41ade9c40f3d360eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RescueVictim
-  lifetime: 15
-  pickedUp: 0
+  lifetime: 20
+  alertText: It's getting hot in here - Help!
+  rescuedText: "You\u2019re hotter than the fire\u2026 in a good way!"
+  victimRepresentation: {fileID: 3447123400750324169}
+  minimapIcon: {fileID: 2955131246365364215}
+  voices:
+  - {fileID: 8300000, guid: 718f416ebfba5e340b6ebf9f31ad3774, type: 3}
+  - {fileID: 8300000, guid: b3ac1686f1d0b084a847a50f035854f7, type: 3}
 --- !u!82 &1332102490185866224
 AudioSource:
   m_ObjectHideFlags: 0

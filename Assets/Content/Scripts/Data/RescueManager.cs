@@ -45,7 +45,6 @@ public class RescueManager : MonoBehaviour
     void Start()
     {
 		audiosource = GetComponent<AudioSource>();
-        spawnCoroutine = StartCoroutine(SpawnVictimsRoutine());
         mapMinBounds = mapArea.bounds.min;
         mapMaxBounds = mapArea.bounds.max;
     }
@@ -60,9 +59,13 @@ public class RescueManager : MonoBehaviour
         }
     }
 
+    public void StartRescueCycle()
+    {
+        spawnCoroutine = StartCoroutine(SpawnVictimsRoutine());
+    }
+
     void SpawnVictim()
     {
-        Debug.Log(rescueInProgress);
         if (rescueInProgress) return;
 
         Vector3 spawnPos = Vector3.zero;
@@ -90,7 +93,9 @@ public class RescueManager : MonoBehaviour
         GameObject victim = Instantiate(victimPrefabs[prefabIndex], spawnPos, Quaternion.identity);
         activeVictims.Add(victim);
 
-        HUD.ShowRescueAlert(victim);
+        RescueVictim rv = victim.GetComponent<RescueVictim>();
+
+        HUD.ShowRescueAlert(rv);
         currentVictimTimerCoroutine = StartCoroutine(VictimTimer(victim));
         rescueInProgress = true;
 		audiosource.clip = radioClip;
@@ -114,6 +119,7 @@ public class RescueManager : MonoBehaviour
             activeVictims.Remove(victim);
             Destroy(victim);
             rescueInProgress = false;
+            GameManager.Instance.AddNotRescuedVictim();
             HUD.ShowRescueFailed();			
 			audiosource.clip = failClip;
 			audiosource.Play();
@@ -142,7 +148,9 @@ public class RescueManager : MonoBehaviour
 
     public void DropVictim()
     {
-        HUD.ShowRescueSuccess();
+        RescueVictim rv = currentCarriedVictim?.GetComponent<RescueVictim>();
+        HUD.ShowRescueSuccess(rv);
+        GameManager.Instance.AddRescuedVictim();
         playerCarryingVictim = false;
 
         if (currentCarriedVictim != null)

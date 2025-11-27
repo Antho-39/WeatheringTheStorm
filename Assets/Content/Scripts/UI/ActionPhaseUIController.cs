@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections;
-
+using System.Collections.Generic;
 
 public class ActionPhaseUIController : MonoBehaviour
 {
@@ -31,20 +31,21 @@ public class ActionPhaseUIController : MonoBehaviour
     private bool isFinished = false;
     [Header("Audio")]
     public AudioSource audioSource;
-    public AudioClip letterSound_1;
-    public AudioClip letterSound_2;
+    [Header("Typing Sounds")]
+    public List<AudioClip> typingSounds = new List<AudioClip>();
     private AudioClip currentAudioClip;
     private float lastSoundTime = 0;
 
     private Label rescueAlertLabel;
     private VisualElement rescueDirectionArrow;
     private Slider rescueTimerSlider;
+    private VisualElement gaugeCross;
     private GameObject currentVictimTarget;
 
     private Coroutine currentAlertCoroutine;
 
     private Label introLabel;
-    private string fullText;
+    private string fullIntroText;
 
     void Start()
     {
@@ -72,19 +73,18 @@ public class ActionPhaseUIController : MonoBehaviour
 
         rescueAlertLabel = root.Q<Label>("RescueAlertLabel");
         rescueDirectionArrow = root.Q<VisualElement>("RescueDirectionArrow");
+        gaugeCross = root.Q<VisualElement>("GaugeCross");
         rescueTimerSlider = root.Q<Slider>("RescueTimerSlider");
         rescueAlertLabel.style.display = DisplayStyle.None;
         rescueDirectionArrow.style.display = DisplayStyle.None;
         rescueTimerSlider.style.display = DisplayStyle.None;
+        gaugeCross.style.display = DisplayStyle.None;
 
         timeLabel = root.Q<Label>("TimeLabel");
-
-        // Get the full text and clear the label
-        fullText = introLabel.text;
-        introLabel.text = "";
+        fullIntroText = introLabel.text;
 
         GameManager.Instance.StopTimer();
-        StartCoroutine(TypeText());
+        StartCoroutine(TypeText(introLabel, typingSounds));
     }
 
     void Update()
@@ -99,25 +99,20 @@ public class ActionPhaseUIController : MonoBehaviour
         {
             UpdateDirectionArrow(currentVictimTarget.transform.position);
         }
-
-        // DEBUG ! 
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SceneLoader.LoadScene("Phase_3_Scene");
-        }
     }
 
-    private IEnumerator TypeText()
+    private IEnumerator TypeText(Label label, List<AudioClip> sounds = null)
     {
+        // Get the full text and clear the label
         isTyping = true;
 
         float currentDelay = letterDelay;
+        string labelText = label.text;
+        label.text = "";
 
-        introLabel.text = "";
-
-        for (int i = 0; i < fullText.Length; i++)
+        for (int i = 0; i < labelText.Length; i++)
         {
-            char c = fullText[i];
+            char c = labelText[i];
 
             //  Skip via bouton
             if (!isTyping) yield break;
@@ -128,30 +123,32 @@ public class ActionPhaseUIController : MonoBehaviour
                 i++;
 
                 // Read full tag
-                while (i < fullText.Length && fullText[i] != '>')
+                while (i < labelText.Length && labelText[i] != '>')
                 {
-                    tag += fullText[i];
+                    tag += labelText[i];
                     i++;
                 }
 
                 tag += ">";
 
                 // Add full tag
-                introLabel.text += tag;
+                label.text += tag;
 
-                continue; // On passe au caractère suivant
+                continue; // On passe au caract re suivant
             }
             // Add letter
-            introLabel.text += c;
+            label.text += c;
 
-            // Play sound
-            if (audioSource && Time.unscaledTime - lastSoundTime > soundCooldown)
+            if(sounds != null && sounds.Count > 0)
             {
-                currentAudioClip = (Random.value > 0.5f) ? letterSound_1 : letterSound_2;
-                audioSource.PlayOneShot(currentAudioClip);
-                lastSoundTime = Time.unscaledTime;
+                // Play sound
+                if (audioSource && Time.unscaledTime - lastSoundTime > soundCooldown)
+                {
+                    currentAudioClip = sounds[Random.Range(0, sounds.Count)];
+                    audioSource.PlayOneShot(currentAudioClip);
+                    lastSoundTime = Time.unscaledTime;
+                }
             }
-
             // Pause ponctuation
             if (".,!?".Contains(c))
                 yield return new WaitForSeconds(punctuationDelay);
@@ -167,7 +164,7 @@ public class ActionPhaseUIController : MonoBehaviour
     {
         if (!isTyping) return;
 
-        introLabel.text = fullText;
+        introLabel.text = fullIntroText;
         isTyping = false;
         isFinished = true;
     }
@@ -196,13 +193,15 @@ public class ActionPhaseUIController : MonoBehaviour
         
         GameManager.Instance.StartTimer();
         GameManager.Instance.PlayPhaseMusic();
+        RescueManager.Instance.StartRescueCycle();
     }
 
-    public void ShowRescueAlert(GameObject victim)
+    public void ShowRescueAlert(RescueVictim victim)
     {
-        currentVictimTarget = victim;
-
-        rescueAlertLabel.text = "Allô ! We have an emergency, someone needs your help !";
+        currentVictimTarget = victim.gameObject;
+        //Show it with voice
+        rescueAlertLabel.text = victim.alertText;
+        StartCoroutine(TypeText(rescueAlertLabel, victim.voices));
         rescueAlertLabel.style.color = Color.yellow;
         rescueAlertLabel.style.display = DisplayStyle.Flex;
 
@@ -217,11 +216,15 @@ public class ActionPhaseUIController : MonoBehaviour
 
     public void ShowRescueFailed()
     {
-        rescueAlertLabel.text = "Oh no ! We are now too late for the rescue !";
+        rescueAlertLabel.text = "Oh no ! We are too late for the rescue !";
         rescueAlertLabel.style.color = Color.red;
+        rescueAlertLabel.style.display = DisplayStyle.Flex;
         rescueDirectionArrow.style.display = DisplayStyle.None;
         rescueTimerSlider.style.display = DisplayStyle.None;
-        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 3f));
+
+        if (currentAlertCoroutine != null)
+            StopCoroutine(currentAlertCoroutine);
+        currentAlertCoroutine = StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 3f));
     }
 
     public void ShowRescueCarryMessage()
@@ -230,15 +233,27 @@ public class ActionPhaseUIController : MonoBehaviour
         rescueTimerSlider.style.display = DisplayStyle.None;
         rescueAlertLabel.text = "Nice ! Bring this person in a safe place !";
         rescueAlertLabel.style.color = Color.green;
+        rescueAlertLabel.style.display = DisplayStyle.Flex;
         rescueDirectionArrow.style.display = DisplayStyle.None;
-        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 3f));
+        gaugeCross.style.display = DisplayStyle.Flex;
+
+        if (currentAlertCoroutine != null)
+            StopCoroutine(currentAlertCoroutine);
+        currentAlertCoroutine = StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 3f));
     }
 
-    public void ShowRescueSuccess()
+    public void ShowRescueSuccess(RescueVictim victim)
     {
-        rescueAlertLabel.text = "Successful Rescue !";
+        //Show it with voice
+        rescueAlertLabel.text = victim.rescuedText;
+        StartCoroutine(TypeText(rescueAlertLabel, victim.voices));
         rescueAlertLabel.style.color = Color.green;
-        StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 2f));
+        rescueAlertLabel.style.display = DisplayStyle.Flex;
+        gaugeCross.style.display = DisplayStyle.None;
+
+        if (currentAlertCoroutine != null)
+            StopCoroutine(currentAlertCoroutine);
+        currentAlertCoroutine = StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 3f));
     }
 
     public void UpdateDirectionArrow(Vector3 targetPos)
@@ -248,10 +263,13 @@ public class ActionPhaseUIController : MonoBehaviour
         if (!helicopter) return;
 
         Vector3 dir = (targetPos - helicopter.position).normalized;
+        dir.y = -dir.y;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        rescueDirectionArrow.transform.rotation =
-            Quaternion.Euler(0, 0, angle - 90f);
+        
+	rescueDirectionArrow.style.rotate =
+    		new Rotate(new Angle(angle), new Vector3(0, 0, 1));
+
     }
 
     private IEnumerator RunRescueTimer(float duration)

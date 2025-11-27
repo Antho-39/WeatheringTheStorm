@@ -39,10 +39,16 @@ public class HelicopterController : MonoBehaviour
     public float pickupRadius = 1f;
     public float dropRadius = 1f;
     public Transform victimHoldPoint;
+    private float rescueDuration;
     private float rescueTimer = 0f;
     private bool isRescuing = false;
     private bool isDropping = false;
+    private bool isTransportingVictim = false;
     private Collider2D currentVictim;
+
+    [Header("Rescue Gauge")]
+    public Canvas rescueCanvas;
+    public UnityEngine.UI.Image rescueFillImage;
 
 
     private GameObject carriedVictim;
@@ -67,14 +73,20 @@ public class HelicopterController : MonoBehaviour
         chopperAudioSource.loop = true;
         chopperAudioSource.playOnAwake = false;
         chopperAudioSource.volume = 0f;
+        rescueDuration = 1.0f;
     }
 
     void Update()
     {
         RotateBlades();
-        HandleWaterCannon();
+
+        if (!isTransportingVictim)
+        {
+            HandleWaterCannon();
+            RefillWater();
+        }
+
         ToggleMiniMap();
-        RefillWater();
         ClampPosition();
 
         HandleRescuePickup();
@@ -193,15 +205,17 @@ public class HelicopterController : MonoBehaviour
         {
             if (!isRescuing)
             {
+
                 isRescuing = true;
                 rescueTimer = 0f;
                 currentVictim = victim;
             }
             else
             {
-                rescueTimer += Time.deltaTime;
 
-                if (rescueTimer >= 1f) // 1 seconde
+                rescueTimer += Time.deltaTime;
+                rescueFillImage.fillAmount = rescueTimer / rescueDuration;
+                if (rescueTimer >= rescueDuration)
                 {
                     carriedVictim = currentVictim.gameObject;
                     RescueManager.Instance.RescueVictim(carriedVictim);
@@ -210,6 +224,7 @@ public class HelicopterController : MonoBehaviour
 
                     isRescuing = false;
                     currentVictim = null;
+                    isTransportingVictim = true;
                 }
             }
         }
@@ -217,6 +232,7 @@ public class HelicopterController : MonoBehaviour
         {
             isRescuing = false;
             rescueTimer = 0f;
+            rescueFillImage.fillAmount = 0f;
             currentVictim = null;
         }
 
@@ -247,8 +263,9 @@ public class HelicopterController : MonoBehaviour
             else
             {
                 rescueTimer += Time.deltaTime;
+                rescueFillImage.fillAmount = rescueTimer / rescueDuration;
 
-                if (rescueTimer >= 1f) // 1 seconde
+                if (rescueTimer >= rescueDuration)
                 {
                     carriedVictim.transform.SetParent(null);
                     RescueManager.Instance.DropVictim();
@@ -256,13 +273,14 @@ public class HelicopterController : MonoBehaviour
 
                     isDropping = false;
                     rescueTimer = 0f;
+                    isTransportingVictim = false;
                 }
             }
         }
         else
         {
-            // Si on sort de la zone avant la fin
             isDropping = false;
+            rescueFillImage.fillAmount = 0.0f;
             rescueTimer = 0f;
         }
     }
