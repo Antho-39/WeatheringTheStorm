@@ -151,7 +151,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         labelNumberSliderCompliantHome.text = "Pink number or Max " + burntHomes.ToString();
         labelNumberSliderTree.text = "Pink number or Max 100";
         //labelRescued = root.Q<Label>("RescuedLabel");
-        //rescuedPeople = GameManager.Instance.rescuedVictim;
+        rescuedPeople = GameManager.Instance.rescuedVictim;
         //labelRescued.text = "- " + rescuedPeople.ToString() + " victim(s) rescued";
 
         homesSlider.lowValue = 0;
