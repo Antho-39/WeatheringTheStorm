@@ -283,7 +283,9 @@ MonoBehaviour:
   rescuedText: "You saved my dog AND my dignity\u2014thank you!"
   victimRepresentation: {fileID: 3447123400750324169}
   minimapIcon: {fileID: 2955131246365364215}
-  voice: {fileID: 8300000, guid: b0a37a56efc3ad242bfa144834739385, type: 3}
+  voices:
+  - {fileID: 8300000, guid: 88603dff1dbd24746bf8a89e7aa80354, type: 3}
+  - {fileID: 8300000, guid: b0a37a56efc3ad242bfa144834739385, type: 3}
 --- !u!82 &1332102490185866224
 AudioSource:
   m_ObjectHideFlags: 0

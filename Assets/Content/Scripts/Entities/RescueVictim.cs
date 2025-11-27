@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class RescueVictim : MonoBehaviour
 {
@@ -7,5 +8,5 @@ public class RescueVictim : MonoBehaviour
     public string rescuedText;
     public SpriteRenderer victimRepresentation;
     public SpriteRenderer minimapIcon;
-    public AudioClip voice;
+    public List<AudioClip> voices;
 }

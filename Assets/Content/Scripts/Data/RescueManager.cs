@@ -94,7 +94,9 @@ public class RescueManager : MonoBehaviour
         GameObject victim = Instantiate(victimPrefabs[prefabIndex], spawnPos, Quaternion.identity);
         activeVictims.Add(victim);
 
-        HUD.ShowRescueAlert(victim);
+        RescueVictim rv = victim.GetComponent<RescueVictim>();
+
+        HUD.ShowRescueAlert(rv);
         currentVictimTimerCoroutine = StartCoroutine(VictimTimer(victim));
         rescueInProgress = true;
 		audiosource.clip = radioClip;
@@ -147,7 +149,8 @@ public class RescueManager : MonoBehaviour
 
     public void DropVictim()
     {
-        HUD.ShowRescueSuccess();
+        RescueVictim rv = currentCarriedVictim?.GetComponent<RescueVictim>();
+        HUD.ShowRescueSuccess(rv);
         GameManager.Instance.AddRescuedVictim();
         playerCarryingVictim = false;
 

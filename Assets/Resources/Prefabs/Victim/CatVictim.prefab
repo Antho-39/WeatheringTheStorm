@@ -283,7 +283,11 @@ MonoBehaviour:
   rescuedText: Purrrrrrrrrr
   victimRepresentation: {fileID: 3447123400750324169}
   minimapIcon: {fileID: 2955131246365364215}
-  voice: {fileID: 8300000, guid: 58b200ef4c753364fba50ad9de36fee5, type: 3}
+  voices:
+  - {fileID: 8300000, guid: 58b200ef4c753364fba50ad9de36fee5, type: 3}
+  - {fileID: 8300000, guid: 58b200ef4c753364fba50ad9de36fee5, type: 3}
+  - {fileID: 8300000, guid: 58b200ef4c753364fba50ad9de36fee5, type: 3}
+  - {fileID: 8300000, guid: d886a66380326e142a0b81cebdcc3117, type: 3}
 --- !u!82 &1332102490185866224
 AudioSource:
   m_ObjectHideFlags: 0

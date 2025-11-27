@@ -283,7 +283,9 @@ MonoBehaviour:
   rescuedText: "Next time, let\u2019s meet somewhere less flammable!"
   victimRepresentation: {fileID: 3447123400750324169}
   minimapIcon: {fileID: 2955131246365364215}
-  voice: {fileID: 8300000, guid: 718f416ebfba5e340b6ebf9f31ad3774, type: 3}
+  voices:
+  - {fileID: 8300000, guid: 718f416ebfba5e340b6ebf9f31ad3774, type: 3}
+  - {fileID: 8300000, guid: b3ac1686f1d0b084a847a50f035854f7, type: 3}
 --- !u!82 &1332102490185866224
 AudioSource:
   m_ObjectHideFlags: 0

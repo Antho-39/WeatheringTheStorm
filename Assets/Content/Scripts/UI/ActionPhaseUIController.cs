@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections;
-
+using System.Collections.Generic;
 
 public class ActionPhaseUIController : MonoBehaviour
 {
@@ -31,8 +31,8 @@ public class ActionPhaseUIController : MonoBehaviour
     private bool isFinished = false;
     [Header("Audio")]
     public AudioSource audioSource;
-    public AudioClip letterSound_1;
-    public AudioClip letterSound_2;
+    [Header("Typing Sounds")]
+    public List<AudioClip> typingSounds = new List<AudioClip>();
     private AudioClip currentAudioClip;
     private float lastSoundTime = 0;
 
@@ -45,7 +45,7 @@ public class ActionPhaseUIController : MonoBehaviour
     private Coroutine currentAlertCoroutine;
 
     private Label introLabel;
-    private string fullText;
+    private string fullIntroText;
 
     void Start()
     {
@@ -81,13 +81,10 @@ public class ActionPhaseUIController : MonoBehaviour
         gaugeCross.style.display = DisplayStyle.None;
 
         timeLabel = root.Q<Label>("TimeLabel");
-
-        // Get the full text and clear the label
-        fullText = introLabel.text;
-        introLabel.text = "";
+        fullIntroText = introLabel.text;
 
         GameManager.Instance.StopTimer();
-        StartCoroutine(TypeText());
+        StartCoroutine(TypeText(introLabel, typingSounds));
     }
 
     void Update()
@@ -110,17 +107,18 @@ public class ActionPhaseUIController : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeText()
+    private IEnumerator TypeText(Label label, List<AudioClip> sounds = null)
     {
+        // Get the full text and clear the label
         isTyping = true;
 
         float currentDelay = letterDelay;
+        string labelText = label.text;
+        label.text = "";
 
-        introLabel.text = "";
-
-        for (int i = 0; i < fullText.Length; i++)
+        for (int i = 0; i < labelText.Length; i++)
         {
-            char c = fullText[i];
+            char c = labelText[i];
 
             //  Skip via bouton
             if (!isTyping) yield break;
@@ -131,30 +129,32 @@ public class ActionPhaseUIController : MonoBehaviour
                 i++;
 
                 // Read full tag
-                while (i < fullText.Length && fullText[i] != '>')
+                while (i < labelText.Length && labelText[i] != '>')
                 {
-                    tag += fullText[i];
+                    tag += labelText[i];
                     i++;
                 }
 
                 tag += ">";
 
                 // Add full tag
-                introLabel.text += tag;
+                label.text += tag;
 
                 continue; // On passe au caractère suivant
             }
             // Add letter
-            introLabel.text += c;
+            label.text += c;
 
-            // Play sound
-            if (audioSource && Time.unscaledTime - lastSoundTime > soundCooldown)
+            if(sounds != null && sounds.Count > 0)
             {
-                currentAudioClip = (Random.value > 0.5f) ? letterSound_1 : letterSound_2;
-                audioSource.PlayOneShot(currentAudioClip);
-                lastSoundTime = Time.unscaledTime;
+                // Play sound
+                if (audioSource && Time.unscaledTime - lastSoundTime > soundCooldown)
+                {
+                    currentAudioClip = sounds[Random.Range(0, sounds.Count)];
+                    audioSource.PlayOneShot(currentAudioClip);
+                    lastSoundTime = Time.unscaledTime;
+                }
             }
-
             // Pause ponctuation
             if (".,!?".Contains(c))
                 yield return new WaitForSeconds(punctuationDelay);
@@ -170,7 +170,7 @@ public class ActionPhaseUIController : MonoBehaviour
     {
         if (!isTyping) return;
 
-        introLabel.text = fullText;
+        introLabel.text = fullIntroText;
         isTyping = false;
         isFinished = true;
     }
@@ -202,11 +202,12 @@ public class ActionPhaseUIController : MonoBehaviour
         RescueManager.Instance.StartRescueCycle();
     }
 
-    public void ShowRescueAlert(GameObject victim)
+    public void ShowRescueAlert(RescueVictim victim)
     {
-        currentVictimTarget = victim;
-
-        rescueAlertLabel.text = "Allô ! We have an emergency, someone needs your help !";
+        currentVictimTarget = victim.gameObject;
+        //Show it with voice
+        rescueAlertLabel.text = victim.alertText;
+        StartCoroutine(TypeText(rescueAlertLabel, victim.voices));
         rescueAlertLabel.style.color = Color.yellow;
         rescueAlertLabel.style.display = DisplayStyle.Flex;
 
@@ -247,10 +248,13 @@ public class ActionPhaseUIController : MonoBehaviour
         currentAlertCoroutine = StartCoroutine(HideLabelAfterSeconds(rescueAlertLabel, 3f));
     }
 
-    public void ShowRescueSuccess()
+    public void ShowRescueSuccess(RescueVictim victim)
     {
-        rescueAlertLabel.text = "Successful Rescue !";
+        //Show it with voice
+        rescueAlertLabel.text = victim.rescuedText;
+        StartCoroutine(TypeText(rescueAlertLabel, victim.voices));
         rescueAlertLabel.style.color = Color.green;
+        rescueAlertLabel.style.display = DisplayStyle.Flex;
         gaugeCross.style.display = DisplayStyle.None;
 
         if (currentAlertCoroutine != null)
