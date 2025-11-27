@@ -188,7 +188,6 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
         GameManager.Instance.StopTimer();
         StartCoroutine(TypeText());
-	GameManager.Instance.PlayPhaseMusic();
     }
 
     void Update()
@@ -283,6 +282,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         phase_3_UI.style.display = DisplayStyle.Flex;
         controls_UI.style.display = DisplayStyle.None;
 
+        GameManager.Instance.PlayPhaseMusic();
         AddDonationMoney();
         moneyLabel.text = GameManager.Instance.money.ToString() + " $";
     }
@@ -317,7 +317,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         print("Damage Score: " + damageScore);
         print("Final Score: " + score);
 
-        labelInjurieScore.text = injuries.ToString();
+        //labelInjurieScore.text = injuries.ToString();
         labelRescuedScore.text = rescuedScore.ToString();
         labelDamageScore.text = damageScore.ToString();
         labelTotalScore.text = score.ToString();

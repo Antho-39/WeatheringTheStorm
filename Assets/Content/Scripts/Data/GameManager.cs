@@ -84,7 +84,9 @@ public class GameManager : MonoBehaviour
                     StopMusic();
                     SceneLoader.LoadScene("Phase_3_Scene");
                     break;
+                case Phase.MenuPhase:
                 case Phase.Phase3:
+                case Phase.FinalScene:
                 default:
                     break;
             }
@@ -128,6 +130,11 @@ public class GameManager : MonoBehaviour
             case Phase.Phase3:
                 PlayMusic(phase_3Music);
                 break;
+            case Phase.FinalScene:
+                PlayMusic(phase_3Music);
+                break;
+            default:
+                break;
         }
     }
 
@@ -147,6 +154,9 @@ public class GameManager : MonoBehaviour
         // Keep phase 1 music playing from menu into phase 1
         switch (currentPhase)
         {
+            case Phase.MenuPhase:
+                PlayPhaseMusic();
+                break;
             case Phase.Phase1:
                 gameTime = preparationPhaseTime;
                 break;
@@ -162,6 +172,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case Phase.FinalScene:
+                PlayPhaseMusic();
                 gameTime = 0;
                 break;
             default:
