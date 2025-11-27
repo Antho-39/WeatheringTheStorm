@@ -175,6 +175,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
         GameManager.Instance.StopTimer();
         StartCoroutine(TypeText());
+	GameManager.Instance.PlayPhaseMusic();
     }
 
     void Update()
@@ -271,7 +272,6 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
         AddDonationMoney();
         moneyLabel.text = GameManager.Instance.money.ToString() + " $";
-        GameManager.Instance.PlayPhaseMusic();
     }
 
     private void AddDonationMoney()
@@ -326,8 +326,10 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         int costCompliantHomes = repairedCompliantHome * compliantHomeReparationCost;
         int costTrees = plantedTrees * treeCost;
 
+	phase3Cost = costHomes + costCompliantHomes + costTrees;
+
         int totalCost = costHomes + costTrees + costCompliantHomes;
-        // Mise à jour UI
+        // Mise   jour UI
         labelCostHome.text = "-" + costHomes.ToString() + " $";
         labelCostCompliantHome.text = "-" + costCompliantHomes.ToString() + " $";
         labelCostTree.text = "-" + costTrees.ToString() + " $";

@@ -80,9 +80,6 @@ public class GameManager : MonoBehaviour
                     SceneLoader.LoadScene("Phase_3_Scene");
                     break;
                 case Phase.Phase3:
-                    StopMusic();
-                    SceneLoader.LoadScene("EndGame");
-                    break;
                 default:
                     break;
             }
@@ -155,7 +152,7 @@ public class GameManager : MonoBehaviour
 
             case Phase.Phase3:
                 StopMusic();
-                gameTime = gameTime;
+                gameTime = 0f;
                 break;
             default:
                 break;

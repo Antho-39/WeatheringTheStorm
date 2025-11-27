@@ -85,6 +85,7 @@ public class ActionPhaseUIController : MonoBehaviour
 
         GameManager.Instance.StopTimer();
         StartCoroutine(TypeText(introLabel, typingSounds));
+	GameManager.Instance.PlayPhaseMusic();
     }
 
     void Update()
@@ -140,7 +141,7 @@ public class ActionPhaseUIController : MonoBehaviour
                 // Add full tag
                 label.text += tag;
 
-                continue; // On passe au caractère suivant
+                continue; // On passe au caract re suivant
             }
             // Add letter
             label.text += c;
@@ -272,8 +273,10 @@ public class ActionPhaseUIController : MonoBehaviour
         dir.y = -dir.y;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        rescueDirectionArrow.transform.rotation =
-            Quaternion.Euler(0, 0, angle);
+        
+	rescueDirectionArrow.style.rotate =
+    		new Rotate(new Angle(angle), new Vector3(0, 0, 1));
+
     }
 
     private IEnumerator RunRescueTimer(float duration)
