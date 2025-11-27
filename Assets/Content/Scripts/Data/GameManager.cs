@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
         switch (currentPhase)
         {
             case Phase.MenuPhase:
-                musicSource.volume = 0.2f;
+                // musicSource.volume = 0.2f;
                 PlayMusic(phase_1Music);
                 break;
 
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case Phase.Phase2:
-                musicSource.volume = 0.1f;
+                // musicSource.volume = 0.1f;
                 PlayMusic(phase_2Music);
                 break;
 
