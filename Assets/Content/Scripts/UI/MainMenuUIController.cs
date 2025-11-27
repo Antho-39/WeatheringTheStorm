@@ -25,6 +25,12 @@ public class MainMenuUIController : MonoBehaviour
 	HowToScoreUI = root.Q<VisualElement>("HowToScoreUI");
 	MainMenuUI = root.Q<VisualElement>("MainMenuUI");
 
+
+if (HowToScoreUI == null)
+    Debug.LogError("HowToScoreUI not found. Check UXML name and hierarchy.");
+if (MainMenuUI == null)
+    Debug.LogError("MainMenuUI not found. Check UXML name and hierarchy.");
+
         playButton.clicked += PlayGame;
         leaveButton.clicked += Quit;
 	howtoscoreButton.clicked += () =>
