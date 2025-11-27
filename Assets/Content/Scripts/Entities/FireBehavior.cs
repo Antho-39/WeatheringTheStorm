@@ -18,11 +18,13 @@ public class FireBehavior : MonoBehaviour
     public AudioClip fireLoopSound;
     public AudioClip fireExtinguishSound;
     public float maxSoundDistance = 12f;
+    private float creationTime;
 
     void Start()
     {
         Initialize();
         nextScoreTime = Time.time + scoreInterval;
+        creationTime = Time.time;
 
         fireLoopSource = gameObject.AddComponent<AudioSource>();
         fireLoopSource.loop = true;
@@ -63,17 +65,28 @@ public class FireBehavior : MonoBehaviour
         float dist = Vector2.Distance(Camera.main.transform.position, transform.position);
         float t = Mathf.Clamp01(1f - dist / maxSoundDistance);
 
-        // Évite les feux TROP proches (empêche volume = 1 pile)
+        // ï¿½vite les feux TROP proches (empï¿½che volume = 1 pile)
         fireLoopSource.volume = Mathf.Lerp(0f, 0.6f, t);
 
         if (transform.localScale.x >= 0.2f && Time.time >= nextScoreTime)
         {
-            GameManager.Instance.AddPhase2Score(-10);
+            // GameManager.Instance.AddPhase2Score(-10);
             nextScoreTime = Time.time + scoreInterval;
         }
 
         if (transform.localScale.x < 0.2f)
         {
+            float timeAlive = Time.time - creationTime;
+
+            if (timeAlive <= 2f)
+            {
+                GameManager.Instance.AddFastFireSuppression();
+            }
+            else if (timeAlive >= 5f)
+            {
+                GameManager.Instance.AddSlowFireSuppression();
+            }
+
             FireManager.Instance.UnregisterFire(this);
             Destroy(gameObject);
         }
