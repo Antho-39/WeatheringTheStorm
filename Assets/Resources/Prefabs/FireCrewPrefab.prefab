@@ -489,4 +489,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bac476cd940184dad2c4a6fbc8a253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireFighterController
-  ExtinguishCollider: {fileID: 6586398310040016862}
+  ExtinguishCollider: {fileID: 243392624253339024}

@@ -88,7 +88,10 @@ public class PlacementManager : MonoBehaviour
     public void SelectObject(SelectableObject obj)
     {
         if (selectedObject != null)
+        {
             selectedObject.SetSelected(false);
+            selectedObject = null;
+        }
 
         selectedObject = obj;
         selectedObject.SetSelected(true);
@@ -237,7 +240,6 @@ public class PlacementManager : MonoBehaviour
     void CancelMove()
     {
         EndMove();
-        selectedObject = null;
     }
 
     void EndMove()
@@ -248,6 +250,7 @@ public class PlacementManager : MonoBehaviour
         isMovingExisting = false;
         isPlacing = false;
         previewRenderer.gameObject.SetActive(false);
+        selectedObject = null;
     }
 
     public void StopPlacing()

@@ -120,6 +120,16 @@ public class PreparationPhaseUIController : MonoBehaviour
 
     }
 
+    void OnEnable()
+    {
+        PauseMenuController.OnGamePaused += SetUICursor;
+    }
+
+    void OnDisable()
+    {
+        PauseMenuController.OnGamePaused -= SetUICursor;
+    }
+
     private IEnumerator TypeText()
     {
         isTyping = true;
@@ -216,4 +226,10 @@ public class PreparationPhaseUIController : MonoBehaviour
         GameManager.Instance.StartTimer();
         GameManager.Instance.PlayPhaseMusic();
     }
+
+    public void SetUICursor(bool enabled)
+    {
+        cursor.style.display = enabled ? DisplayStyle.None : DisplayStyle.Flex;
+    }
+
 }

@@ -284,12 +284,12 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private void CountScore()
     {
         int phase2Score = GameManager.Instance.phase2scoreBonus;
-        int socialScore = repairedHome * repairedHomePointScale + repairedCompliantHome * repairedCompliantHomePointScale + /*repairedBuilding * 150*/ + plantedTrees * plantedTreePointScale;
+        int socialScore = repairedHome * repairedHomePointScale + repairedCompliantHome * repairedCompliantHomePointScale + plantedTrees * plantedTreePointScale;
         if(plantedTrees < burntTrees) socialScore -= 1000;
         //int injuriesScore = (injuries * -20);
         int rescuedScore = rescuedPeople * 50;
-        int damageScore = /*(burntBuildings * -50) + */(burntHomes * -20) + (burntTrees * -5);
-        score = (socialScore/* + injuriesScore*/ + damageScore) + phase2Score + rescuedScore;
+        int damageScore = (burntHomes * -20) + (burntTrees * -5);
+        score = (socialScore + damageScore) + phase2Score + rescuedScore;
         labelSocialScore.text = socialScore.ToString();
         //labelInjurieScore.text = injuriesScore.ToString();
         labelRescuedScore.text = rescuedScore.ToString();
