@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public enum Phase { MenuPhase, Phase1, Phase2, Phase3 }
+    public enum Phase { MenuPhase, Phase1, Phase2, Phase3, FinalScene }
     public Phase currentPhase;
 
     [Header("Timer")]
@@ -137,7 +137,8 @@ public class GameManager : MonoBehaviour
         if (scene.name.Contains("1")) currentPhase = Phase.Phase1;
         if (scene.name.Contains("2")) currentPhase = Phase.Phase2;
         if (scene.name.Contains("3")) currentPhase = Phase.Phase3;
-        
+        if (scene.name.Contains("Final")) currentPhase = Phase.FinalScene;
+
         // Keep phase 1 music playing from menu into phase 1
         switch (currentPhase)
         {
@@ -152,7 +153,11 @@ public class GameManager : MonoBehaviour
 
             case Phase.Phase3:
                 StopMusic();
-                gameTime = 0f;
+                gameTime = 0;
+                break;
+
+            case Phase.FinalScene:
+                gameTime = 0;
                 break;
             default:
                 break;
