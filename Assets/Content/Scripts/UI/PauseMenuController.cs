@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class PauseMenuController : MonoBehaviour
 {
+    public static PauseMenuController Instance;
+
     public Texture2D muteSprite;
     public Texture2D unmuteSprite;
 
@@ -11,12 +14,24 @@ public class PauseMenuController : MonoBehaviour
     private Button quitButton;
     private Button volumeButton;
 
+
+    public static event Action<bool> OnGamePaused;
+
     private bool isPaused = false;
     private bool isMuted = false;
+    private bool saveCursorState;
 
     private void Awake()
     {
-        DontDestroyOnLoad(transform.parent.gameObject);
+        // Singleton
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()
@@ -49,13 +64,17 @@ public class PauseMenuController : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
-
+        saveCursorState = UnityEngine.Cursor.visible;
+        UnityEngine.Cursor.visible = true;
         // Show pause menu UI
         pauseMenu.style.display = DisplayStyle.Flex;
 
         // Freeze game
         GameManager.Instance.timerRunning = false;
         Time.timeScale = 0f;
+
+        OnGamePaused?.Invoke(true);
+
     }
 
     public void ResumeGame()
@@ -69,6 +88,9 @@ public class PauseMenuController : MonoBehaviour
         Time.timeScale = 1f;
 
         GameManager.Instance.timerRunning = true;
+        UnityEngine.Cursor.visible = saveCursorState;
+
+        OnGamePaused?.Invoke(false);
     }
 
     public void QuitToMenu()

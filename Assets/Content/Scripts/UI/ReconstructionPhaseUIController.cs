@@ -188,6 +188,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
         GameManager.Instance.StopTimer();
         StartCoroutine(TypeText());
+	GameManager.Instance.PlayPhaseMusic();
     }
 
     void Update()
@@ -284,7 +285,6 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
         AddDonationMoney();
         moneyLabel.text = GameManager.Instance.money.ToString() + " $";
-        GameManager.Instance.PlayPhaseMusic();
     }
 
     private void AddDonationMoney()
@@ -296,9 +296,6 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
     private void CountScore()
     {
-        // int phase2Score = GameManager.Instance.phase2scoreBonus;
-        // int socialScore = repairedHome * repairedHomePointScale + repairedCompliantHome * repairedCompliantHomePointScale + /*repairedBuilding * 150*/ + plantedTrees * plantedTreePointScale;
-        // if(plantedTrees < burntTrees) socialScore -= 1000;
         //int injuriesScore = (injuries * -20);
         
         int fireCrewScore = fireCrews * 10;
@@ -353,8 +350,10 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         int costCompliantHomes = repairedCompliantHome * compliantHomeReparationCost;
         int costTrees = plantedTrees * treeCost;
 
+	phase3Cost = costHomes + costCompliantHomes + costTrees;
+
         int totalCost = costHomes + costTrees + costCompliantHomes;
-        // Mise � jour UI
+
         labelCostHome.text = "-" + costHomes.ToString() + " $";
         labelCostCompliantHome.text = "-" + costCompliantHomes.ToString() + " $";
         labelCostTree.text = "-" + costTrees.ToString() + " $";

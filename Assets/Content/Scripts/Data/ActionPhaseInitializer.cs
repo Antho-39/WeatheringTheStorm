@@ -22,7 +22,12 @@ public class ActionPhaseInitializer : MonoBehaviour
                 data.position,
                 Quaternion.Euler(0, 0, data.rotation)
             );
-            if(data.id == "SAFE_ZONE")
+
+            Vector3 newPosition = prefab.transform.position;
+            newPosition.z = -0.01f;
+            transform.position = newPosition;
+
+            if (data.id == "SAFE_ZONE")
             {
                 RescueManager.Instance.safeZones.Add(prefab.transform);
             }
