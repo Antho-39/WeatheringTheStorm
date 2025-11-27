@@ -36,11 +36,6 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private Label introLabel;
     private string fullText;
 
-    //public TextField repairBuildingField;
-    public TextField repairHomeField;
-    public TextField repairCompliantHomeField;
-    public TextField plantTreeField;
-    //private Label labelCostBuilding;
     private Label labelCostHome;
     private Label labelCostCompliantHome;
     private Label labelCostTree;
@@ -53,7 +48,6 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private Label labelNumberSliderCompliantHome;
     private Label labelNumberSliderTree;
 
-    //private Label labelBurntBuilding;
     private Label labelBurntHomes;
     private Label labelBurntTrees;
     private Label labelInjuries;
@@ -81,24 +75,20 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private float score;
 
     private int phase3Cost;
-    //private int burntBuildings;
     private int burntHomes;
     private int burntTrees;
     private int rescuedPeople;
     private int injuries;
 
-    //private int repairedBuilding;
     private int repairedHome;
     private int repairedCompliantHome;
     private int plantedTrees;
 
     void Start()
     {
-        //burntBuildings = GameManager.Instance.buildingsDestroyed;
         burntHomes = GameManager.Instance.homesDestroyed;
         burntTrees = GameManager.Instance.treesDestroyed;
         phase3Cost = 0;
-        //repairedBuilding = 0;
         repairedHome = 0;
         repairedCompliantHome = 0;
         plantedTrees = 0;
@@ -126,20 +116,10 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         validateButton.clicked += ShowFinalScore;
         continueButton.clicked += () => SceneLoader.LoadScene("Final_Scene");
 
-        //repairBuildingField = root.Q<TextField>("InputBuilding");
-        //repairBuildingField.RegisterValueChangedCallback(OnRepairBuildingChanged);
-        repairHomeField = root.Q<TextField>("InputHome");
-        repairHomeField.RegisterValueChangedCallback(OnRepairHomeChanged);
-        repairCompliantHomeField = root.Q<TextField>("InputCompliantHome");
-        repairCompliantHomeField.RegisterValueChangedCallback(OnRepairCompliantHomeChanged);
-        plantTreeField = root.Q<TextField>("InputTree");
-        plantTreeField.RegisterValueChangedCallback(OnPlantTreeChanged);
-
-        //labelCostBuilding = root.Q<Label>("LabelCostBuilding");
-        labelCostHome = root.Q<Label>("LabelCostHome");
-        labelCostCompliantHome = root.Q<Label>("LabelCostCompliantHome");
-        labelCostTree = root.Q<Label>("LabelCostTree");
-        labelCostTotal = root.Q<Label>("LabelCostTotal");
+        labelCostHome = root.Q<Label>("CostHomeLabel");
+        labelCostCompliantHome = root.Q<Label>("CostCompliantHomeLabel");
+        labelCostTree = root.Q<Label>("CostTreeLabel");
+        labelCostTotal = root.Q<Label>("CostTotalLabel");
 
         homesSlider = root.Q<SliderInt>("SliderHome");
         compliantHomesSlider = root.Q<SliderInt>("SliderCompliantHome");
@@ -159,8 +139,6 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         labelError.style.opacity = 0;
         labelError.style.display = DisplayStyle.None;
 
-        //labelBurntBuilding = root.Q<Label>("BuildingLabel");
-        //labelBurntBuilding.text = "- " + burntBuildings.ToString() + " burnt building(s)";
         labelBurntHomes = root.Q<Label>("HomeLabel");
         labelBurntHomes.text = "- " + burntHomes.ToString() + " burnt home(s)";
         labelBurntTrees = root.Q<Label>("TreeLabel");
@@ -182,9 +160,9 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         compliantHomesSlider.highValue = burntHomes;
         treesSlider.lowValue = 0;
         treesSlider.highValue = 100;
-        homesSlider.RegisterValueChangedCallback(OnHomesChanged);
-        compliantHomesSlider.RegisterValueChangedCallback(OnCompliantHomesChanged);
-        treesSlider.RegisterValueChangedCallback(OnTreesChanged);
+        homesSlider.RegisterCallback<ChangeEvent<int>>(OnHomesChanged);
+        compliantHomesSlider.RegisterCallback<ChangeEvent<int>>(OnCompliantHomesChanged);
+        treesSlider.RegisterCallback<ChangeEvent<int>>(OnTreesChanged);
 
         phase_3_UI.style.display = DisplayStyle.None;
         controls_UI.style.display = DisplayStyle.None;
@@ -323,42 +301,37 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
     private void OnHomesChanged(ChangeEvent<int> evt)
     {
-        int newValue = evt.newValue;
+        repairedHome = evt.newValue;
         ApplyHomeCostLimit();
         UpdateCosts();
     }
 
     private void OnCompliantHomesChanged(ChangeEvent<int> evt)
     {
-        int newValue = evt.newValue;
+        repairedCompliantHome = evt.newValue;
         ApplyCompliantHomesCostLimit();
         UpdateCosts();
     }
 
     private void OnTreesChanged(ChangeEvent<int> evt)
     {
-        int newValue = evt.newValue;
+        plantedTrees = evt.newValue;
         ApplyTreeCostLimit();
         UpdateCosts();
     }
 
     private void UpdateCosts()
     {
-        int homeCount = homesSlider.value;
-        int compliantHomeCount = compliantHomesSlider.value;
-        int treeCount = treesSlider.value;
+        int costHomes = repairedHome * homeReparationCost;
+        int costCompliantHomes = repairedCompliantHome * compliantHomeReparationCost;
+        int costTrees = plantedTrees * treeCost;
 
-        int costHomes = homeCount * homeReparationCost;
-        int costCompliantHomes = homeCount * compliantHomeReparationCost;
-        int costTrees = treeCount * treeCost;
-
-        int totalCost = costHomes + costTrees;
-
+        int totalCost = costHomes + costTrees + costCompliantHomes;
         // Mise à jour UI
-        labelCostHome.text = $"-{costHomes} $";
-        labelCostCompliantHome.text = $"-{costCompliantHomes} $";
-        labelCostTree.text = $"-{costTrees} $";
-        labelCostTotal.text = $"-{totalCost} $";
+        labelCostHome.text = "-" + costHomes.ToString() + " $";
+        labelCostCompliantHome.text = "-" + costCompliantHomes.ToString() + " $";
+        labelCostTree.text = "-" + costTrees.ToString() + " $";
+        labelCostTotal.text = "-" + totalCost.ToString() + " $";
     }
 
     private void ApplyHomeCostLimit()
@@ -368,7 +341,10 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         int hardLimit = Mathf.Min(maxAffordable, (homesSlider.highValue - compliantHomesSlider.value));
 
         if (homesSlider.value + compliantHomesSlider.value > hardLimit)
+        {
+            repairedHome = hardLimit;
             homesSlider.SetValueWithoutNotify(hardLimit);
+        }
     }
 
     private void ApplyCompliantHomesCostLimit()
@@ -378,7 +354,10 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         int hardLimit = Mathf.Min(maxAffordable, (compliantHomesSlider.highValue - homesSlider.value));
 
         if (compliantHomesSlider.value + homesSlider.value > hardLimit)
+        {
+            repairedCompliantHome = hardLimit;
             compliantHomesSlider.SetValueWithoutNotify(hardLimit);
+        }
     }
 
     private void ApplyTreeCostLimit()
@@ -387,139 +366,10 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         int hardLimit = Mathf.Min(maxAffordable, treesSlider.highValue);
 
         if (treesSlider.value > hardLimit)
+        {
+            plantedTrees = hardLimit;
             treesSlider.SetValueWithoutNotify(hardLimit);
-    }
-
-    /*
-    void OnRepairBuildingChanged(ChangeEvent<string> evt)
-    {
-        string input = evt.newValue;
-        if (!int.TryParse(input, out int value))
-        {
-            repairBuildingField.SetValueWithoutNotify(evt.previousValue);   // revert
-            ShowError("Integer value are expected !");
-            return;
         }
-        if (value > burntBuildings)
-        {
-            repairBuildingField.SetValueWithoutNotify(evt.previousValue);
-            ShowError("You try to repair more than the number of burnt element !");
-            return;
-        }
-
-        int diff = value - repairedBuilding;
-        int diffCost = diff * buildingReparationCost;
-        if (diff > 0 && GameManager.Instance.money < diffCost)
-        {
-            repairBuildingField.SetValueWithoutNotify(repairedBuilding.ToString());
-            ShowError("Not enough money !");
-            return;
-        }
-
-        GameManager.Instance.AddMoney(-diffCost);
-        phase3Cost += diffCost;
-        labelCostBuilding.text = "- " + (value * buildingReparationCost).ToString() + " $";
-        labelCostTotal.text = "- " + phase3Cost.ToString() + " $";
-        repairedBuilding = value;
-        repairBuildingField.SetValueWithoutNotify(repairedBuilding.ToString());
-    }
-    */
-    void OnRepairHomeChanged(ChangeEvent<string> evt)
-    {
-        string input = evt.newValue;
-        if (!int.TryParse(input, out int value))
-        {
-            repairHomeField.SetValueWithoutNotify(evt.previousValue);   // revert
-            ShowError("Integer value are expected !");
-        }
-        else
-        {
-            if ((value + repairedCompliantHome) > burntHomes)
-            {
-                repairHomeField.SetValueWithoutNotify(evt.previousValue);
-                ShowError("You try to repair more than the number of burnt element !");
-                return;
-            }
-
-            int diff = value - repairedHome;
-            int diffCost = diff * homeReparationCost;
-            if (diff > 0 && GameManager.Instance.money < diffCost)
-            {
-                repairHomeField.SetValueWithoutNotify(repairedHome.ToString());
-                ShowError("Not enough money !");
-                return;
-            }
-
-            GameManager.Instance.AddMoney(-diffCost);
-            phase3Cost += diffCost;
-            labelCostHome.text = "- " + (value * homeReparationCost).ToString() + " $";
-            labelCostTotal.text = "- " + phase3Cost.ToString() + " $";
-            repairedHome = value;
-            repairHomeField.SetValueWithoutNotify(repairedHome.ToString());
-        }
-    }
-
-    void OnRepairCompliantHomeChanged(ChangeEvent<string> evt)
-    {
-        string input = evt.newValue;
-        if (!int.TryParse(input, out int value))
-        {
-            repairCompliantHomeField.SetValueWithoutNotify(evt.previousValue);   // revert
-            ShowError("Integer value are expected !");
-        }
-        else
-        {
-            if ((value + repairedHome) > burntHomes)
-            {
-                repairCompliantHomeField.SetValueWithoutNotify(evt.previousValue);
-                ShowError("You try to repair more than the number of burnt element !");
-                return;
-            }
-
-            int diff = value - repairedCompliantHome;
-            int diffCost = diff * compliantHomeReparationCost;
-            if (diff > 0 && GameManager.Instance.money < diffCost)
-            {
-                repairCompliantHomeField.SetValueWithoutNotify(repairedCompliantHome.ToString());
-                ShowError("Not enough money !");
-                return;
-            }
-
-            GameManager.Instance.AddMoney(-diffCost);
-            phase3Cost += diffCost;
-            labelCostCompliantHome.text = "- " + (value * compliantHomeReparationCost).ToString() + " $";
-            labelCostTotal.text = "- " + phase3Cost.ToString() + " $";
-            repairedCompliantHome = value;
-            repairCompliantHomeField.SetValueWithoutNotify(repairedCompliantHome.ToString());
-        }        
-    }
-
-    void OnPlantTreeChanged(ChangeEvent<string> evt)
-    {
-        string input = evt.newValue;
-        if (!int.TryParse(input, out int value))
-        {
-            plantTreeField.SetValueWithoutNotify(evt.previousValue);   // revert
-            ShowError("Integer value are expected !");
-        }
-        else
-        {
-            int diff = value - plantedTrees;
-            int diffCost = diff * treeCost;
-            if (diff > 0 && GameManager.Instance.money < diffCost)
-            {
-                plantTreeField.SetValueWithoutNotify(plantedTrees.ToString());
-                ShowError("Not enough money !");
-                return;
-            }
-
-            GameManager.Instance.AddMoney(-diffCost);
-            phase3Cost += diffCost;
-            labelCostTree.text = "- " + (value * treeCost).ToString() + " $";
-            labelCostTotal.text = "- " + phase3Cost.ToString() + " $";
-            plantedTrees = value;
-            plantTreeField.SetValueWithoutNotify(plantedTrees.ToString());
-        }        
     }
 
     public void ShowError(string message, float duration = 5f, float fadeTime = 0.4f)
