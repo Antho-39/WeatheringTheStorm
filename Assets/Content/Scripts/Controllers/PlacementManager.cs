@@ -179,6 +179,19 @@ public class PlacementManager : MonoBehaviour
             audioSource.Play();
         }
 
+        if (currentDef.id == "FIRE_CREW")
+        {
+            GameManager.Instance.AddFireCrew(1);
+        }
+        if (currentDef.id == "FIRE_LINE")
+        {
+            GameManager.Instance.AddFireLine(1);
+        }
+        if (currentDef.id == "SAFE_ZONE")
+        {
+            GameManager.Instance.AddSafeZone(1);
+        }
+
         StopPlacing();
     }
 

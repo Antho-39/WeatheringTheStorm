@@ -78,6 +78,13 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private int burntHomes;
     private int burntTrees;
     private int rescuedPeople;
+
+    private int fireCrews;
+    private int fireLines;
+    private int safeZones;
+
+    private int fastSuppression;
+    private int slowSuppression;
     private int injuries;
 
     private int repairedHome;
@@ -88,6 +95,12 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     {
         burntHomes = GameManager.Instance.homesDestroyed;
         burntTrees = GameManager.Instance.treesDestroyed;
+        fireCrews = GameManager.Instance.fireCrews;
+        fireLines = GameManager.Instance.fireLines;
+        safeZones = GameManager.Instance.safeZones;
+        fastSuppression = GameManager.Instance.fastFireSuppression;
+        slowSuppression = GameManager.Instance.slowFireSuppression;
+
         phase3Cost = 0;
         repairedHome = 0;
         repairedCompliantHome = 0;
@@ -175,6 +188,9 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
         GameManager.Instance.StopTimer();
         StartCoroutine(TypeText());
+        print("Fire Crews: " + GameManager.Instance.fireCrews);
+        print("Fire Lines: " + GameManager.Instance.fireLines);
+        print("Safe Zones: " + GameManager.Instance.safeZones);
     }
 
     void Update()
@@ -283,20 +299,27 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
     private void CountScore()
     {
-        int phase2Score = GameManager.Instance.phase2scoreBonus;
-        int socialScore = repairedHome * repairedHomePointScale + repairedCompliantHome * repairedCompliantHomePointScale + /*repairedBuilding * 150*/ + plantedTrees * plantedTreePointScale;
-        if(plantedTrees < burntTrees) socialScore -= 1000;
+        // int phase2Score = GameManager.Instance.phase2scoreBonus;
+        // int socialScore = repairedHome * repairedHomePointScale + repairedCompliantHome * repairedCompliantHomePointScale + /*repairedBuilding * 150*/ + plantedTrees * plantedTreePointScale;
+        // if(plantedTrees < burntTrees) socialScore -= 1000;
         //int injuriesScore = (injuries * -20);
+        
+        int fireCrewScore = fireCrews * 10;
+        int fireLineScore = fireLines * 20;
+        int safeZoneScore = safeZones * 20;
+        int phase1Score = fireCrewScore + fireLineScore + safeZoneScore;
+
+        int fireScore = (fastSuppression * 10) + (slowSuppression * -1);
         int rescuedScore = rescuedPeople * 50;
-        int damageScore = /*(burntBuildings * -50) + */(burntHomes * -20) + (burntTrees * -5);
-        score = (socialScore/* + injuriesScore*/ + damageScore) + phase2Score + rescuedScore;
-        labelSocialScore.text = socialScore.ToString();
-        //labelInjurieScore.text = injuriesScore.ToString();
+        
+        int damageScore = (burntHomes * -5) + (burntTrees * -1) + (repairedHome * 30) + (repairedCompliantHome * 90) + (plantedTrees * 4);
+
+        score = phase1Score + fireScore + damageScore + rescuedScore;
+
+        labelInjurieScore.text = injuries.ToString();
         labelRescuedScore.text = rescuedScore.ToString();
         labelDamageScore.text = damageScore.ToString();
-        labelPhase2Score.text = phase2Score.ToString();
         labelTotalScore.text = score.ToString();
-
     }
 
     private void OnHomesChanged(ChangeEvent<int> evt)
@@ -327,7 +350,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         int costTrees = plantedTrees * treeCost;
 
         int totalCost = costHomes + costTrees + costCompliantHomes;
-        // Mise à jour UI
+        // Mise ï¿½ jour UI
         labelCostHome.text = "-" + costHomes.ToString() + " $";
         labelCostCompliantHome.text = "-" + costCompliantHomes.ToString() + " $";
         labelCostTree.text = "-" + costTrees.ToString() + " $";

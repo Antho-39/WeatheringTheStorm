@@ -17,6 +17,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Score")]
     public int score;
+    public int fastFireSuppression;
+    public int slowFireSuppression;
+    public int fireCrews;
+    public int fireLines;
+    public int safeZones;
     public int phase2scoreBonus;
     public int treesDestroyed;
     public int homesDestroyed;
@@ -237,6 +242,30 @@ public class GameManager : MonoBehaviour
     public void AddNotRescuedVictim()
     {
         notRescuedVictim += 1;
+    }
+
+    public void AddFireCrew(int amount)
+    {
+        fireCrews += amount;
+    }
+    public void AddFireLine(int amount)
+    {
+        fireLines += amount;
+    }
+
+    public void AddSafeZone(int amount)
+    {
+        safeZones += amount;
+    }
+
+    public void AddFastFireSuppression()
+    {
+        fastFireSuppression += 1;
+    }
+
+    public void AddSlowFireSuppression()
+    {
+        slowFireSuppression += 1;
     }
 
     public bool GetMuteState()
