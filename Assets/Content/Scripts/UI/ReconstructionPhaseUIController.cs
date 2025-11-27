@@ -46,15 +46,24 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private Label labelCostTree;
     private Label labelCostTotal;
 
+    private SliderInt homesSlider;
+    private SliderInt compliantHomesSlider;
+    private SliderInt treesSlider;
+    private Label labelNumberSliderHome;
+    private Label labelNumberSliderCompliantHome;
+    private Label labelNumberSliderTree;
+
     //private Label labelBurntBuilding;
     private Label labelBurntHomes;
     private Label labelBurntTrees;
-    //private Label labelInjuries;
+    private Label labelInjuries;
+    private Label labelRescued;
 
     private Label labelError;
 
     private Label labelSocialScore;
-    //private Label labelInjurieScore;
+    private Label labelInjurieScore;
+    private Label labelRescuedScore;
     private Label labelDamageScore;
     private Label labelPhase2Score;
     private Label labelTotalScore;
@@ -75,7 +84,8 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     //private int burntBuildings;
     private int burntHomes;
     private int burntTrees;
-    //private int injuries;
+    private int rescuedPeople;
+    private int injuries;
 
     //private int repairedBuilding;
     private int repairedHome;
@@ -131,8 +141,16 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         labelCostTree = root.Q<Label>("LabelCostTree");
         labelCostTotal = root.Q<Label>("LabelCostTotal");
 
+        homesSlider = root.Q<SliderInt>("SliderHome");
+        compliantHomesSlider = root.Q<SliderInt>("SliderCompliantHome");
+        treesSlider = root.Q<SliderInt>("SliderTree");
+        labelNumberSliderHome = root.Q<Label>("NumberforsliderHome");
+        labelNumberSliderCompliantHome = root.Q<Label>("NumberforsliderCompliantHome");
+        labelNumberSliderTree = root.Q<Label>("NumberforsliderTree");
+
         labelSocialScore = root.Q<Label>("SocialImpactScore");
-        //labelInjurieScore = root.Q<Label>("InjuriesScore");
+        labelInjurieScore = root.Q<Label>("InjuriesScore");
+        labelRescuedScore = root.Q<Label>("RescuedScore");
         labelDamageScore = root.Q<Label>("DamagesScore");
         labelTotalScore = root.Q<Label>("TotalScore");
         labelPhase2Score = root.Q<Label>("Phase2Score");
@@ -147,9 +165,26 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         labelBurntHomes.text = "- " + burntHomes.ToString() + " burnt home(s)";
         labelBurntTrees = root.Q<Label>("TreeLabel");
         labelBurntTrees.text = "- " + burntTrees.ToString() + " burnt tree(s)";
-        //labelInjuries = root.Q<Label>("InjurieLabel");
-        //injuries = Random.Range(burntHomes, burntTrees);
-        //labelInjuries.text = "- " + injuries.ToString() + " injuries";
+        labelInjuries = root.Q<Label>("InjuriesLabel");
+        injuries = GameManager.Instance.notRescuedVictim;
+        labelInjuries.text = "- " + injuries.ToString() + " injuries";
+
+        labelNumberSliderHome.text = "Pink number or Max " + burntHomes.ToString();
+        labelNumberSliderCompliantHome.text = "Pink number or Max " + burntHomes.ToString();
+        labelNumberSliderTree.text = "Pink number or Max 100";
+        //labelRescued = root.Q<Label>("RescuedLabel");
+        //rescuedPeople = GameManager.Instance.rescuedVictim;
+        //labelRescued.text = "- " + rescuedPeople.ToString() + " victim(s) rescued";
+
+        homesSlider.lowValue = 0;
+        homesSlider.highValue = burntHomes;
+        compliantHomesSlider.lowValue = 0;
+        compliantHomesSlider.highValue = burntHomes;
+        treesSlider.lowValue = 0;
+        treesSlider.highValue = 100;
+        homesSlider.RegisterValueChangedCallback(OnHomesChanged);
+        compliantHomesSlider.RegisterValueChangedCallback(OnCompliantHomesChanged);
+        treesSlider.RegisterValueChangedCallback(OnTreesChanged);
 
         phase_3_UI.style.display = DisplayStyle.None;
         controls_UI.style.display = DisplayStyle.None;
@@ -274,15 +309,87 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         int socialScore = repairedHome * repairedHomePointScale + repairedCompliantHome * repairedCompliantHomePointScale + /*repairedBuilding * 150*/ + plantedTrees * plantedTreePointScale;
         if(plantedTrees < burntTrees) socialScore -= 1000;
         //int injuriesScore = (injuries * -20);
+        int rescuedScore = rescuedPeople * 50;
         int damageScore = /*(burntBuildings * -50) + */(burntHomes * -20) + (burntTrees * -5);
-        score = (socialScore/* + injuriesScore*/ + damageScore) + phase2Score;
+        score = (socialScore/* + injuriesScore*/ + damageScore) + phase2Score + rescuedScore;
         labelSocialScore.text = socialScore.ToString();
         //labelInjurieScore.text = injuriesScore.ToString();
+        labelRescuedScore.text = rescuedScore.ToString();
         labelDamageScore.text = damageScore.ToString();
         labelPhase2Score.text = phase2Score.ToString();
         labelTotalScore.text = score.ToString();
 
     }
+
+    private void OnHomesChanged(ChangeEvent<int> evt)
+    {
+        int newValue = evt.newValue;
+        ApplyHomeCostLimit();
+        UpdateCosts();
+    }
+
+    private void OnCompliantHomesChanged(ChangeEvent<int> evt)
+    {
+        int newValue = evt.newValue;
+        ApplyCompliantHomesCostLimit();
+        UpdateCosts();
+    }
+
+    private void OnTreesChanged(ChangeEvent<int> evt)
+    {
+        int newValue = evt.newValue;
+        ApplyTreeCostLimit();
+        UpdateCosts();
+    }
+
+    private void UpdateCosts()
+    {
+        int homeCount = homesSlider.value;
+        int compliantHomeCount = compliantHomesSlider.value;
+        int treeCount = treesSlider.value;
+
+        int costHomes = homeCount * homeReparationCost;
+        int costCompliantHomes = homeCount * compliantHomeReparationCost;
+        int costTrees = treeCount * treeCost;
+
+        int totalCost = costHomes + costTrees;
+
+        // Mise à jour UI
+        labelCostHome.text = $"-{costHomes} $";
+        labelCostCompliantHome.text = $"-{costCompliantHomes} $";
+        labelCostTree.text = $"-{costTrees} $";
+        labelCostTotal.text = $"-{totalCost} $";
+    }
+
+    private void ApplyHomeCostLimit()
+    {
+        int maxAffordable = GameManager.Instance.money / homeReparationCost;
+
+        int hardLimit = Mathf.Min(maxAffordable, (homesSlider.highValue - compliantHomesSlider.value));
+
+        if (homesSlider.value + compliantHomesSlider.value > hardLimit)
+            homesSlider.SetValueWithoutNotify(hardLimit);
+    }
+
+    private void ApplyCompliantHomesCostLimit()
+    {
+        int maxAffordable = GameManager.Instance.money / compliantHomeReparationCost;
+
+        int hardLimit = Mathf.Min(maxAffordable, (compliantHomesSlider.highValue - homesSlider.value));
+
+        if (compliantHomesSlider.value + homesSlider.value > hardLimit)
+            compliantHomesSlider.SetValueWithoutNotify(hardLimit);
+    }
+
+    private void ApplyTreeCostLimit()
+    {
+        int maxAffordable = GameManager.Instance.money / treeCost;
+        int hardLimit = Mathf.Min(maxAffordable, treesSlider.highValue);
+
+        if (treesSlider.value > hardLimit)
+            treesSlider.SetValueWithoutNotify(hardLimit);
+    }
+
     /*
     void OnRepairBuildingChanged(ChangeEvent<string> evt)
     {
