@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     public int treesDestroyed;
     public int homesDestroyed;
     public int buildingsDestroyed;
+    public int rescuedVictim;
+    public int notRescuedVictim;
 
     [Header("Money")]
     public int money;
@@ -222,8 +224,19 @@ public class GameManager : MonoBehaviour
         gameTime = preparationPhaseTime;
         treesDestroyed = 0;
         buildingsDestroyed = 0;
+        rescuedVictim = 0;
+        notRescuedVictim = 0;
         timerRunning = false;
         isMuted = false;
+    }
+
+    public void AddRescuedVictim()
+    {
+        rescuedVictim += 1;
+    }
+    public void AddNotRescuedVictim()
+    {
+        notRescuedVictim += 1;
     }
 
     public bool GetMuteState()

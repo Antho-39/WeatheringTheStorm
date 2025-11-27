@@ -158,6 +158,8 @@ MonoBehaviour:
   treesDestroyed: 0
   homesDestroyed: 0
   buildingsDestroyed: 0
+  rescuedVictim: 0
+  notRescuedVictim: 0
   money: 0
   musicSource: {fileID: 331325300}
   phase_1Music: {fileID: 8300000, guid: 4f5337f9dec349648939fe6759b284bd, type: 3}
