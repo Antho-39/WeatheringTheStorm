@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 306cc5d34adcbb540a8e8570edf612e2
+guid: f98dbab8a5c2d544e8ec83efd9d159c0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1193086878673795441
-    second: Chien ig _0
+      213: 5663409867761305383
+    second: Injurie icon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Chien ig _0
+      name: Injurie icon_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 1
-        width: 20
-        height: 19
+        x: 0
+        y: 0
+        width: 47
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 179f785e132be8010800000000000000
-      internalID: 1193086878673795441
+      spriteID: 727ca59c449789e40800000000000000
+      internalID: 5663409867761305383
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Chien ig _0: 1193086878673795441
+      Injurie icon_0: 5663409867761305383
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

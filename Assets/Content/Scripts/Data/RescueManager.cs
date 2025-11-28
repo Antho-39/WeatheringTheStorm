@@ -66,6 +66,7 @@ public class RescueManager : MonoBehaviour
 
     void SpawnVictim()
     {
+        Debug.Log(rescueInProgress);
         if (rescueInProgress) return;
 
         Vector3 spawnPos = Vector3.zero;
