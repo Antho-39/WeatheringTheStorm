@@ -63,8 +63,8 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private Label labelTotalScore;
 
     public int buildingReparationCost = 3000;
-    public int homeReparationCost = 1000;
-    public int compliantHomeReparationCost = 1500;
+    public int homeReparationCost = 500;
+    public int compliantHomeReparationCost = 1000;
     public int treeCost = 50;
 
     public int repairedHomePointScale = 30;

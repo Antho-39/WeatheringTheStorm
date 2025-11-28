@@ -227,7 +227,6 @@ public class GameManager : MonoBehaviour
     {
         money = 10000;
         score = 0;
-        phase2scoreBonus = 1000;
         gameTime = preparationPhaseTime;
         treesDestroyed = 0;
         buildingsDestroyed = 0;
