@@ -89,6 +89,7 @@ public class RescueManager : MonoBehaviour
 
         if (!validPos) return;
 
+        spawnPos.z = -0.01f;
         int prefabIndex = Random.Range(0, victimPrefabs.Length);
         GameObject victim = Instantiate(victimPrefabs[prefabIndex], spawnPos, Quaternion.identity);
         activeVictims.Add(victim);
