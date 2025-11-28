@@ -16,6 +16,11 @@ public class PreparationPhaseUIController : MonoBehaviour
     private Button controlsNextButton;
     private Button nextPhaseButton;
 
+    private Label popUpFireCrew;
+    private Label popUpFireLine;
+    private Label popUpSafeZone;
+    private Coroutine fadeRoutine;
+
     [Header("Speed Settings")]
     public float letterDelay = 0.05f;  // Time between each letter
     public float punctuationDelay = 0.2f;       // Delay extra for . , ! ?
@@ -59,27 +64,40 @@ public class PreparationPhaseUIController : MonoBehaviour
         controlsNextButton = root.Q<Button>("ControlsNextButton");
         nextPhaseButton = root.Q<Button>("NextPhaseButton");
 
+        popUpFireCrew = root.Q<Label>("FireCrewPopUptext");
+        popUpFireLine = root.Q<Label>("FireLinePopUptext");
+        popUpSafeZone = root.Q<Label>("SafeZonePopUptext");
+
         var btnFireCrew = root.Q<Button>("FireCrewButton");
         var btnFireLine = root.Q<Button>("FireLineButton");
         var btnSafeZone = root.Q<Button>("SafeZoneButton");
 
+        //Btn FireCrew
         btnFireCrew.clicked += () =>
         {
             var def = GameManager.Instance.database.GetById("FIRE_CREW");
             PlacementManager.Instance.StartPlacing(def);
         };
+        btnFireCrew.RegisterCallback<PointerEnterEvent>(evt => StartFade(popUpFireCrew, 1f, 0.2f));
+        btnFireCrew.RegisterCallback<PointerLeaveEvent>(evt => StartFade(popUpFireCrew, 0f, 0.2f));
 
+        //Btn FireLine
         btnFireLine.clicked += () =>
         {
             var def = GameManager.Instance.database.GetById("FIRE_LINE");
             PlacementManager.Instance.StartPlacing(def);
         };
+        btnFireLine.RegisterCallback<PointerEnterEvent>(evt => StartFade(popUpFireLine, 1f, 0.2f));
+        btnFireLine.RegisterCallback<PointerLeaveEvent>(evt => StartFade(popUpFireLine, 0f, 0.2f));
 
+        //Btn SafeZone
         btnSafeZone.clicked += () =>
         {
             var def = GameManager.Instance.database.GetById("SAFE_ZONE");
             PlacementManager.Instance.StartPlacing(def);
         };
+        btnSafeZone.RegisterCallback<PointerEnterEvent>(evt => StartFade(popUpSafeZone, 1f, 0.2f));
+        btnSafeZone.RegisterCallback<PointerLeaveEvent>(evt => StartFade(popUpSafeZone, 0f, 0.2f));
 
         skipButton.clicked += SkipText;
         introNextButton.clicked += IntroNextUI;
@@ -128,6 +146,31 @@ public class PreparationPhaseUIController : MonoBehaviour
     void OnDisable()
     {
         PauseMenuController.OnGamePaused -= SetUICursor;
+    }
+
+    void StartFade(Label label, float targetOpacity, float duration)
+    {
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+
+        fadeRoutine = StartCoroutine(FadeOpacity(label, targetOpacity, duration));
+    }
+
+    IEnumerator FadeOpacity(Label label, float target, float duration)
+    {
+        float start = label.resolvedStyle.opacity;
+        float t = 0f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float blend = Mathf.Clamp01(t / duration);
+            label.style.opacity = Mathf.Lerp(start, target, blend);
+            yield return null;
+        }
+
+        label.style.opacity = target;
+        fadeRoutine = null;
     }
 
     private IEnumerator TypeText()

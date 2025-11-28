@@ -224,7 +224,10 @@ public class HelicopterController : MonoBehaviour
 
                     isRescuing = false;
                     currentVictim = null;
+
                     isTransportingVictim = true;
+                    emission.enabled = false;
+                    chopperAudioSource.Stop();
                 }
             }
         }
