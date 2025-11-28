@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PreparationPhaseUIController : MonoBehaviour
 {
@@ -19,7 +20,10 @@ public class PreparationPhaseUIController : MonoBehaviour
     private Label popUpFireCrew;
     private Label popUpFireLine;
     private Label popUpSafeZone;
-    private Coroutine fadeRoutine;
+    private Coroutine fadeFireCrew;
+    private Coroutine fadeFireLine;
+    private Coroutine fadeSafeZone;
+    private Dictionary<Label, Coroutine> fadeRoutines = new Dictionary<Label, Coroutine>();
 
     [Header("Speed Settings")]
     public float letterDelay = 0.05f;  // Time between each letter
@@ -150,10 +154,12 @@ public class PreparationPhaseUIController : MonoBehaviour
 
     void StartFade(Label label, float targetOpacity, float duration)
     {
-        if (fadeRoutine != null)
-            StopCoroutine(fadeRoutine);
+        if (fadeRoutines.ContainsKey(label) && fadeRoutines[label] != null)
+        {
+            StopCoroutine(fadeRoutines[label]);
+        }
 
-        fadeRoutine = StartCoroutine(FadeOpacity(label, targetOpacity, duration));
+        fadeRoutines[label] = StartCoroutine(FadeOpacity(label, targetOpacity, duration));
     }
 
     IEnumerator FadeOpacity(Label label, float target, float duration)
@@ -170,7 +176,6 @@ public class PreparationPhaseUIController : MonoBehaviour
         }
 
         label.style.opacity = target;
-        fadeRoutine = null;
     }
 
     private IEnumerator TypeText()
