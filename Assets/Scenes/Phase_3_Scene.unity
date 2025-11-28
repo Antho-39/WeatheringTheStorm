@@ -14989,12 +14989,16 @@ MonoBehaviour:
   letterSound_1: {fileID: 8300000, guid: 06d68d08a1d68ed43b88a477499a32e6, type: 3}
   letterSound_2: {fileID: 8300000, guid: 06d68d08a1d68ed43b88a477499a32e6, type: 3}
   buildingReparationCost: 3000
-  homeReparationCost: 1000
-  compliantHomeReparationCost: 1500
+  homeReparationCost: 500
+  compliantHomeReparationCost: 1000
   treeCost: 50
   repairedHomePointScale: 30
   repairedCompliantHomePointScale: 90
   plantedTreePointScale: 4
+  ratingOneStar: 400
+  ratingTwoStar: 699
+  ratingThreeStar: 899
+  ratingFourStar: 999
 --- !u!82 &869377850
 AudioSource:
   m_ObjectHideFlags: 0

@@ -99,6 +99,12 @@ public class ActionPhaseUIController : MonoBehaviour
         {
             UpdateDirectionArrow(currentVictimTarget.transform.position);
         }
+
+        // DEBUG ! 
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SceneLoader.LoadScene("Phase_3_Scene");
+        }
     }
 
     private IEnumerator TypeText(Label label, List<AudioClip> sounds = null)
@@ -184,8 +190,9 @@ public class ActionPhaseUIController : MonoBehaviour
         phase_2_UI.style.display = DisplayStyle.Flex;
         controls_UI.style.display = DisplayStyle.None;
         UnityEngine.Cursor.visible = false;
+        GameManager.Instance.PlayPhaseMusic();
 
-        
+
         if (fireManager != null)
         {
             fireManager.StartFireCycle();

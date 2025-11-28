@@ -19,8 +19,6 @@ public class FinalSceneUIController : MonoBehaviour
 
         replayButton.clicked += ReplayGame;
         leaveButton.clicked += Quit;
-
-        GameManager.Instance.StopTimer();
     }
 
     private void ReplayGame()
