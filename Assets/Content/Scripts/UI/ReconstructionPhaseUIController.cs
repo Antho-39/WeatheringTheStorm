@@ -160,9 +160,9 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         injuries = GameManager.Instance.notRescuedVictim;
         labelInjuries.text = "- " + injuries.ToString() + " injuries";
 
-        labelNumberSliderHome.text = "Pink number or Max " + burntHomes.ToString();
-        labelNumberSliderCompliantHome.text = "Pink number or Max " + burntHomes.ToString();
-        labelNumberSliderTree.text = "Pink number or Max 100";
+        labelNumberSliderHome.text = "Max " + burntHomes.ToString();
+        labelNumberSliderCompliantHome.text = "Max " + burntHomes.ToString();
+        labelNumberSliderTree.text = "Max 100";
         //labelRescued = root.Q<Label>("RescuedLabel");
         rescuedPeople = GameManager.Instance.rescuedVictim;
         //labelRescued.text = "- " + rescuedPeople.ToString() + " victim(s) rescued";
