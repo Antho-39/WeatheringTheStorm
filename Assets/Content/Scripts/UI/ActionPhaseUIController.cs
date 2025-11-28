@@ -85,7 +85,6 @@ public class ActionPhaseUIController : MonoBehaviour
 
         GameManager.Instance.StopTimer();
         StartCoroutine(TypeText(introLabel, typingSounds));
-	GameManager.Instance.PlayPhaseMusic();
     }
 
     void Update()
@@ -99,12 +98,6 @@ public class ActionPhaseUIController : MonoBehaviour
         if (currentVictimTarget != null)
         {
             UpdateDirectionArrow(currentVictimTarget.transform.position);
-        }
-
-        // DEBUG ! 
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SceneLoader.LoadScene("Phase_3_Scene");
         }
     }
 
