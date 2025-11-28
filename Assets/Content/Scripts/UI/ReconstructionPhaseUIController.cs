@@ -317,7 +317,6 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         print("Damage Score: " + damageScore);
         print("Final Score: " + score);
 
-        labelInjurieScore.text = injuries.ToString();
         labelRescuedScore.text = rescuedScore.ToString();
         labelDamageScore.text = damageScore.ToString();
         labelTotalScore.text = score.ToString();
