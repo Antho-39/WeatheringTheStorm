@@ -12,6 +12,8 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private Button controlsNextButton;
     private Button validateButton;
     private Button continueButton;
+    private Button skipButtonstarring;
+    private Button continueButtonstarring;
 
     [Header("Speed Settings")]
     public float letterDelay = 0.05f;  // Time between each letter
@@ -34,7 +36,15 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private VisualElement intro_UI;
     private VisualElement score_UI;
     private Label introLabel;
-    private string fullText;
+    private string fullIntroText;
+    private Label currentScoreLabel;
+    private string fullScoreText;
+
+    private Label ashesandregrest;
+    private Label singedbutstanding;
+    private Label holdingtheline;
+    private Label communityChampion;
+    private Label heroofMontparisBay;
 
     private Label labelCostHome;
     private Label labelCostCompliantHome;
@@ -61,6 +71,13 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private Label labelDamageScore;
     private Label labelPhase2Score;
     private Label labelTotalScore;
+    private Label totalScoreLabel;
+
+    private VisualElement oneStarrating;
+    private VisualElement twoStarrating;
+    private VisualElement threeStarrating;
+    private VisualElement fourStarrating;
+    private VisualElement fiveStarrating;
 
     public int buildingReparationCost = 3000;
     public int homeReparationCost = 500;
@@ -70,6 +87,11 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     public int repairedHomePointScale = 30;
     public int repairedCompliantHomePointScale = 90;
     public int plantedTreePointScale = 4;
+
+    public int ratingOneStar;
+    public int ratingTwoStar;
+    public int ratingThreeStar;
+    public int ratingFourStar;
 
     private Label moneyLabel;
     private float score;
@@ -117,17 +139,30 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         controls_UI = root.Q<VisualElement>("Controls");
         score_UI = root.Q<VisualElement>("Score");
 
+        ashesandregrest = root.Q<Label>("Ashesandregrest");
+        singedbutstanding = root.Q<Label>("Singedbutstanding");
+        holdingtheline = root.Q<Label>("Holdingtheline");
+        communityChampion = root.Q<Label>("CommunityChampion");
+        heroofMontparisBay = root.Q<Label>("HeroofMontparisBay");
+
         skipButton = root.Q<Button>("SkipButton");
         introNextButton = root.Q<Button>("IntroNextButton");
         controlsNextButton = root.Q<Button>("ControlsNextButton");
         validateButton = root.Q<Button>("ValidateButton");
         continueButton = root.Q<Button>("ContinueButton");
+        skipButtonstarring = root.Q<Button>("SkipButtonstarring");
+        continueButtonstarring = root.Q<Button>("ContinueButtonstarring");
 
-        skipButton.clicked += SkipText;
+        skipButton.clicked += SkipIntroText;
         introNextButton.clicked += IntroNextUI;
         controlsNextButton.clicked += ControlsNextUI;
         validateButton.clicked += ShowFinalScore;
         continueButton.clicked += () => SceneLoader.LoadScene("Final_Scene");
+        skipButtonstarring.clicked += SkipScoreText;
+        continueButtonstarring.clicked += ShowScoreDetails;
+
+        skipButtonstarring.style.display = DisplayStyle.None;
+        continueButtonstarring.style.display = DisplayStyle.None;
 
         labelCostHome = root.Q<Label>("CostHomeLabel");
         labelCostCompliantHome = root.Q<Label>("CostCompliantHomeLabel");
@@ -145,8 +180,21 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         labelInjurieScore = root.Q<Label>("InjuriesScore");
         labelRescuedScore = root.Q<Label>("RescuedScore");
         labelDamageScore = root.Q<Label>("DamagesScore");
-        labelTotalScore = root.Q<Label>("TotalScore");
         labelPhase2Score = root.Q<Label>("Phase2Score");
+        labelTotalScore = root.Q<Label>("TotalScore");
+        totalScoreLabel = root.Q<Label>("TotalScoreLabel");
+
+        oneStarrating = root.Q<VisualElement>("OneStarrating");
+        twoStarrating = root.Q<VisualElement>("TwoStarrating");
+        threeStarrating = root.Q<VisualElement>("ThreeStarrating");
+        fourStarrating = root.Q<VisualElement>("FourStarrating");
+        fiveStarrating = root.Q<VisualElement>("FiveStarrating");
+
+        oneStarrating.style.display = DisplayStyle.None;
+        twoStarrating.style.display = DisplayStyle.None;
+        threeStarrating.style.display = DisplayStyle.None;
+        fourStarrating.style.display = DisplayStyle.None;
+        fiveStarrating.style.display = DisplayStyle.None;
 
         labelError = root.Q<Label>("ErrorLabel");
         labelError.style.opacity = 0;
@@ -177,36 +225,32 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         compliantHomesSlider.RegisterCallback<ChangeEvent<int>>(OnCompliantHomesChanged);
         treesSlider.RegisterCallback<ChangeEvent<int>>(OnTreesChanged);
 
+        labelTotalScore.style.opacity = 0f;
         phase_3_UI.style.display = DisplayStyle.None;
         controls_UI.style.display = DisplayStyle.None;
         score_UI.style.display = DisplayStyle.None;
         intro_UI.style.display = DisplayStyle.Flex;
 
         // Get the full text and clear the label
-        fullText = introLabel.text;
-        introLabel.text = "";
+        fullIntroText = introLabel.text;
 
         GameManager.Instance.StopTimer();
-        StartCoroutine(TypeText());
-	GameManager.Instance.PlayPhaseMusic();
+        StartCoroutine(TypeText(introLabel));
     }
 
-    void Update()
-    {
-        //moneyLabel.text = GameManager.Instance.money.ToString() + " $";
-    }
 
-    private IEnumerator TypeText()
+    private IEnumerator TypeText(Label label)
     {
         isTyping = true;
 
         float currentDelay = letterDelay;
 
+        string labelText = label.text;
         introLabel.text = "";
 
-        for (int i = 0; i < fullText.Length; i++)
+        for (int i = 0; i < labelText.Length; i++)
         {
-            char c = fullText[i];
+            char c = labelText[i];
 
             //  Skip via bouton
             if (!isTyping) yield break;
@@ -217,9 +261,9 @@ public class ReconstructionPhaseUIController : MonoBehaviour
                 i++;
 
                 // Read full tag
-                while (i < fullText.Length && fullText[i] != '>')
+                while (i < labelText.Length && labelText[i] != '>')
                 {
-                    tag += fullText[i];
+                    tag += labelText[i];
                     i++;
                 }
 
@@ -252,20 +296,42 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         isFinished = true;
     }
 
-    private void SkipText()
+    private void SkipIntroText()
     {
         if (!isTyping) return;
 
-        introLabel.text = fullText;
+        introLabel.text = fullIntroText;
         isTyping = false;
         isFinished = true;
     }
+
+    private void SkipScoreText()
+    {
+        if (!isTyping) return;
+
+        currentScoreLabel.text = fullScoreText;
+        isTyping = false;
+        isFinished = true;
+    }
+
 
     private void ShowFinalScore()
     {
         CountScore();
         phase_3_UI.style.display = DisplayStyle.None;
+    }
+
+    private void ShowScoreDetails()
+    {
         score_UI.style.display = DisplayStyle.Flex;
+        oneStarrating.style.display = DisplayStyle.None;
+        twoStarrating.style.display = DisplayStyle.None;
+        threeStarrating.style.display = DisplayStyle.None;
+        fourStarrating.style.display = DisplayStyle.None;
+        fiveStarrating.style.display = DisplayStyle.None;
+        labelTotalScore.style.opacity = 0f;
+        skipButtonstarring.style.display = DisplayStyle.None;
+        continueButtonstarring.style.display = DisplayStyle.None;
     }
 
     private void IntroNextUI()
@@ -283,6 +349,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         phase_3_UI.style.display = DisplayStyle.Flex;
         controls_UI.style.display = DisplayStyle.None;
 
+        GameManager.Instance.PlayPhaseMusic();
         AddDonationMoney();
         moneyLabel.text = GameManager.Instance.money.ToString() + " $";
     }
@@ -320,6 +387,43 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         labelRescuedScore.text = rescuedScore.ToString();
         labelDamageScore.text = damageScore.ToString();
         labelTotalScore.text = score.ToString();
+        totalScoreLabel.text = score.ToString();
+        SetStarRating(score);
+    }
+
+    private void SetStarRating(float finalScore)
+    {
+        labelTotalScore.style.opacity = 1f;
+        skipButtonstarring.style.display = DisplayStyle.Flex;
+        continueButtonstarring.style.display = DisplayStyle.Flex;
+
+        if (finalScore < ratingOneStar)
+        {
+            oneStarrating.style.display = DisplayStyle.Flex;
+            currentScoreLabel = ashesandregrest;
+        }
+        else if(finalScore < ratingTwoStar)
+        {
+            twoStarrating.style.display = DisplayStyle.Flex;
+            currentScoreLabel = singedbutstanding;
+        }
+        else if(finalScore < ratingThreeStar)
+        {
+            threeStarrating.style.display = DisplayStyle.Flex;
+            currentScoreLabel = holdingtheline;
+        }
+        else if(finalScore < ratingFourStar)
+        {
+            fourStarrating.style.display = DisplayStyle.Flex;
+            currentScoreLabel = communityChampion;
+        }
+        else
+        {
+            fiveStarrating.style.display = DisplayStyle.Flex;
+            currentScoreLabel = heroofMontparisBay;
+        }
+        fullScoreText = currentScoreLabel.text;
+        TypeText(currentScoreLabel);
     }
 
     private void OnHomesChanged(ChangeEvent<int> evt)

@@ -16531,7 +16531,8 @@ MonoBehaviour:
   instantSkip: 1
   soundCooldown: 0.05
   audioSource: {fileID: 869377849}
-  typingSounds: []
+  typingSounds:
+  - {fileID: 8300000, guid: 06d68d08a1d68ed43b88a477499a32e6, type: 3}
 --- !u!82 &869377849
 AudioSource:
   m_ObjectHideFlags: 0
@@ -19784,12 +19785,12 @@ MonoBehaviour:
   - {fileID: 265656545}
   forbiddenLayers:
     serializedVersion: 2
-    m_Bits: 80
+    m_Bits: 848
   radioClip: {fileID: 8300000, guid: 4140a0c6ebe798044820edc7bd8fc057, type: 3}
   rescueClip: {fileID: 8300000, guid: c334dcea2dbbcdd4ea3010c382411887, type: 3}
   successClip: {fileID: 8300000, guid: 11354f2b0891c144d8462ab1aaab1134, type: 3}
   failClip: {fileID: 8300000, guid: 7cc71da36ba642d44a7ad5070871eb7a, type: 3}
-  spawnInterval: 45
+  spawnInterval: 42
   rescueTimeLimit: 20
   playerCarryingVictim: 0
   currentCarriedVictim: {fileID: 0}

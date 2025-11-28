@@ -85,7 +85,6 @@ public class ActionPhaseUIController : MonoBehaviour
 
         GameManager.Instance.StopTimer();
         StartCoroutine(TypeText(introLabel, typingSounds));
-	GameManager.Instance.PlayPhaseMusic();
     }
 
     void Update()
@@ -191,8 +190,9 @@ public class ActionPhaseUIController : MonoBehaviour
         phase_2_UI.style.display = DisplayStyle.Flex;
         controls_UI.style.display = DisplayStyle.None;
         UnityEngine.Cursor.visible = false;
+        GameManager.Instance.PlayPhaseMusic();
 
-        
+
         if (fireManager != null)
         {
             fireManager.StartFireCycle();

@@ -14995,6 +14995,10 @@ MonoBehaviour:
   repairedHomePointScale: 30
   repairedCompliantHomePointScale: 90
   plantedTreePointScale: 4
+  ratingOneStar: 400
+  ratingTwoStar: 699
+  ratingThreeStar: 899
+  ratingFourStar: 999
 --- !u!82 &869377850
 AudioSource:
   m_ObjectHideFlags: 0
