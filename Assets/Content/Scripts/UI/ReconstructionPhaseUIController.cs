@@ -65,7 +65,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
 
     private Label labelError;
 
-    private Label labelSocialScore;
+    private Label labelPreparationScore;
     private Label labelInjurieScore;
     private Label labelRescuedScore;
     private Label labelDamageScore;
@@ -78,6 +78,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
     private VisualElement threeStarrating;
     private VisualElement fourStarrating;
     private VisualElement fiveStarrating;
+    private VisualElement starratingScreens;
 
     public int buildingReparationCost = 3000;
     public int homeReparationCost = 500;
@@ -176,7 +177,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         labelNumberSliderCompliantHome = root.Q<Label>("NumberforsliderCompliantHome");
         labelNumberSliderTree = root.Q<Label>("NumberforsliderTree");
 
-        labelSocialScore = root.Q<Label>("SocialImpactScore");
+        labelPreparationScore = root.Q<Label>("PreparationScore");
         labelInjurieScore = root.Q<Label>("InjuriesScore");
         labelRescuedScore = root.Q<Label>("RescuedScore");
         labelDamageScore = root.Q<Label>("DamagesScore");
@@ -189,12 +190,14 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         threeStarrating = root.Q<VisualElement>("ThreeStarrating");
         fourStarrating = root.Q<VisualElement>("FourStarrating");
         fiveStarrating = root.Q<VisualElement>("FiveStarrating");
+        starratingScreens = root.Q<VisualElement>("StarratingScreens");
 
         oneStarrating.style.display = DisplayStyle.None;
         twoStarrating.style.display = DisplayStyle.None;
         threeStarrating.style.display = DisplayStyle.None;
         fourStarrating.style.display = DisplayStyle.None;
         fiveStarrating.style.display = DisplayStyle.None;
+        starratingScreens.style.display = DisplayStyle.None;
 
         labelError = root.Q<Label>("ErrorLabel");
         labelError.style.opacity = 0;
@@ -329,6 +332,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         threeStarrating.style.display = DisplayStyle.None;
         fourStarrating.style.display = DisplayStyle.None;
         fiveStarrating.style.display = DisplayStyle.None;
+        starratingScreens.style.display = DisplayStyle.None;
         labelTotalScore.style.opacity = 0f;
         skipButtonstarring.style.display = DisplayStyle.None;
         continueButtonstarring.style.display = DisplayStyle.None;
@@ -384,9 +388,11 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         print("Damage Score: " + damageScore);
         print("Final Score: " + score);
 
+        labelPreparationScore.text = phase1Score.ToString();
+        labelPhase2Score.text = fireScore.ToString();
         labelRescuedScore.text = rescuedScore.ToString();
         labelDamageScore.text = damageScore.ToString();
-        labelTotalScore.text = score.ToString();
+        labelTotalScore.text = "SCORE " + score.ToString();
         totalScoreLabel.text = score.ToString();
         SetStarRating(score);
     }
@@ -396,6 +402,7 @@ public class ReconstructionPhaseUIController : MonoBehaviour
         labelTotalScore.style.opacity = 1f;
         skipButtonstarring.style.display = DisplayStyle.Flex;
         continueButtonstarring.style.display = DisplayStyle.Flex;
+        starratingScreens.style.display = DisplayStyle.Flex;
 
         if (finalScore < ratingOneStar)
         {

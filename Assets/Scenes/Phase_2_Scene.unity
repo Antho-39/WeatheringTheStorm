@@ -35201,7 +35201,7 @@ MonoBehaviour:
     m_Bits: 336
   spreadRadius: 1.5
   maxAttemptsPerFire: 10
-  globalSpawnInterval: 10
+  globalSpawnInterval: 9
   globalSpawnAttempts: 20
   mapArea: {fileID: 1857692959}
 --- !u!1001 &2068073785

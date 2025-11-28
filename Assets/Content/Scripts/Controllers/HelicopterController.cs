@@ -113,7 +113,7 @@ public class HelicopterController : MonoBehaviour
         }
 
         float speed = chopperRigidbody.linearVelocity.magnitude;
-        helicopterAudioSource.volume = Mathf.InverseLerp(0f, 25f, speed);
+        helicopterAudioSource.volume = Mathf.InverseLerp(0f, 30f, speed);
     }
 
     private void HandleWaterCannon()
